@@ -1,3 +1,10 @@
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
+
+@font-face {
+    font-family: "Lazy Dog";
+    src: url("/public/fonts/lazy_dog.ttf");
+    font-weight: 500;
+    font-style: normal;
+}
