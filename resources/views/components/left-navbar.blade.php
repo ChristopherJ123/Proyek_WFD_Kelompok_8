@@ -29,36 +29,20 @@
         </button>
     </div>
     <div id="recent-tab" class="flex flex-col gap-2">
-        <div class="flex gap-2">
+        <div class="flex gap-2 cursor-pointer">
             <img src="images_temp/medieval-raw.jpg" alt="medieval" class="size-8 object-cover rounded-full">
             <div>y/medieval</div>
         </div>
-        <div class="flex gap-2">
+        <div class="flex gap-2 cursor-pointer">
             <img src="images_temp/frieren-raw.jpg" alt="medieval" class="size-8 object-cover rounded-full">
             <div>y/frieren</div>
         </div>
-        <div class="flex gap-2">
+        <div class="flex gap-2 cursor-pointer">
             <img src="images_temp/frieren-raw.jpg" alt="medieval" class="size-8 object-cover rounded-full">
             <div>y/frieren</div>
         </div>
-        <div class="flex gap-2">
-            <img src="images_temp/frieren-raw.jpg" alt="medieval" class="size-8 object-cover rounded-full">
-            <div>y/frieren</div>
-        </div>
-        <div class="flex gap-2">
-            <img src="images_temp/frieren-raw.jpg" alt="medieval" class="size-8 object-cover rounded-full">
-            <div>y/frieren</div>
-        </div>
-        <div class="flex gap-2">
-            <img src="images_temp/frieren-raw.jpg" alt="medieval" class="size-8 object-cover rounded-full">
-            <div>y/frieren</div>
-        </div>
-        <div class="flex gap-2">
-            <img src="images_temp/frieren-raw.jpg" alt="medieval" class="size-8 object-cover rounded-full">
-            <div>y/frieren</div>
-        </div>
-        <div class="relative">
-            <div class="absolute bg-linear-0 from-brand-500 h-4 w-full"></div>
+        <div class="relative cursor-pointer">
+            <div class="absolute bg-linear-0 -top-10 from-brand-900 h-8 w-full"></div>
             <div class="">
                 View more...
             </div>
@@ -74,17 +58,27 @@
         </button>
     </div>
     <div id="topics-tab" class="flex flex-col gap-2">
-        <div class="flex gap-2">
+        <div class="flex gap-2 cursor-pointer">
             <img src="images_temp/ultramen-raw.jpg" alt="medieval" class="size-8 object-cover rounded-full">
             <div>y/ultramen</div>
         </div>
-        <div class="flex gap-2">
+        <div class="flex gap-2 cursor-pointer">
             <img src="images_temp/cook-raw.jpg" alt="medieval" class="size-8 object-cover rounded-full">
             <div>y/cook</div>
         </div>
-        <div class="flex gap-2">
+        <div class="flex gap-2 cursor-pointer">
             <img src="images_temp/programming-raw.jpg" alt="medieval" class="size-8 object-cover rounded-full">
             <div>y/programmer</div>
+        </div>
+        <div class="flex gap-2 cursor-pointer">
+            <img src="images_temp/programming-raw.jpg" alt="medieval" class="size-8 object-cover rounded-full">
+            <div>y/programmer</div>
+        </div>
+        <div class="relative cursor-pointer">
+            <div class="absolute bg-linear-0 -top-10 from-brand-900 h-8 w-full"></div>
+            <div class="">
+                View more...
+            </div>
         </div>
     </div>
 </nav>
