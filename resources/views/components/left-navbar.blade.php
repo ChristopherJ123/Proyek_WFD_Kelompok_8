@@ -20,7 +20,7 @@
         <div>EXPLORE</div>
     </div>
     <hr class="border border-brand-500">
-    <div class="flex justify-between">
+    <div id="recent-bar" class="flex justify-between cursor-pointer">
         <div class="font-bold">RECENT</div>
         <button id="recent-button">
             <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" class="size-6 transition ease-out">
@@ -31,15 +31,41 @@
     <div id="recent-tab" class="flex flex-col gap-2">
         <div class="flex gap-2">
             <img src="images_temp/medieval-raw.jpg" alt="medieval" class="size-8 object-cover rounded-full">
-            <div>Y/MEDIEVAL</div>
+            <div>y/medieval</div>
         </div>
         <div class="flex gap-2">
             <img src="images_temp/frieren-raw.jpg" alt="medieval" class="size-8 object-cover rounded-full">
             <div>y/frieren</div>
         </div>
+        <div class="flex gap-2">
+            <img src="images_temp/frieren-raw.jpg" alt="medieval" class="size-8 object-cover rounded-full">
+            <div>y/frieren</div>
+        </div>
+        <div class="flex gap-2">
+            <img src="images_temp/frieren-raw.jpg" alt="medieval" class="size-8 object-cover rounded-full">
+            <div>y/frieren</div>
+        </div>
+        <div class="flex gap-2">
+            <img src="images_temp/frieren-raw.jpg" alt="medieval" class="size-8 object-cover rounded-full">
+            <div>y/frieren</div>
+        </div>
+        <div class="flex gap-2">
+            <img src="images_temp/frieren-raw.jpg" alt="medieval" class="size-8 object-cover rounded-full">
+            <div>y/frieren</div>
+        </div>
+        <div class="flex gap-2">
+            <img src="images_temp/frieren-raw.jpg" alt="medieval" class="size-8 object-cover rounded-full">
+            <div>y/frieren</div>
+        </div>
+        <div class="relative">
+            <div class="absolute bg-linear-90 from-brand-500 h-4 w-full"></div>
+            <div class="">
+                View more...
+            </div>
+        </div>
     </div>
     <hr class="border border-brand-500">
-    <div class="flex justify-between">
+    <div id="topics-bar" class="flex justify-between cursor-pointer">
         <div class="font-bold">TOPICS</div>
         <button id="topics-button">
             <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" class="size-6">
@@ -63,13 +89,13 @@
     </div>
 </nav>
 <script>
-    $('#recent-button').on("click", function () {
+    $('#recent-bar').on("click", function () {
         $('#recent-tab').slideToggle();
-        $(this).children().first().toggleClass('rotate-180');
+        $(this).children('button').children().first().toggleClass('rotate-180');
     });
 
-    $('#topics-button').on("click", function () {
+    $('#topics-bar').on("click", function () {
         $('#topics-tab').slideToggle();
-        $(this).children().first().toggleClass('rotate-180');
+        $(this).children('button').children().first().toggleClass('rotate-180');
     });
 </script>

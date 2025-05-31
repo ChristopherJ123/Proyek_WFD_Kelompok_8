@@ -1,10 +1,22 @@
-@tailwind base;
-@tailwind components;
-@tailwind utilities;
+@import "tailwindcss";
+
+@source '../../vendor/laravel/framework/src/Illuminate/Pagination/resources/views/*.blade.php';
+@source '../../storage/framework/views/*.php';
+@source "../**/*.blade.php";
+@source "../**/*.js";
+@source "../**/*.vue";
 
 @font-face {
     font-family: "Lazy Dog";
     src: url("/public/fonts/lazy_dog.ttf");
     font-weight: 500;
     font-style: normal;
+}
+
+@theme {
+    --color-brand-100: #ffe5b6;
+    --color-brand-300: #c7ac6b;
+    --color-brand-500: #b2935b;
+    --color-brand-700: #957252;
+    --color-brand-900: #544541;
 }
