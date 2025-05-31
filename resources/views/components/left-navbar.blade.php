@@ -58,7 +58,7 @@
             <div>y/frieren</div>
         </div>
         <div class="relative">
-            <div class="absolute bg-linear-90 from-brand-500 h-4 w-full"></div>
+            <div class="absolute bg-linear-0 from-brand-500 h-4 w-full"></div>
             <div class="">
                 View more...
             </div>

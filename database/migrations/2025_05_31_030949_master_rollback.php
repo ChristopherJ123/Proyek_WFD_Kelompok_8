@@ -35,6 +35,8 @@ return new class extends Migration
         Schema::dropIfExists('topic'); // 13
         Schema::dropIfExists('genre'); // 14
         Schema::dropIfExists('user'); // 15
+        Schema::dropIfExists('password_reset_tokens');
+        Schema::dropIfExists('sessions');
         Schema::dropIfExists('role'); // 16
     }
 };
