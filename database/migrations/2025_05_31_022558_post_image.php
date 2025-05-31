@@ -13,7 +13,7 @@ return new class extends Migration
     {
         Schema::create('post_image', function (Blueprint $table) {
             $table->id();
-            $table->foreignId('post_id')->constrained()->onDelete('cascade');
+            $table->foreignId('post_id')->constrained('post')->onDelete('cascade');
             $table->string('image_url');
             $table->timestamps();
         });
@@ -24,6 +24,6 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::dropIfExists('post_image');
+        
     }
 };

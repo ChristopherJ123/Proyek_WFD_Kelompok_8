@@ -13,7 +13,7 @@ return new class extends Migration
     {
         Schema::create('topic_rule', function (Blueprint $table) {
             $table->id();
-            $table->foreignId('topic_id')->constrained()->onDelete('cascade');
+            $table->foreignId('topic_id')->constrained('topic')->onDelete('cascade');
             $table->integer('order');
             $table->string('title');
             $table->string('description');

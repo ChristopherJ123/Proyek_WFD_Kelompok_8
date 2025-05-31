@@ -13,7 +13,7 @@ return new class extends Migration
     {
         Schema::create('user_post_report', function (Blueprint $table) {
             $table->id();
-            $table->foreignId('post_id')->constrained()->onDelete('cascade');
+            $table->foreignId('post_id')->constrained('post')->onDelete('cascade');
             $table->foreignId('post_comment_id')->nullable()->constrained('post_comment')->onDelete('cascade');
             $table->string('report_reason');
             $table->timestamps();
@@ -25,6 +25,6 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::dropIfExists('user_post_report');
+        
     }
 };
