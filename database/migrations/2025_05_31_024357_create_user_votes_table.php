@@ -11,11 +11,11 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('user_vote', function (Blueprint $table) {
+        Schema::create('user_votes', function (Blueprint $table) {
             $table->id();
-            $table->foreignId('user_id')->constrained('user')->onDelete('cascade');
-            $table->foreignId('post_id')->constrained('post')->onDelete('cascade');
-            $table->foreignId('post_comment_id')->nullable()->constrained('post_comment')->onDelete('cascade');
+            $table->foreignId('user_id')->constrained('users')->onDelete('cascade');
+            $table->foreignId('post_id')->constrained('posts')->onDelete('cascade');
+            $table->foreignId('post_comment_id')->nullable()->constrained('post_comments')->onDelete('cascade');
             $table->boolean('is_upvote')->default(false);
             $table->boolean('is_owner_read')->default(false);
             $table->timestamps();

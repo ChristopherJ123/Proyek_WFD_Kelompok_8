@@ -11,10 +11,11 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('post_image', function (Blueprint $table) {
+        Schema::create('topics', function (Blueprint $table) {
             $table->id();
-            $table->foreignId('post_id')->constrained('post')->onDelete('cascade');
-            $table->string('image_url');
+            $table->string('title');
+            $table->string('moderator_notice')->nullable();
+            $table->boolean('is_deleted')->default(false);
             $table->timestamps();
         });
     }
@@ -24,6 +25,6 @@ return new class extends Migration
      */
     public function down(): void
     {
-        
+
     }
 };

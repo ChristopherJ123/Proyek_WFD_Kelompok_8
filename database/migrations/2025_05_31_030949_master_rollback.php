@@ -20,23 +20,23 @@ return new class extends Migration
     public function down(): void
     {
             // ada 16 table
-        Schema::dropIfExists('post_image'); // 1
-        Schema::dropIfExists('user_post_report'); // 2
-        Schema::dropIfExists('direct_message_image'); // 3
-        Schema::dropIfExists('direct_message'); // 4
-        Schema::dropIfExists('user_topic_follow'); // 5
-        Schema::dropIfExists('topic_blocked_user'); // 6
-        Schema::dropIfExists('topic_rule'); // 7
+        Schema::dropIfExists('post_images'); // 1
+        Schema::dropIfExists('user_post_reports'); // 2
+        Schema::dropIfExists('direct_message_images'); // 3
+        Schema::dropIfExists('direct_messages'); // 4
+        Schema::dropIfExists('user_topic_following'); // 5
+        Schema::dropIfExists('topic_blocked_users'); // 6
+        Schema::dropIfExists('topic_rules'); // 7
         Schema::dropIfExists('topic_moderator'); // 8
-        Schema::dropIfExists('user_genre'); // 9
-        Schema::dropIfExists('user_vote'); // 10
-        Schema::dropIfExists('post_comment'); // 11
-        Schema::dropIfExists('post'); // 12
-        Schema::dropIfExists('topic'); // 13
-        Schema::dropIfExists('genre'); // 14
-        Schema::dropIfExists('user'); // 15
+        Schema::dropIfExists('user_genres'); // 9
+        Schema::dropIfExists('user_votes'); // 10
+        Schema::dropIfExists('post_comments'); // 11
+        Schema::dropIfExists('posts'); // 12
+        Schema::dropIfExists('topics'); // 13
+        Schema::dropIfExists('genres'); // 14
+        Schema::dropIfExists('users'); // 15
         Schema::dropIfExists('password_reset_tokens');
         Schema::dropIfExists('sessions');
-        Schema::dropIfExists('role'); // 16
+        Schema::dropIfExists('roles'); // 16
     }
 };

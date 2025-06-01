@@ -11,12 +11,9 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('topic_blocked_user', function (Blueprint $table) {
+        Schema::create('genres', function (Blueprint $table) {
             $table->id();
-            $table->foreignId('topic_id')->constrained('topic')->onDelete('cascade');
-            $table->foreignId('user_id')->constrained('user')->onDelete('cascade');
-            $table->foreignId('moderator_id')->constrained('topic_moderator')->onDelete('cascade');
-            $table->string('reason')->nullable();
+            $table->string('name');
             $table->timestamps();
         });
     }
@@ -26,6 +23,6 @@ return new class extends Migration
      */
     public function down(): void
     {
-        //
+
     }
 };

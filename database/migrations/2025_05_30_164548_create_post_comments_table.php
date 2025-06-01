@@ -11,11 +11,11 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('post_comment', function (Blueprint $table) {
+        Schema::create('post_comments', function (Blueprint $table) {
             $table->id();
-            $table->foreignId('post_id')->constrained('post')->onDelete('cascade');
-            $table->foreignId('author_id')->constrained('user')->onDelete('cascade');
-            $table->foreignId('parent_message_id')->constrained('post_comment')->onDelete('cascade');
+            $table->foreignId('post_id')->constrained('posts')->onDelete('cascade');
+            $table->foreignId('author_id')->constrained('users')->onDelete('cascade');
+            $table->foreignId('parent_message_id')->constrained('post_comments')->onDelete('cascade');
             $table->string('message');
             $table->boolean('is_answer')->default(false);
             $table->boolean('is_post_owner_read')->default(false);
@@ -33,6 +33,6 @@ return new class extends Migration
      */
     public function down(): void
     {
-        
+
     }
 };

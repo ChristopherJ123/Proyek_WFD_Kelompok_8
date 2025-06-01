@@ -11,9 +11,9 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('direct_message_image', function (Blueprint $table) {
+        Schema::create('direct_message_images', function (Blueprint $table) {
             $table->id();
-            $table->foreignId('direct_messsage_id')->constrained('direct_message')->onDelete('cascade');
+            $table->foreignId('direct_messsage_id')->constrained('direct_messages')->onDelete('cascade');
             $table->string('image_link');
             $table->timestamps();
         });

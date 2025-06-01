@@ -11,13 +11,12 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('direct_message', function (Blueprint $table) {
+        Schema::create('topic_rules', function (Blueprint $table) {
             $table->id();
-            $table->foreignId('sender_id')->constrained('user')->onDelete('cascade');
-            $table->foreignId('target_user_id')->constrained('user')->onDelete('cascade');
-            $table->string('message');
-            $table->string('reason')->nullable();
-            $table->boolean('is_read')->default(false);
+            $table->foreignId('topic_id')->constrained('topics')->onDelete('cascade');
+            $table->integer('order');
+            $table->string('title');
+            $table->string('description');
             $table->timestamps();
         });
     }
@@ -27,6 +26,6 @@ return new class extends Migration
      */
     public function down(): void
     {
-        
+        //
     }
 };

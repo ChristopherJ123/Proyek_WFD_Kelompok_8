@@ -11,11 +11,13 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('user_post_report', function (Blueprint $table) {
+        Schema::create('direct_messages', function (Blueprint $table) {
             $table->id();
-            $table->foreignId('post_id')->constrained('post')->onDelete('cascade');
-            $table->foreignId('post_comment_id')->nullable()->constrained('post_comment')->onDelete('cascade');
-            $table->string('report_reason');
+            $table->foreignId('sender_id')->constrained('users')->onDelete('cascade');
+            $table->foreignId('target_user_id')->constrained('users')->onDelete('cascade');
+            $table->string('message');
+            $table->string('reason')->nullable();
+            $table->boolean('is_read')->default(false);
             $table->timestamps();
         });
     }
@@ -25,6 +27,6 @@ return new class extends Migration
      */
     public function down(): void
     {
-        
+
     }
 };
