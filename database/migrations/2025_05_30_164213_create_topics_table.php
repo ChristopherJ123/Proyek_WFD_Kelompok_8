@@ -13,8 +13,12 @@ return new class extends Migration
     {
         Schema::create('topics', function (Blueprint $table) {
             $table->id();
-            $table->string('title');
-            $table->string('moderator_notice')->nullable();
+            $table->foreignId('owner_id')->constrained('users')->onDelete('cascade');
+            $table->foreignId('genre_id')->constrained('genres')->onDelete('cascade');
+            $table->string('name');
+            $table->string('description');
+            $table->string('icon_image_link')->nullable();
+            $table->string('banner_image_link')->nullable();
             $table->boolean('is_deleted')->default(false);
             $table->timestamps();
         });

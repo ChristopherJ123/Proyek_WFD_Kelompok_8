@@ -19,9 +19,10 @@ return new class extends Migration
             $table->string('password');
             $table->rememberToken();
             $table->string('username')->unique();
+            $table->string('bio')->nullable();
             $table->string('education')->nullable();
             $table->string('university')->nullable();
-            $table->date('birth_date')->nullable();
+            $table->date('birth_date');
             $table->string('profile_picture_url')->nullable();
             $table->timestamps();
         });
