@@ -15,7 +15,7 @@ return new class extends Migration
             $table->id();
             $table->foreignId('post_id')->constrained('posts')->onDelete('cascade');
             $table->foreignId('author_id')->constrained('users')->onDelete('cascade');
-            $table->foreignId('parent_message_id')->constrained('post_comments')->onDelete('cascade');
+            $table->foreignId('parent_message_id')->nullable()->constrained('post_comments')->onDelete('cascade');
             $table->string('message');
             $table->boolean('is_answer')->default(false);
             $table->boolean('is_post_owner_read')->default(false);

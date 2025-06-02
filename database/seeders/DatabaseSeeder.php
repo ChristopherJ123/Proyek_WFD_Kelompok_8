@@ -2,7 +2,6 @@
 
 namespace Database\Seeders;
 
-use App\Models\User;
 // use Illuminate\Database\Console\Seeds\WithoutModelEvents;
 use Illuminate\Database\Seeder;
 
@@ -18,6 +17,10 @@ class DatabaseSeeder extends Seeder
             UserSeeder::class,
             GenreSeeder::class,
             TopicSeeder::class,
+            PostSeeder::class,
+            PostCommentSeeder::class,
+            PostImageSeeder::class,
+            UserVoteSeeder::class,
         ]);
     }
 }
