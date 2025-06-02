@@ -17,7 +17,7 @@ class TopicSeeder extends Seeder
         Topic::insert([
             [
                 'owner_id' => User::all()->random()['id'],
-                'name' => 'Medieval',
+                'name' => 'medieval',
                 'genre_id' => 1,
                 'description' => 'Discussing medieval related topics.',
                 'icon_image_link' => 'topic_1_icon',
@@ -25,7 +25,7 @@ class TopicSeeder extends Seeder
             ],
             [
                 'owner_id' => User::all()->random()['id'],
-                'name' => 'Frieren',
+                'name' => 'frieren',
                 'genre_id' => 3,
                 'description' => 'Talking about Frieren related topics here.',
                 'icon_image_link' => 'topic_2_icon',
@@ -33,7 +33,7 @@ class TopicSeeder extends Seeder
             ],
             [
                 'owner_id' => User::all()->random()['id'],
-                'name' => 'Cooking',
+                'name' => 'cooking',
                 'genre_id' => 2,
                 'description' => 'The channel for beginners, advanced cooking related topics.',
                 'icon_image_link' => 'topic_3_icon',
@@ -41,7 +41,7 @@ class TopicSeeder extends Seeder
             ],
             [
                 'owner_id' => User::all()->random()['id'],
-                'name' => 'Ultramen',
+                'name' => 'ultramen',
                 'genre_id' => 3,
                 'description' => 'Ultramen classic.',
                 'icon_image_link' => 'topic_4_icon',
@@ -49,7 +49,7 @@ class TopicSeeder extends Seeder
             ],
             [
                 'owner_id' => User::all()->random()['id'],
-                'name' => 'Programming',
+                'name' => 'programming',
                 'genre_id' => 1,
                 'description' => 'Discuss coding related topics here.',
                 'icon_image_link' => 'topic_5_icon',
@@ -57,7 +57,7 @@ class TopicSeeder extends Seeder
             ],
             [
                 'owner_id' => User::all()->random()['id'],
-                'name' => 'Minimalist Living',
+                'name' => 'minimalist_living',
                 'genre_id' => 1,
                 'description' => 'Exploring simplicity in life and living spaces.',
                 'icon_image_link' => 'topic_6_icon',
@@ -65,7 +65,7 @@ class TopicSeeder extends Seeder
             ],
             [
                 'owner_id' => User::all()->random()['id'],
-                'name' => 'Healthy Habits',
+                'name' => 'healthy_habits',
                 'genre_id' => 1,
                 'description' => 'Discussing routines and practices for better health.',
                 'icon_image_link' => 'topic_7_icon',
@@ -73,7 +73,7 @@ class TopicSeeder extends Seeder
             ],
             [
                 'owner_id' => User::all()->random()['id'],
-                'name' => 'Relationship Advice',
+                'name' => 'relationship_advice',
                 'genre_id' => 1,
                 'description' => 'Sharing experiences and tips for relationships.',
                 'icon_image_link' => 'topic_8_icon',
@@ -81,7 +81,7 @@ class TopicSeeder extends Seeder
             ],
             [
                 'owner_id' => User::all()->random()['id'],
-                'name' => 'Time Management',
+                'name' => 'time_management',
                 'genre_id' => 1,
                 'description' => 'Tips and strategies for effective time use.',
                 'icon_image_link' => 'topic_9_icon',
@@ -89,7 +89,7 @@ class TopicSeeder extends Seeder
             ],
             [
                 'owner_id' => User::all()->random()['id'],
-                'name' => 'Interior Design',
+                'name' => 'interior_design',
                 'genre_id' => 1,
                 'description' => 'Aesthetic and functional home ideas.',
                 'icon_image_link' => 'topic_10_icon',
@@ -97,7 +97,7 @@ class TopicSeeder extends Seeder
             ],
             [
                 'owner_id' => User::all()->random()['id'],
-                'name' => 'Fashion Trends',
+                'name' => 'fashion_trends',
                 'genre_id' => 1,
                 'description' => 'Discussing the latest in style and clothing.',
                 'icon_image_link' => 'topic_11_icon',
@@ -105,7 +105,7 @@ class TopicSeeder extends Seeder
             ],
             [
                 'owner_id' => User::all()->random()['id'],
-                'name' => 'Self-Care Routines',
+                'name' => 'self-care_routines',
                 'genre_id' => 1,
                 'description' => 'Mental and physical self-care practices.',
                 'icon_image_link' => 'topic_12_icon',
@@ -113,7 +113,7 @@ class TopicSeeder extends Seeder
             ],
             [
                 'owner_id' => User::all()->random()['id'],
-                'name' => 'Productivity Hacks',
+                'name' => 'productivity_hacks',
                 'genre_id' => 1,
                 'description' => 'Boosting efficiency in daily tasks.',
                 'icon_image_link' => 'topic_13_icon',
@@ -121,7 +121,7 @@ class TopicSeeder extends Seeder
             ],
             [
                 'owner_id' => User::all()->random()['id'],
-                'name' => 'Star Wars',
+                'name' => 'star_wars',
                 'genre_id' => 2,
                 'description' => 'Discussing everything Star Wars.',
                 'icon_image_link' => 'topic_14_icon',
@@ -129,7 +129,7 @@ class TopicSeeder extends Seeder
             ],
             [
                 'owner_id' => User::all()->random()['id'],
-                'name' => 'Marvel Cinematic Universe',
+                'name' => 'marvel_cinematic_universe',
                 'genre_id' => 2,
                 'description' => 'From Iron Man to Avengers, it’s all here.',
                 'icon_image_link' => 'topic_15_icon',
@@ -137,7 +137,7 @@ class TopicSeeder extends Seeder
             ],
             [
                 'owner_id' => User::all()->random()['id'],
-                'name' => 'Stranger Things',
+                'name' => 'stranger_things',
                 'genre_id' => 2,
                 'description' => 'Fan theories and episode discussions.',
                 'icon_image_link' => 'topic_16_icon',
@@ -145,7 +145,7 @@ class TopicSeeder extends Seeder
             ],
             [
                 'owner_id' => User::all()->random()['id'],
-                'name' => 'The Office',
+                'name' => 'the_office',
                 'genre_id' => 2,
                 'description' => 'Classic sitcom discussions and memes.',
                 'icon_image_link' => 'topic_17_icon',
@@ -153,7 +153,7 @@ class TopicSeeder extends Seeder
             ],
             [
                 'owner_id' => User::all()->random()['id'],
-                'name' => 'Breaking Bad',
+                'name' => 'breaking_bad',
                 'genre_id' => 2,
                 'description' => 'Dive deep into the story and characters.',
                 'icon_image_link' => 'topic_18_icon',
@@ -161,7 +161,7 @@ class TopicSeeder extends Seeder
             ],
             [
                 'owner_id' => User::all()->random()['id'],
-                'name' => 'Game of Thrones',
+                'name' => 'game_of_thrones',
                 'genre_id' => 2,
                 'description' => 'House wars and lore from Westeros.',
                 'icon_image_link' => 'topic_19_icon',
@@ -169,7 +169,7 @@ class TopicSeeder extends Seeder
             ],
             [
                 'owner_id' => User::all()->random()['id'],
-                'name' => 'Lord of the Rings',
+                'name' => 'lord_of_the_rings',
                 'genre_id' => 2,
                 'description' => 'Middle-earth discussion hub.',
                 'icon_image_link' => 'topic_20_icon',
@@ -177,7 +177,7 @@ class TopicSeeder extends Seeder
             ],
             [
                 'owner_id' => User::all()->random()['id'],
-                'name' => 'K-Pop Central',
+                'name' => 'k-pop_central',
                 'genre_id' => 2,
                 'description' => 'Talk about idols, music, and fandoms.',
                 'icon_image_link' => 'topic_21_icon',
@@ -186,7 +186,7 @@ class TopicSeeder extends Seeder
 
             [
                 'owner_id' => User::all()->random()['id'],
-                'name' => 'Pop Culture Watch',
+                'name' => 'pop_culture_watch',
                 'genre_id' => 2,
                 'description' => 'Tracking trends and viral phenomena.',
                 'icon_image_link' => 'topic_22_icon',
@@ -194,7 +194,7 @@ class TopicSeeder extends Seeder
             ],
             [
                 'owner_id' => User::all()->random()['id'],
-                'name' => 'Award Show Discussions',
+                'name' => 'award_show_discussions',
                 'genre_id' => 2,
                 'description' => 'Oscars, Grammys and more.',
                 'icon_image_link' => 'topic_23_icon',
@@ -202,7 +202,7 @@ class TopicSeeder extends Seeder
             ],
             [
                 'owner_id' => User::all()->random()['id'],
-                'name' => 'Naruto',
+                'name' => 'naruto',
                 'genre_id' => 3,
                 'description' => 'From Konoha to the Akatsuki. Everything Naruto.',
                 'icon_image_link' => 'topic_24_icon',
@@ -210,7 +210,7 @@ class TopicSeeder extends Seeder
             ],
             [
                 'owner_id' => User::all()->random()['id'],
-                'name' => 'One Piece',
+                'name' => 'one_piece',
                 'genre_id' => 3,
                 'description' => 'Sailing with Luffy and the Straw Hats.',
                 'icon_image_link' => 'topic_25_icon',
@@ -218,7 +218,7 @@ class TopicSeeder extends Seeder
             ],
             [
                 'owner_id' => User::all()->random()['id'],
-                'name' => 'Attack on Titan',
+                'name' => 'attack_on_titan',
                 'genre_id' => 3,
                 'description' => 'Titans, Marley, and beyond.',
                 'icon_image_link' => 'topic_26_icon',
@@ -226,7 +226,7 @@ class TopicSeeder extends Seeder
             ],
             [
                 'owner_id' => User::all()->random()['id'],
-                'name' => 'Spongebob Squarepants',
+                'name' => 'spongebob_squarepants',
                 'genre_id' => 3,
                 'description' => 'Underwater laughs and quotes.',
                 'icon_image_link' => 'topic_27_icon',
@@ -234,7 +234,7 @@ class TopicSeeder extends Seeder
             ],
             [
                 'owner_id' => User::all()->random()['id'],
-                'name' => 'Avatar: The Last Airbender',
+                'name' => 'avatar:_the_last_airbender',
                 'genre_id' => 3,
                 'description' => 'Bending elements and deep lore.',
                 'icon_image_link' => 'topic_28_icon',
@@ -242,7 +242,7 @@ class TopicSeeder extends Seeder
             ],
             [
                 'owner_id' => User::all()->random()['id'],
-                'name' => 'Demon Slayer',
+                'name' => 'demon_slayer',
                 'genre_id' => 3,
                 'description' => 'Demon hunting and breathing styles.',
                 'icon_image_link' => 'topic_29_icon',
@@ -250,7 +250,7 @@ class TopicSeeder extends Seeder
             ],
             [
                 'owner_id' => User::all()->random()['id'],
-                'name' => 'Adventure Time',
+                'name' => 'adventure_time',
                 'genre_id' => 3,
                 'description' => 'Ooo, Finn, and the Land beyond.',
                 'icon_image_link' => 'topic_30_icon',
@@ -258,7 +258,7 @@ class TopicSeeder extends Seeder
             ],
             [
                 'owner_id' => User::all()->random()['id'],
-                'name' => 'Bojack Horseman',
+                'name' => 'bojack_horseman',
                 'genre_id' => 3,
                 'description' => 'Hollywood satire and personal struggles.',
                 'icon_image_link' => 'topic_31_icon',
@@ -266,7 +266,7 @@ class TopicSeeder extends Seeder
             ],
             [
                 'owner_id' => User::all()->random()['id'],
-                'name' => 'Studio Ghibli Talk',
+                'name' => 'studio_ghibli_talk',
                 'genre_id' => 3,
                 'description' => 'Exploring the worlds of Miyazaki.',
                 'icon_image_link' => 'topic_32_icon',
@@ -274,7 +274,7 @@ class TopicSeeder extends Seeder
             ],
             [
                 'owner_id' => User::all()->random()['id'],
-                'name' => 'Indie Animation',
+                'name' => 'indie_animation',
                 'genre_id' => 3,
                 'description' => 'Celebrating non-mainstream gems.',
                 'icon_image_link' => 'topic_33_icon',
@@ -282,7 +282,7 @@ class TopicSeeder extends Seeder
             ],
             [
                 'owner_id' => User::all()->random()['id'],
-                'name' => 'Rocket Science',
+                'name' => 'rocket_science',
                 'genre_id' => 4,
                 'description' => 'Orbit mechanics to propulsion.',
                 'icon_image_link' => 'topic_34_icon',
@@ -290,7 +290,7 @@ class TopicSeeder extends Seeder
             ],
             [
                 'owner_id' => User::all()->random()['id'],
-                'name' => 'Programming Concepts',
+                'name' => 'programming_concepts',
                 'genre_id' => 4,
                 'description' => 'Discussing programming principles.',
                 'icon_image_link' => 'topic_35_icon',
@@ -298,7 +298,7 @@ class TopicSeeder extends Seeder
             ],
             [
                 'owner_id' => User::all()->random()['id'],
-                'name' => 'Medieval History',
+                'name' => 'medieval_history',
                 'genre_id' => 4,
                 'description' => 'Castles, knights, and crusades.',
                 'icon_image_link' => 'topic_36_icon',
@@ -306,7 +306,7 @@ class TopicSeeder extends Seeder
             ],
             [
                 'owner_id' => User::all()->random()['id'],
-                'name' => 'Paleontology',
+                'name' => 'paleontology',
                 'genre_id' => 4,
                 'description' => 'Dinosaurs, fossils, and ancient life.',
                 'icon_image_link' => 'topic_37_icon',
@@ -314,7 +314,7 @@ class TopicSeeder extends Seeder
             ],
             [
                 'owner_id' => User::all()->random()['id'],
-                'name' => 'Quantum Physics',
+                'name' => 'quantum_physics',
                 'genre_id' => 4,
                 'description' => 'The weird world of particles.',
                 'icon_image_link' => 'topic_38_icon',
@@ -322,7 +322,7 @@ class TopicSeeder extends Seeder
             ],
             [
                 'owner_id' => User::all()->random()['id'],
-                'name' => 'Environmental Science',
+                'name' => 'environmental_science',
                 'genre_id' => 4,
                 'description' => 'Climate change and ecosystems.',
                 'icon_image_link' => 'topic_39_icon',
@@ -330,7 +330,7 @@ class TopicSeeder extends Seeder
             ],
             [
                 'owner_id' => User::all()->random()['id'],
-                'name' => 'Philosophy 101',
+                'name' => 'philosophy_101',
                 'genre_id' => 4,
                 'description' => 'Debates, theories, and thought experiments.',
                 'icon_image_link' => 'topic_40_icon',
@@ -338,7 +338,7 @@ class TopicSeeder extends Seeder
             ],
             [
                 'owner_id' => User::all()->random()['id'],
-                'name' => 'World Religions',
+                'name' => 'world_religions',
                 'genre_id' => 4,
                 'description' => 'Exploring beliefs and faiths.',
                 'icon_image_link' => 'topic_41_icon',
@@ -346,7 +346,7 @@ class TopicSeeder extends Seeder
             ],
             [
                 'owner_id' => User::all()->random()['id'],
-                'name' => 'Language Learning',
+                'name' => 'language_learning',
                 'genre_id' => 4,
                 'description' => 'Grammar tips, vocab, and immersion.',
                 'icon_image_link' => 'topic_42_icon',
@@ -354,7 +354,7 @@ class TopicSeeder extends Seeder
             ],
             [
                 'owner_id' => User::all()->random()['id'],
-                'name' => 'College Survival Guide',
+                'name' => 'college_survival_guide',
                 'genre_id' => 4,
                 'description' => 'Study hacks and college life advice.',
                 'icon_image_link' => 'topic_43_icon',
@@ -362,7 +362,7 @@ class TopicSeeder extends Seeder
             ],
             [
                 'owner_id' => User::all()->random()['id'],
-                'name' => 'Global Headlines',
+                'name' => 'global_headlines',
                 'genre_id' => 5,
                 'description' => 'Discussing current world news.',
                 'icon_image_link' => 'topic_44_icon',
@@ -370,7 +370,7 @@ class TopicSeeder extends Seeder
             ],
             [
                 'owner_id' => User::all()->random()['id'],
-                'name' => 'Local Issues',
+                'name' => 'local_issues',
                 'genre_id' => 5,
                 'description' => 'Community-level problems and insights.',
                 'icon_image_link' => 'topic_45_icon',
@@ -378,7 +378,7 @@ class TopicSeeder extends Seeder
             ],
             [
                 'owner_id' => User::all()->random()['id'],
-                'name' => 'Policy and Law',
+                'name' => 'policy_and_law',
                 'genre_id' => 5,
                 'description' => 'Regulations, rights, and policy-making.',
                 'icon_image_link' => 'topic_46_icon',
@@ -386,7 +386,7 @@ class TopicSeeder extends Seeder
             ],
             [
                 'owner_id' => User::all()->random()['id'],
-                'name' => 'Election Watch',
+                'name' => 'election_watch',
                 'genre_id' => 5,
                 'description' => 'Covering election seasons globally.',
                 'icon_image_link' => 'topic_47_icon',
@@ -394,7 +394,7 @@ class TopicSeeder extends Seeder
             ],
             [
                 'owner_id' => User::all()->random()['id'],
-                'name' => 'Media Literacy',
+                'name' => 'media_literacy',
                 'genre_id' => 5,
                 'description' => 'Spotting bias, fake news, and disinfo.',
                 'icon_image_link' => 'topic_48_icon',
@@ -402,7 +402,7 @@ class TopicSeeder extends Seeder
             ],
             [
                 'owner_id' => User::all()->random()['id'],
-                'name' => 'Conflict Zones',
+                'name' => 'conflict_zones',
                 'genre_id' => 5,
                 'description' => 'Understanding war and unrest areas.',
                 'icon_image_link' => 'topic_49_icon',
@@ -410,7 +410,7 @@ class TopicSeeder extends Seeder
             ],
             [
                 'owner_id' => User::all()->random()['id'],
-                'name' => 'Economic Politics',
+                'name' => 'economic_politics',
                 'genre_id' => 5,
                 'description' => 'Money and policy intersections.',
                 'icon_image_link' => 'topic_50_icon',
@@ -418,7 +418,7 @@ class TopicSeeder extends Seeder
             ],
             [
                 'owner_id' => User::all()->random()['id'],
-                'name' => 'Human Rights Talk',
+                'name' => 'human_rights_talk',
                 'genre_id' => 5,
                 'description' => 'Discussing justice and advocacy.',
                 'icon_image_link' => 'topic_51_icon',
