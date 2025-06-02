@@ -21,6 +21,7 @@ class DatabaseSeeder extends Seeder
             PostCommentSeeder::class,
             PostImageSeeder::class,
             UserVoteSeeder::class,
+            UserTopicFollowingSeeder::class,
         ]);
     }
 }

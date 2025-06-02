@@ -18,11 +18,8 @@ class UserVoteSeeder extends Seeder
         UserVote::factory()
             ->count(500)
             ->state(new Sequence(
-                ['post_comment_id' => null],
-                ['post_comment_id' => null],
-                ['post_comment_id' => null],
-                ['post_comment_id' => PostComment::all()->random()['id']],
+                fn (Sequence $sequence) => ['post_comment_id' => $sequence->index % 4 === 0 ? PostComment::all()->random() : null]
             ))
-            ->make();
+            ->create();
     }
 }

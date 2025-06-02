@@ -20,6 +20,7 @@ class PostSeeder extends Seeder
                 'title' => 'What makes medieval feudalism so appealing in fantasy settings?',
                 'description' => 'I’ve noticed many fantasy games and stories lean into feudal structures. Is it the drama, the hierarchy, or the knights? What do you all think?',
                 'share_count' => 18,
+                // created_at sama updated_at pakai factory buat di randomkan biar gak sama semua tlg marco
             ],
             [
                 'topic_id' => 2,

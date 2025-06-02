@@ -18,8 +18,9 @@ return new class extends Migration
             $table->string('title');
             $table->string('description')->nullable();
             $table->integer('share_count')->default(0);
-            $table->boolean('is_deleted')->default(false);
+//            $table->boolean('is_deleted')->default(false); // Menggunakan laravel Soft Delete.
             $table->string('moderator_notice')->nullable();
+            $table->softDeletes(); // Soft delete
             $table->timestamps();
         });
     }

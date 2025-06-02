@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\DashboardController;
 use App\Http\Controllers\ProfileController;
 use Illuminate\Support\Facades\Route;
 
@@ -17,8 +18,6 @@ Route::get('/', function () {
 //    Route::delete('/profile', [ProfileController::class, 'destroy'])->name('profile.destroy');
 //});
 
-Route::get('dashboard', function () {
-    return view('dashboard');
-});
+Route::get('dashboard', [DashboardController::class, 'create']);
 
 require __DIR__.'/auth.php';
