@@ -6,5 +6,13 @@ use Illuminate\Database\Eloquent\Model;
 
 class UserTopicVisited extends Model
 {
-    //
+    protected $table = 'user_topic_visited';
+
+	protected $fillable = [
+        'topic_id'
+	];
+
+    public function topic() {
+        return $this->belongsToMany(Topic::class);
+    }
 }

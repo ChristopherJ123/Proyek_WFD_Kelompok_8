@@ -12,37 +12,53 @@ class User extends Authenticatable
     /** @use HasFactory<\Database\Factories\UserFactory> */
     use HasFactory, Notifiable;
 
-    /**
-     * The attributes that are mass assignable.
-     *
-     * @var list<string>
-     */
+    protected $table = 'users';
+    
     protected $fillable = [
-        'username',
+        'role_id',
         'email',
         'password',
+        'birth_date',
+        'profile_picture_link',
+        'bio',
+        'education',
+        'university',  
     ];
 
-    /**
-     * The attributes that should be hidden for serialization.
-     *
-     * @var list<string>
-     */
-    protected $hidden = [
-        'password',
-        'remember_token',
-    ];
-
-    /**
-     * Get the attributes that should be cast.
-     *
-     * @return array<string, string>
-     */
-    protected function casts(): array
-    {
-        return [
-            'email_verified_at' => 'datetime',
-            'password' => 'hashed',
-        ];
+    public function roles() {
+        return $this->belongsTo(Role::class);
     }
+
+     public function posts() {
+        return $this->hasMany(Post::class, 'author_id');
+    }
+
+    public function comments() {
+        return $this->hasMany(PostComment::class, 'author_id');
+    }
+
+    public function votes() {
+        return $this->hasMany(UserVote::class);
+    }
+
+     public function postReports() {
+        return $this->hasMany(UserPostReport::class);
+    }
+
+    public function topicFollowings() {
+        return $this->hasMany(UserTopicFollowing::class);
+    }
+
+    public function genres() {
+        return $this->belongsToMany(Genre::class, 'user_genre');
+    }
+
+    public function sentMessages() {
+        return $this->hasMany(DirectMessage::class, 'user_id');
+    }
+
+     public function receivedMessages() {
+        return $this->hasMany(DirectMessage::class, 'target_user_id');
+    }
+    
 }
