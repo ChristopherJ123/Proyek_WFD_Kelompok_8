@@ -21,7 +21,6 @@ class Post extends Model
         'moderator_notice',
     ];
 
-
     public function author() {
         return $this->belongsTo(User::class, 'author_id');
     }

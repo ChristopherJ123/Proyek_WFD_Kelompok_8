@@ -30,12 +30,12 @@ class User extends Authenticatable
     }
 
     public function genres() {
-        return $this->hasMany(Genre::class);
+        return $this->belongsToMany(Genre::class, 'user_genres', 'user_id', 'genre_id')->withTimestamps();
     }
 
     public function topics()
     {
-        return $this->hasMany(Topic::class);
+        return $this->hasMany(Topic::class, 'owner_id');
     }
 
     public function posts() {
@@ -49,7 +49,7 @@ class User extends Authenticatable
 
     public function topicFollowings()
     {
-        return $this->hasMany(UserTopicFollowing::class);
+        return $this->belongsToMany(Topic::class, 'user_topic_following', 'user_id', 'topic_id')->withTimestamps();
     }
 
     public function votes()
@@ -64,7 +64,7 @@ class User extends Authenticatable
 
     public function topicModerators()
     {
-        return $this->hasMany(TopicModerator::class);
+        return $this->belongsToMany(Topic::class, 'topic_moderators', 'user_id', 'topic_id')->withTimestamps();
     }
 
     public function topicBlocked()
@@ -83,6 +83,11 @@ class User extends Authenticatable
 
     public function receivedMessages() {
         return $this->hasMany(DirectMessage::class, 'target_user_id');
+    }
+
+    public function topicsVisited()
+    {
+        return $this->belongsToMany(Post::class, 'user_topic_visited', 'user_id', 'topic_id')->withTimestamps();
     }
 
 }

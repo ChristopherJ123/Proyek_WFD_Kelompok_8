@@ -22,11 +22,11 @@ class Topic extends Model
     }
 
     public function posts() {
-        return $this->hasMany(Post::class);
+        return $this->hasMany(Post::class)->chaperone();
     }
 
     public function moderators() {
-        return $this->hasMany(TopicModerator::class);
+        return $this->belongsToMany(User::class, 'topic_moderators', 'topic_id', 'user_id')->withTimestamps();
     }
 
     public function blockedUsers() {
@@ -34,7 +34,7 @@ class Topic extends Model
     }
 
     public function followers() {
-        return $this->hasMany(UserTopicFollowing::class);
+        return $this->belongsToMany(User::class, 'user_topic_following', 'topic_id', 'user_id')->withTimestamps();
     }
 
     public function genre()
@@ -46,4 +46,8 @@ class Topic extends Model
         return $this->hasMany(TopicRules::class);
     }
 
+    public function usersVisited()
+    {
+        return $this->belongsToMany(User::class, 'user_topic_visited', 'topic_id', 'user_id')->withTimestamps();
+    }
 }
