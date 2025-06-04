@@ -12,12 +12,12 @@ class Genre extends Model
         'name'
 	];
 
-    public function topic() {
-        return $this->belongsToMany(Topic::class);
+    public function topics() {
+        return $this->hasMany(Topic::class);
     }
-    
-    public function userGenres() {
-        return $this->belongsToMany(UserGenre::class);
+
+    public function users() {
+        return $this->hasMany(UserGenre::class);
     }
-    
+
 }

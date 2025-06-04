@@ -13,7 +13,7 @@ class User extends Authenticatable
     use HasFactory, Notifiable;
 
     protected $table = 'users';
-    
+
     protected $fillable = [
         'role_id',
         'email',
@@ -22,43 +22,67 @@ class User extends Authenticatable
         'profile_picture_link',
         'bio',
         'education',
-        'university',  
+        'university',
     ];
 
-    public function roles() {
+    public function role() {
         return $this->belongsTo(Role::class);
     }
 
-     public function posts() {
+    public function genres() {
+        return $this->hasMany(Genre::class);
+    }
+
+    public function topics()
+    {
+        return $this->hasMany(Topic::class);
+    }
+
+    public function posts() {
         return $this->hasMany(Post::class, 'author_id');
     }
 
-    public function comments() {
+    public function comments()
+    {
         return $this->hasMany(PostComment::class, 'author_id');
     }
 
-    public function votes() {
-        return $this->hasMany(UserVote::class);
-    }
-
-     public function postReports() {
-        return $this->hasMany(UserPostReport::class);
-    }
-
-    public function topicFollowings() {
+    public function topicFollowings()
+    {
         return $this->hasMany(UserTopicFollowing::class);
     }
 
-    public function genres() {
-        return $this->belongsToMany(Genre::class, 'user_genre');
+    public function votes()
+    {
+        return $this->hasMany(UserVote::class);
+    }
+
+    public function postReports()
+    {
+        return $this->hasMany(UserPostReport::class);
+    }
+
+    public function topicModerators()
+    {
+        return $this->hasMany(TopicModerator::class);
+    }
+
+    public function topicBlocked()
+    {
+        return $this->hasMany(TopicBlockedUser::class, 'user_id');
+    }
+
+    public function topicBlockedAsModerator()
+    {
+        return $this->hasMany(TopicBlockedUser::class, 'moderator_id');
     }
 
     public function sentMessages() {
         return $this->hasMany(DirectMessage::class, 'user_id');
     }
 
-     public function receivedMessages() {
+    public function receivedMessages() {
         return $this->hasMany(DirectMessage::class, 'target_user_id');
     }
-    
+
 }

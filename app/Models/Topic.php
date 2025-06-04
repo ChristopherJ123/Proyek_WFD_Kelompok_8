@@ -16,7 +16,7 @@ class Topic extends Model
         'icon_image_link',
         'banner_image_link',
     ];
-    
+
     public function owner() {
         return $this->belongsTo(User::class, 'owner_id');
     }
@@ -32,13 +32,18 @@ class Topic extends Model
     public function blockedUsers() {
         return $this->hasMany(TopicBlockedUser::class);
     }
-    
+
     public function followers() {
         return $this->hasMany(UserTopicFollowing::class);
     }
-    
+
+    public function genre()
+    {
+        return $this->belongsTo(Genre::class);
+    }
+
     public function rules() {
         return $this->hasMany(TopicRules::class);
     }
-    
+
 }

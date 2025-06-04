@@ -12,7 +12,12 @@ class UserTopicVisited extends Model
         'topic_id'
 	];
 
+    public function user()
+    {
+        return $this->belongsTo(User::class);
+    }
+
     public function topic() {
-        return $this->belongsToMany(Topic::class);
+        return $this->belongsTo(Topic::class);
     }
 }

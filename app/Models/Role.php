@@ -12,8 +12,8 @@ class Role extends Model
         'name'
 	];
 
-    public function user() {
-        return $this->belongsToMany(User::class,);
+    public function users() {
+        return $this->hasMany(User::class);
     }
 
 }

@@ -19,6 +19,6 @@ class PostImage extends Model
     }
 
     public function comment() {
-        return $this->belongsTo(PostComment::class, 'post_comment_id');
+        return $this->belongsTo(PostComment::class);
     }
 }

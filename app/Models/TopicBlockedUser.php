@@ -6,10 +6,10 @@ use Illuminate\Database\Eloquent\Model;
 
 class TopicBlockedUser extends Model
 {
-     protected $table = 'topic_blocked_users';
+    protected $table = 'topic_blocked_users';
 
     protected $fillable = [
-        'user_id', 
+        'user_id',
         'topic_id',
         'moderator_id',
         'reason',
@@ -22,7 +22,7 @@ class TopicBlockedUser extends Model
     public function topic() {
         return $this->belongsTo(Topic::class);
     }
-    
+
     public function moderator() {
         return $this->belongsTo(TopicModerator::class);
     }

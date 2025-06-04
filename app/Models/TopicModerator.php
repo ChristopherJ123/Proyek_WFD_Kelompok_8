@@ -22,7 +22,7 @@ class TopicModerator extends Model
     }
 
     public function blockedUsers() {
-        return $this->belongsToMany(TopicBlockedUser::class);
+        return $this->hasMany(TopicBlockedUser::class);
     }
-    
+
 }
