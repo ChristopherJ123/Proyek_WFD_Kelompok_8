@@ -63,6 +63,15 @@ class DashboardController extends Controller
             $recentPosts = Post::whereIn('topic_id', $userTopicFollowings->pluck('topics.id'))
                 ->join('topics', 'topics.id', '=', 'posts.topic_id')
                 ->select('posts.*', 'topics.name AS topic_name')
+                ->withCount([
+                    'votes as upvote_count' => function (Builder $query) {
+                        $query->where('is_upvote', true);
+                    },
+                    'votes as downvote_count' => function (Builder $query) {
+                        $query->where('is_upvote', false);
+                    },
+                    'comments',
+                ])
                 ->latest()
                 ->get();
 //            dd($bestPosts);
@@ -70,6 +79,7 @@ class DashboardController extends Controller
                 'userTopicFollowings' => $userTopicFollowings->get(),
                 'recentlyVisitedTopics' => $recentlyVisitedTopics,
                 'bestPosts' => $bestPosts,
+                'recentPosts' => $recentPosts,
             ]);
         }
         return view('dashboard');
