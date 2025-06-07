@@ -29,7 +29,7 @@
     <hr class="border border-brand-500">
     <div id="recent-bar" class="flex justify-between cursor-pointer">
         <div class="font-bold">RECENT</div>
-        <button id="recent-button">
+        <button id="recent-button" class="cursor-pointer">
             <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2"
                  stroke="currentColor" class="size-6 transition ease-out">
                 <path stroke-linecap="round" stroke-linejoin="round" d="m4.5 15.75 7.5-7.5 7.5 7.5"/>
@@ -62,13 +62,20 @@
                     @break
                 @endif
             @endforeach
+        @else
+            <li class="relative">
+                <div class="absolute bg-linear-0 -top-10 from-brand-900 h-8 w-full"></div>
+                <div>
+                    Login now to keep track of recent topics <span class="whitespace-nowrap">(o゜▽゜)o☆</span>
+                </div>
+            </li>
         @endif
 
     </ul>
     <hr class="border border-brand-500">
     <div id="topics-bar" class="flex justify-between cursor-pointer">
         <div class="font-bold">TOPICS</div>
-        <button id="topics-button">
+        <button id="topics-button" class="cursor-pointer">
             <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2"
                  stroke="currentColor" class="size-6">
                 <path stroke-linecap="round" stroke-linejoin="round" d="m4.5 15.75 7.5-7.5 7.5 7.5"/>
@@ -101,6 +108,13 @@
                     </li>
                 @endif
             @endforeach
+        @else
+            <li class="relative">
+                <div class="absolute bg-linear-0 -top-10 from-brand-900 h-8 w-full"></div>
+                <div>
+                    Login now to start following topics <span class="whitespace-nowrap">(>'-'<)</span>
+                </div>
+            </li>
         @endif
 
     </ul>

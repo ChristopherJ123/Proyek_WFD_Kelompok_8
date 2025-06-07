@@ -14,6 +14,8 @@
 }
 
 @theme {
+    --font-lazy-dog: "Lazy Dog";
+
     --color-brand-100: #ffe5b6;
     --color-brand-300: #c7ac6b;
     --color-brand-500: #b2935b;

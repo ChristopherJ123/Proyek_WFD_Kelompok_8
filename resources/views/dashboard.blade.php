@@ -3,7 +3,7 @@
 @extends('layouts.app')
 
 @section('content')
-    <div class="flex w-full m-4 gap-4 tracking-wider overflow-auto">
+    <div class="flex w-full m-4 gap-4 tracking-widest overflow-auto">
         <div class="flex flex-grow-1 flex-col">
             <div class="flex text-2xl">
                 <div>Best</div>
@@ -105,7 +105,7 @@
                                 <div class="tracking-normal font-sans tracking-tighter font-medium line-clamp-2">
                                     {{ $post['title'] }}
                                 </div>
-                                <div class="text-gray-900">{{ $post['upvote_count'] - $post['downvote_count'] }}
+                                <div class="text-gray-900 tracking-normal">{{ $post['upvote_count'] - $post['downvote_count'] }}
                                     upvote {{ $post['comments_count'] }} comments
                                 </div>
                             </li>

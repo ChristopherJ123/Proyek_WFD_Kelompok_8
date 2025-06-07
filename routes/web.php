@@ -20,4 +20,8 @@ Route::get('/', function () {
 
 Route::get('dashboard', [DashboardController::class, 'create']);
 
+Route::view('post', 'post-mockup');
+Route::view('topic', 'topic-mockup');
+
+
 require __DIR__.'/auth.php';
