@@ -2,6 +2,7 @@
 
 use App\Http\Controllers\DashboardController;
 use App\Http\Controllers\ProfileController;
+use App\Http\Controllers\RegisterTopicController;
 use Illuminate\Support\Facades\Route;
 
 Route::get('/', function () {
@@ -22,6 +23,8 @@ Route::get('dashboard', [DashboardController::class, 'create']);
 
 Route::view('post', 'post-mockup');
 Route::view('topic', 'topic-mockup');
+Route::view('register-post', 'register-post-mockup');
+Route::get('register-topic', [RegisterTopicController::class, 'create']);
 
 
 require __DIR__.'/auth.php';

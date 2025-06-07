@@ -65,8 +65,8 @@
             </form>
         </div>
 
-        <div class="flex flex-col gap-2 bg-brand-500 p-4 max-w-sm">
-            <div class="flex items-center gap-2 mt-4">
+        <div class="flex flex-col gap-2 bg-brand-500 p-4 max-w-sm font-sans">
+            <div class="flex items-center gap-2">
                 <div class="text-2xl font-bold text-gray-800 font-lazy-dog tracking-widest">y/frieren</div>
                 <button class="bg-brand-900 font-semibold text-brand-100 p-1 px-2 rounded-4xl">
                     Joined
