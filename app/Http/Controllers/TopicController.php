@@ -47,7 +47,7 @@ class TopicController extends Controller
 
         $request->validate([
             'genre' => 'required|string',
-            'title' => 'required|string',
+            'title' => 'required|string|regex:/^\S+$/',
             'description' => 'required|string',
             'icon' => [
                 'nullable',
@@ -59,6 +59,8 @@ class TopicController extends Controller
             'rules.*.order' => 'required|numeric|max:20',
             'rules.*.title' => 'required|string|max:255',
             'rules.*.description' => 'nullable|string|max:1000',
+        ], [
+            'title.regex' => 'Topic Name must not contain spaces.'
         ]);
 
         $topic = new Topic();
@@ -83,7 +85,7 @@ class TopicController extends Controller
         // Owner becomes the topic moderator automatically
         $topic->moderators()->attach($topic->owner_id);
 
-        dd($request->hasFile('icon'));
+        return redirect()->route('topics.show', $topic);
     }
 
     /**
@@ -91,7 +93,7 @@ class TopicController extends Controller
      */
     public function show(Topic $topic)
     {
-        //
+        dd($topic->name);
     }
 
     /**

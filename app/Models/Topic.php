@@ -17,6 +17,11 @@ class Topic extends Model
         'banner_image_link',
     ];
 
+    public function getRouteKeyName(): string
+    {
+        return 'name';
+    }
+
     public function owner() {
         return $this->belongsTo(User::class, 'owner_id');
     }

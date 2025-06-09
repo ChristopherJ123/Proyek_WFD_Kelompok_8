@@ -16,7 +16,7 @@
                     </div>
                 </div>
                 <div class="relative">
-                    <input type="text" name="title" id="title" value="{{ old('title') }}" class="bg-brand-100 focus:outline-brand-500 focus:outline-2 w-full p-4 rounded-3xl text-lg peer placeholder-transparent" placeholder="Title*">
+                    <input type="text" name="title" id="title" value="{{ old('title') }}" class="bg-brand-100 focus:outline-brand-500 lowercase focus:outline-2 w-full p-4 rounded-3xl text-lg peer placeholder-transparent" placeholder="Title*">
                     <label class="absolute left-4 top-4 text-lg peer-placeholder-shown:visible peer-focus:invisible invisible" for="title">Topic name<span class="font-bold text-red-500">*</span></label>
                 </div>
                 <div class="flex w-fit bg-brand-900 items-center rounded-4xl focus:outline-brand-500">
