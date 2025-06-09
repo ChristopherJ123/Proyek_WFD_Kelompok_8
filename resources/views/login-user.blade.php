@@ -8,10 +8,10 @@
         <h1 class="text-6xl">Login Page</h1>
     </div>
     <div>
-        <form action="" method="POST" class="text-2xl">
+        <form action="{{ route('login.store') }}" method="POST" class="text-2xl">
             @csrf
             <div>
-                <label class="block" for="email">Email</label>
+                <label class="block" for="email">Email / Username</label>
                 <input class="border border-brand-500 rounded-md w-full px-4 py-2 bg-brand-500" type="email" name="email" placeholder="placeholder@gmail.com" required>
             </div>
             <div>

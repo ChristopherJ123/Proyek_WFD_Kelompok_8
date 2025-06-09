@@ -4,7 +4,7 @@ use App\Http\Controllers\Auth\LoginController;
 use App\Http\Controllers\DashboardController;
 use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\RegisterTopicController;
-use App\Http\Controllers\Auth\RegisterController;
+use App\Http\Controllers\Auth\RegisterUserController;
 use Illuminate\Support\Facades\Route;
 
 Route::get('/', function () {
@@ -28,10 +28,18 @@ Route::view('topic', 'topic-mockup');
 Route::view('register-post', 'register-post-mockup');
 Route::get('register-topic', [RegisterTopicController::class, 'create']);
 
-//testing nanti disaamakan di auth
-Route::get('register', [RegisterController::class, 'create'])->name('register-user');
-Route::post('register', [RegisterController::class, 'store'])->name('register.store');
-Route::get('login', [LoginController::class, 'create'])->name('login');
+// TODO middleware bikin sendiri jangan pakai punya laravel
+Route::middleware('guest')->group(function () {
+    Route::get('register', [RegisterUserController::class, 'create'])
+        ->name('register-user');
+    Route::post('register', [RegisterUserController::class, 'store'])
+        ->name('register.store');
+
+    Route::get('login', [LoginController::class, 'create'])
+        ->name('login');
+    Route::post('login', [LoginController::class, 'post'])
+        ->name('login.store');
+});
 
 
 require __DIR__.'/auth.php';
