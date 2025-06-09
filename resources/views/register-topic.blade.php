@@ -1,29 +1,28 @@
 @extends('layouts.app')
 
 @section('content')
-    <form action="#" class="flex gap-4 w-full m-4">
+    <form action="{{ route('topics.store') }}" method="post" class="flex gap-4 w-full m-4">
+        @csrf
         <div class="flex flex-col w-full gap-4">
             <div class="text-xl font-bold tracking-wide">CREATE TOPIC</div>
             <hr class="border-1">
             <div class="flex flex-col bg-brand-300 p-4 rounded-2xl gap-4 font-sans">
                 <div class="flex">
-                    <div class="flex items-center gap-2 rounded-3xl bg-brand-100 p-4 font-bold font-lazy-dog text-2xl tracking-wide">
-                        <div class="size-8 rounded-full bg-brand-500">
-                            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor" class="size-8 rounded-full border-2 cursor-pointer">
-                                <path fill-rule="evenodd" d="M12 3.75a.75.75 0 0 1 .75.75v6.75h6.75a.75.75 0 0 1 0 1.5h-6.75v6.75a.75.75 0 0 1-1.5 0v-6.75H4.5a.75.75 0 0 1 0-1.5h6.75V4.5a.75.75 0 0 1 .75-.75Z" clip-rule="evenodd" />
-                            </svg>
+                    <div id="icon-container" class="flex items-center gap-2 rounded-3xl bg-brand-100 p-4 font-bold font-lazy-dog text-2xl tracking-wide">
+                        <div id="icon-add-button" class="size-8 rounded-full bg-brand-500">
+                            <img id="icon-preview" src="/images/add.png" alt="add" class="size-8">
                         </div>
                         <span>y/topic_name</span>
                     </div>
                 </div>
                 <div class="relative">
-                    <input class="bg-brand-100 focus:outline-brand-500 focus:outline-2 w-full p-4 rounded-3xl text-lg peer placeholder-transparent" type="text" name="title" id="title" placeholder="Title*">
+                    <input type="text" name="title" id="title" value="{{ old('title') }}" class="bg-brand-100 focus:outline-brand-500 focus:outline-2 w-full p-4 rounded-3xl text-lg peer placeholder-transparent" placeholder="Title*">
                     <label class="absolute left-4 top-4 text-lg peer-placeholder-shown:visible peer-focus:invisible invisible" for="title">Topic name<span class="font-bold text-red-500">*</span></label>
                 </div>
                 <div class="flex w-fit bg-brand-900 items-center rounded-4xl focus:outline-brand-500">
                     <select id="genre" name="genre" class="p-2 appearance-none font-semibold text-brand-300 focus:outline-0">
                         @foreach($genres as $genre)
-                            <option value="{{ $genre['name'] }}">{{ $genre['name'] }}</option>
+                            <option value="{{ $genre['id'] }}">{{ $genre['name'] }}</option>
                         @endforeach
                     </select>
                     <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="size-6 text-brand-300">
@@ -70,6 +69,8 @@
                 </div>
             </div>
         </div>
+
+        <input class="hidden" type="file" name="icon" id="icon" accept="image/*" multiple>
     </form>
 
     <script>
@@ -113,6 +114,45 @@
                     <textarea class="hidden border-2 focus:outline-brand-300 focus:outline-2 border-brand-300 rounded-2xl p-2 resize-none" placeholder="Rule description (optional)" name="rule-desc-${index}" id="rule-desc-${index}" cols="30" rows="2"></textarea>
                 </div>
             `;
+        }
+
+        const $fileInput = $('#icon');
+        const $fileContainer = $('#icon-container');
+        const $fileButton = $('#icon-add-button');
+        const $previewImage = $('#icon-preview');
+
+        $('form').on('dragover', function (e) {
+            e.preventDefault();
+            e.stopPropagation();
+            $fileContainer.addClass('border-2 border-dashed');
+        }).on('dragleave', function (e) {
+            e.preventDefault();
+            e.stopPropagation();
+            $fileContainer.removeClass('border-2 border-dashed');
+        }).on('drop', function (e) {
+            e.preventDefault();
+            e.stopPropagation();
+            $fileContainer.removeClass('border-2 border-dashed');
+
+            const file = e.originalEvent.dataTransfer.files[0];
+            $fileInput[0].files = e.originalEvent.dataTransfer.files;
+            handleFile(file);
+        })
+
+        $fileButton.on('click', function () {
+            $fileInput.trigger('click');
+        });
+
+        $fileInput.on('change', function () {
+            handleFile(this.files[0])
+        })
+
+        function handleFile(file) {
+            const reader = new FileReader();
+            reader.onload = function (e) {
+                $previewImage.attr('src', e.target.result);
+            };
+            reader.readAsDataURL(file);
         }
     </script>
 @endsection
