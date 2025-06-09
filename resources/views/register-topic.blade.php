@@ -1,7 +1,7 @@
 @extends('layouts.app')
 
 @section('content')
-    <form action="{{ route('topics.store') }}" method="post" class="flex gap-4 w-full m-4">
+    <form action="{{ route('topics.store') }}" method="post" enctype="multipart/form-data" class="flex gap-4 w-full m-4">
         @csrf
         <div class="flex flex-col w-full gap-4">
             <div class="text-xl font-bold tracking-wide">CREATE TOPIC</div>
@@ -29,9 +29,9 @@
                         <path stroke-linecap="round" stroke-linejoin="round" d="M8.25 15 12 18.75 15.75 15m-7.5-6L12 5.25 15.75 9" />
                     </svg>
                 </div>
-                <textarea class="resize-none bg-brand-100 focus:outline-brand-500 focus:outline-2 p-4 rounded-3xl text-lg" name="description" id="description" cols="30" rows="8" placeholder="Body Text (Optional)"></textarea>
+                <textarea class="resize-none bg-brand-100 focus:outline-brand-500 focus:outline-2 p-4 rounded-3xl text-lg" name="description" id="description" cols="30" rows="8" placeholder="Body Text (Optional)">{{ old('description') }}</textarea>
                 <div class="flex flex-row-reverse">
-                    <button class="p-2 rounded-4xl font-semibold bg-brand-900 text-brand-100 w-36" type="submit">Post</button>
+                    <button class="p-2 rounded-4xl font-semibold bg-brand-900 text-brand-100 w-36" type="submit">Create</button>
                 </div>
             </div>
         </div>
@@ -44,8 +44,8 @@
                 <div class="flex space-x-4 items-center">
                     <span class="text-xl">1</span>
                     <div class="flex relative justify-between w-full font-semibold">
-                        <input class="peer placeholder-transparent" type="text" name="rule-1" id="rule-1" placeholder="Rule 1*">
-                        <label class="absolute invisible peer-placeholder-shown:visible peer-focus:invisible" for="rule-1"><span>Rule 1<span class="text-red-500 font-bold">*</span></span></label>
+                        <input class="peer placeholder-transparent" type="text" name="rules[0][title]" id="rules[0][title]" placeholder="Rule 1*">
+                        <label class="absolute invisible peer-placeholder-shown:visible peer-focus:invisible" for="rules[0][title]"><span>Rule 1<span class="text-red-500 font-bold">*</span></span></label>
                         <div class="rule cursor-pointer">
                             <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2"
                                  stroke="currentColor" class="transition size-6">
@@ -54,7 +54,8 @@
                         </div>
                     </div>
                 </div>
-                <textarea class="hidden border-2 focus:outline-brand-300 focus:outline-2 border-brand-300 rounded-2xl p-2 resize-none" placeholder="Rule description (optional)" name="rule-desc-1" id="rule-desc-1" cols="30" rows="2"></textarea>
+                <textarea name="rules[0][description]" id="rules[0][description]" class="hidden border-2 focus:outline-brand-300 focus:outline-2 border-brand-300 rounded-2xl p-2 resize-none" placeholder="Rule description (optional)" cols="30" rows="2"></textarea>
+                <input type="hidden" name="rules[0][order]" value="1">
             </div>
             <div class="flex">
                 <div class="flex flex-1 justify-center">
@@ -70,7 +71,7 @@
             </div>
         </div>
 
-        <input class="hidden" type="file" name="icon" id="icon" accept="image/*" multiple>
+        <input class="hidden" type="file" name="icon" id="icon" accept="image/*">
     </form>
 
     <script>
@@ -81,7 +82,7 @@
 
 
         $('#add-rule').on('click', function () {
-            let ruleCount = $('.rule-container').length + 1;
+            let ruleCount = $('.rule-container').length;
             const newRule = generateRuleTemplate(ruleCount);
             $(newRule).insertBefore($(this).parent().parent());
         })
@@ -99,9 +100,9 @@
                     <div class="flex space-x-4 items-center">
                         <span class="text-xl">${index}</span>
                         <div class="flex relative justify-between w-full font-semibold">
-                            <input class="peer placeholder-transparent" type="text" name="rule-${index}" id="rule-${index}" placeholder="Rule ${index}*">
-                            <label class="absolute invisible peer-placeholder-shown:visible peer-focus:invisible" for="rule-${index}">
-                                <span>Rule ${index}<span class="text-red-500 font-bold">*</span></span>
+                            <input class="peer placeholder-transparent" type="text" name="rules[${index}][title]" id="rules[${index}][title]" placeholder="Rule ${index}*">
+                            <label class="absolute invisible peer-placeholder-shown:visible peer-focus:invisible" for="rules[${index}][title]">
+                                <span>Rule ${index + 1}<span class="text-red-500 font-bold">*</span></span>
                             </label>
                             <div class="rule cursor-pointer">
                                 <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2"
@@ -111,7 +112,8 @@
                             </div>
                         </div>
                     </div>
-                    <textarea class="hidden border-2 focus:outline-brand-300 focus:outline-2 border-brand-300 rounded-2xl p-2 resize-none" placeholder="Rule description (optional)" name="rule-desc-${index}" id="rule-desc-${index}" cols="30" rows="2"></textarea>
+                    <textarea name="rules[${index}][description]" id="rules[${index}][description]" class="hidden border-2 focus:outline-brand-300 focus:outline-2 border-brand-300 rounded-2xl p-2 resize-none" placeholder="Rule description (optional)" cols="30" rows="2"></textarea>
+                    <input type="hidden" name="rules[${index}][order]" value="${index + 1}">
                 </div>
             `;
         }

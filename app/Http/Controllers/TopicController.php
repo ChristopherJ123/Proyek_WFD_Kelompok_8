@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Models\Genre;
 use App\Models\Topic;
+use App\Models\UserTopicFollowing;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Validation\Rule;
@@ -50,12 +51,14 @@ class TopicController extends Controller
             'description' => 'required|string',
             'icon' => [
                 'nullable',
-//                'mimes:png,jpg,jpeg',
                 File::image()
                     ->extensions('png,jpg,jpeg')
-                    ->min(128)
                     ->max(4096)
             ],
+            'rules' => 'required|array|min:1',
+            'rules.*.order' => 'required|numeric|max:20',
+            'rules.*.title' => 'required|string|max:255',
+            'rules.*.description' => 'nullable|string|max:1000',
         ]);
 
         $topic = new Topic();
@@ -67,7 +70,20 @@ class TopicController extends Controller
             $topic->icon_image_link = $request->icon->store('images');
         $topic->save();
 
-        dd($request);
+        foreach ($request->rules as $rule) {
+            $topic->rules()->create([
+                'order' => $rule['order'],
+                'title' => $rule['title'],
+                'description' => $rule['description'],
+            ]);
+        }
+
+        // Owner follows the topic automatically
+        $topic->followers()->attach($topic->owner_id);
+        // Owner becomes the topic moderator automatically
+        $topic->moderators()->attach($topic->owner_id);
+
+        dd($request->hasFile('icon'));
     }
 
     /**
