@@ -15,7 +15,7 @@ return new class extends Migration
             $table->id();
             $table->foreignId('owner_id')->constrained('users')->onDelete('cascade');
             $table->foreignId('genre_id')->constrained('genres')->onDelete('cascade');
-            $table->string('name');
+            $table->string('name')->unique();
             $table->string('description');
             $table->string('icon_image_link')->nullable();
             $table->string('banner_image_link')->nullable();

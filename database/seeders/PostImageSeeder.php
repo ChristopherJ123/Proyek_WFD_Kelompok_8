@@ -13,7 +13,7 @@ class PostImageSeeder extends Seeder
      */
     public function run(): void
     {
-        PostImage::insert([
+        PostImage::upsert([
             ['post_id' => 1, 'image_link' => 'post_1_1.png'],
             ['post_id' => 2, 'image_link' => 'post_2_1.png'],
             ['post_id' => 4, 'image_link' => 'post_4_1.png'],
@@ -30,9 +30,9 @@ class PostImageSeeder extends Seeder
             ['post_id' => 25, 'image_link' => 'post_25_1.png'],
             ['post_id' => 27, 'image_link' => 'post_27_1.png'],
             ['post_id' => 30, 'image_link' => 'post_30_1.png'],
-        ]);
+        ], uniqueBy: 'id');
 
-        PostImage::insert([
+        PostImage::upsert([
             [
                 'post_id' => 2,
                 'post_comment_id' => 1,
@@ -93,7 +93,7 @@ class PostImageSeeder extends Seeder
                 'post_comment_id' => 1,
                 'image_link' => 'post_comment_30_59.png',
             ],
-        ]);
+        ], uniqueBy: 'id');
 
 
     }

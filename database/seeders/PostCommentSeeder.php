@@ -14,7 +14,7 @@ class PostCommentSeeder extends Seeder
      */
     public function run(): void
     {
-        PostComment::insert([
+        PostComment::upsert([
             [
                 'post_id' => 1,
                 'author_id' => User::all()->random()['id'],
@@ -728,6 +728,6 @@ class PostCommentSeeder extends Seeder
 
             ['post_id' => 86, 'author_id' => User::all()->random()['id'], 'message' => 'It’s like a toy that can be a car or a plane—same interface, different function.', 'sharecount' => rand(0, 30)],
             ['post_id' => 86, 'author_id' => User::all()->random()['id'], 'message' => 'When one method works differently depending on the object—neat and powerful!', 'sharecount' => rand(0, 30)],
-        ]);
+        ], uniqueBy: 'id');
     }
 }

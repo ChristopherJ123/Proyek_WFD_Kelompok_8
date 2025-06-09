@@ -13,9 +13,9 @@ class RoleSeeder extends Seeder
      */
     public function run(): void
     {
-        Role::insert([
+        Role::upsert([
             ['name' => 'User'],
             ['name' => 'Admin'],
-        ]);
+        ], uniqueBy: 'id');
     }
 }

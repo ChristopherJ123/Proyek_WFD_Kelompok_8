@@ -14,7 +14,7 @@ class TopicSeeder extends Seeder
      */
     public function run(): void
     {
-        Topic::insert([
+        Topic::upsert([
             [
                 'owner_id' => User::all()->random()['id'],
                 'name' => 'medieval',
@@ -424,6 +424,6 @@ class TopicSeeder extends Seeder
                 'icon_image_link' => 'topic_51_icon',
                 'banner_image_link' => 'topic_51_banner',
             ],
-        ]);
+        ], uniqueBy: 'id');
     }
 }
