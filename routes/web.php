@@ -2,9 +2,11 @@
 
 use App\Http\Controllers\Auth\LoginController;
 use App\Http\Controllers\DashboardController;
+use App\Http\Controllers\PostController;
 use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\RegisterTopicController;
 use App\Http\Controllers\Auth\RegisterUserController;
+use App\Http\Controllers\TopicController;
 use Illuminate\Support\Facades\Route;
 
 Route::get('/', function () {
@@ -25,8 +27,7 @@ Route::get('dashboard', [DashboardController::class, 'create']);
 
 Route::view('post', 'post-mockup');
 Route::view('topic', 'topic-mockup');
-Route::view('register-post', 'register-post-mockup');
-Route::get('register-topic', [RegisterTopicController::class, 'create']);
+
 
 // TODO middleware bikin sendiri jangan pakai punya laravel
 Route::middleware('guest')->group(function () {
@@ -40,6 +41,13 @@ Route::middleware('guest')->group(function () {
     Route::post('login', [LoginController::class, 'post'])
         ->name('login.store');
 });
+
+//Route::middleware('auth')->group(function () {
+//    Route::view('register-post', 'register-post-mockup');
+//    Route::get('register-topic', [RegisterTopicController::class, 'create']);
+Route::resource('topics', TopicController::class);
+Route::resource('topics.posts', PostController::class);
+//});
 
 
 require __DIR__.'/auth.php';
