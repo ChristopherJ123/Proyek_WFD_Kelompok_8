@@ -6,7 +6,7 @@ use Illuminate\Database\Eloquent\Model;
 
 class UserGenre extends Model
 {
-    protected $table = 'use_genres';
+    protected $table = 'user_genres';
 
     protected $fillable = [
         'user_id',

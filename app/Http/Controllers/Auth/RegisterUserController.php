@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\Auth;
 
 use App\Http\Controllers\Controller;
+use App\Models\Genre;
 use App\Models\Role;
 use Illuminate\Http\Request;
 use App\Models\User;
@@ -16,7 +17,8 @@ class RegisterUserController extends Controller {
     // aint gon lie https://www.youtube.com/watch?v=tBdLO8u-0L8 this OST slap hard
 
     public function create() {
-        return view('register-user');
+        $genres = Genre::all();
+        return view('register-user', compact('genres'));
     }
 
     public function store(Request $request) {
@@ -28,7 +30,8 @@ class RegisterUserController extends Controller {
         ]);
 
         $memberRoleId = Role::where('name', 'user')->value('id');
-
+        
+        // Role 1 = member
         $user = User::create([
             'role_id' => $memberRoleId ?? 1,
             'username' => $request->username,
@@ -38,6 +41,10 @@ class RegisterUserController extends Controller {
             'birth_date' => $request->birth_date,
         ]);
 
+        if ($request->has('genres')) {
+            $user->genres()->attach($request->genres);
+        }
+        
         // Langsung login
         Auth::login($user);
 

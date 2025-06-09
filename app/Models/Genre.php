@@ -17,7 +17,7 @@ class Genre extends Model
     }
 
     public function users() {
-        return $this->belongsToMany(User::class, 'user_genre', 'genre_id', 'user_id')->withTimestamps();
+        return $this->belongsToMany(User::class, 'user_genres', 'genre_id', 'user_id')->withTimestamps();
     }
 
 }
