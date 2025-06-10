@@ -26,14 +26,18 @@ class TopicController extends Controller
      */
     public function create()
     {
-        $credentials = [
-            'username' => 'admin',
-            'password' => 'Admin123*',
-        ];
-
-        Auth::attempt($credentials);
-
         $genres = Genre::all();
+
+        if (Auth::check()) {
+            $user = Auth::user();
+
+            return view('register-topic', [
+                'userTopicFollowings' => $user->topicFollowings()->get(),
+                'recentlyVisitedTopics' => $user->topicsVisited()->latest()->get(),
+                'genres' => $genres,
+            ]);
+        }
+
         return view('register-topic', [
             'genres' => $genres,
         ]);

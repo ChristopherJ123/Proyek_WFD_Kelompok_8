@@ -108,7 +108,7 @@
             return `
                 <div id="rule-container-${index}" class="rule-container flex flex-col bg-brand-100 p-2 rounded-2xl">
                     <div class="flex space-x-4 items-center">
-                        <span class="text-xl">${index}</span>
+                        <span class="text-xl">${index + 1}</span>
                         <div class="flex relative justify-between w-full font-semibold">
                             <input class="peer placeholder-transparent" type="text" name="rules[${index}][title]" id="rules[${index}][title]" placeholder="Rule ${index}*">
                             <label class="absolute invisible peer-placeholder-shown:visible peer-focus:invisible" for="rules[${index}][title]">
