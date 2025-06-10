@@ -25,19 +25,22 @@
                             <li class="flex flex-col gap-2 text-white rounded-4xl bg-brand-300 p-4">
                                 <div class="flex flex-col gap-3">
                                     <div class="flex gap-2 mx-8">
-                                        <img class="size-8 object-cover rounded-full" src="{{ $post['topic_name'] }}"
-                                             alt="{{ $post['topic_name'] }}">
+                                        <img class="size-8 object-cover rounded-full" src="{{ asset($post->topic->icon_image_link) }}"
+                                             alt="{{ $post->topic->icon_image_link }}">
                                         <div class="font-bold text-2xl">y/{{ $post['topic_name'] }}</div>
                                     </div>
                                     <div
                                         class="tracking-normal font-sans tracking-normal mx-8 text-xl font-medium line-clamp-2">
                                         {{ $post['title'] }}
                                     </div>
-                                    <img class="max-h-96 mx-8 object-cover rounded-2xl"
-                                         src="{{ $post['image_link'] }}"
-                                         alt="{{ $post['image_link'] }}">
+                                    @if(count($post->images) > 0)
+                                        <img class="max-h-96 mx-8 object-cover rounded-2xl"
+                                             src="{{ asset('storage/'.$post->images[0]->image_link) }}"
+                                             alt="{{ $post->images[0]->image_link }}">
+                                    @endif
                                     <div class="flex gap-4">
                                         <div class="flex items-center p-2 px-3 gap-3 rounded-4xl bg-brand-900">
+                                            <div class="font-sans font-semibold text-xl">{{ $post['upvote_count'] }}</div>
                                             <button>
                                                 <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512"
                                                      class="size-6"
@@ -48,8 +51,7 @@
                                                     </g>
                                                 </svg>
                                             </button>
-                                            <div
-                                                class="font-sans font-semibold text-xl">{{ $post['upvote_count'] - $post['downvote_count'] }}</div>
+                                            <div class="font-sans font-semibold text-xl">{{ $post['downvote_count'] }}</div>
                                             <button>
                                                 <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512"
                                                      class="size-6 rotate-180" fill="currentColor">
@@ -105,8 +107,8 @@
                                 <div class="tracking-normal font-sans tracking-tighter font-medium line-clamp-2">
                                     {{ $post['title'] }}
                                 </div>
-                                <div class="text-gray-900 tracking-normal">{{ $post['upvote_count'] - $post['downvote_count'] }}
-                                    upvote {{ $post['comments_count'] }} comments
+                                <div class="text-gray-900 tracking-normal">{{ $post['upvote_count'] }}
+                                    upvote {{ $post['downvote_count'] }} downvote {{ $post['comments_count'] }} comments
                                 </div>
                             </li>
                         @endforeach

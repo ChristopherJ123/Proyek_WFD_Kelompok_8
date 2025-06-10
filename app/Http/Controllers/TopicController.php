@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Models\Genre;
 use App\Models\Topic;
 use App\Models\UserTopicFollowing;
+use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Validation\Rule;
@@ -52,7 +53,13 @@ class TopicController extends Controller
             'icon' => [
                 'nullable',
                 File::image()
-                    ->extensions('png,jpg,jpeg')
+                    ->extensions('png,jpg,jpeg,webp')
+                    ->max(4096)
+            ],
+            'banner' => [
+                'nullable',
+                File::image()
+                    ->extensions('png,jpg,jpeg,webp')
                     ->max(4096)
             ],
             'rules' => 'required|array|min:1',
@@ -68,8 +75,14 @@ class TopicController extends Controller
         $topic->genre_id = $request->genre;
         $topic->name = $request->title;
         $topic->description = $request->description;
-        if ($request->hasFile('icon'))
-            $topic->icon_image_link = $request->icon->store('images');
+        if ($request->hasFile('icon')) {
+            $extension = $request->icon->extension();
+            $topic->icon_image_link = $request->icon->storeAs('images/topic_icons', $topic->name . '.' . $extension, 'public');
+        }
+        if ($request->hasFile('banner')) {
+            $extension = $request->banner->extension();
+            $topic->banner_image_link = $request->banner->storeAs('images/topic_banners', $topic->name . '.' . $extension, 'public');
+        }
         $topic->save();
 
         foreach ($request->rules as $rule) {
@@ -93,7 +106,54 @@ class TopicController extends Controller
      */
     public function show(Topic $topic)
     {
-        dd($topic->name);
+        $bestPosts = $topic->posts()
+            ->withCount([
+                'votes as upvote_count' => function (Builder $query) {
+                    $query->where('is_upvote', true);
+                },
+                'votes as downvote_count' => function (Builder $query) {
+                    $query->where('is_upvote', false);
+                },
+            ])
+            ->selectRaw('
+                    CASE
+                        WHEN
+                            (SELECT COUNT(*) FROM user_votes WHERE user_votes.post_id = posts.id AND is_upvote = 1) = 0 AND
+                            (SELECT COUNT(*) FROM user_votes WHERE user_votes.post_id = posts.id AND is_upvote = 0) = 0
+                        THEN 0
+                        WHEN
+                            (SELECT COUNT(*) FROM user_votes WHERE user_votes.post_id = posts.id AND is_upvote = 0) = 0
+                        THEN
+                            (SELECT COUNT(*) FROM user_votes WHERE user_votes.post_id = posts.id AND is_upvote = 1)
+                        ELSE
+                            (SELECT COUNT(*) FROM user_votes WHERE user_votes.post_id = posts.id AND is_upvote = 1) /
+                            (SELECT COUNT(*) FROM user_votes WHERE user_votes.post_id = posts.id AND is_upvote = 0)
+                    END as vote_ratio
+                ')
+            ->orderBy('vote_ratio', 'desc')
+            ->get();
+
+        if (Auth::check()) {
+            $user = Auth::user();
+
+            $topic->usersVisited()->syncWithoutDetaching($user['id']);
+            $topic->usersVisited()->updateExistingPivot($user['id'], [
+                'updated_at' => now(),
+            ]);
+
+
+            return view('topic', [
+                'userTopicFollowings' => $user->topicFollowings()->get(),
+                'recentlyVisitedTopics' => $user->topicsVisited()->latest()->get(),
+                'topic' => $topic,
+                'bestPosts' => $bestPosts,
+            ]);
+        }
+
+        return view('topic', [
+            'topic' => $topic,
+            'bestPosts' => $bestPosts,
+        ]);
     }
 
     /**

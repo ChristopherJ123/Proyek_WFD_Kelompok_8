@@ -106,6 +106,7 @@
                             View more...
                         </div>
                     </li>
+                    @break
                 @endif
             @endforeach
         @else

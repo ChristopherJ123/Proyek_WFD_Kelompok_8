@@ -51,6 +51,8 @@
                             <img class="max-h-96 mx-8 object-cover rounded-2xl" src="https://cdn.apartmenttherapy.info/image/upload/v1565275640/k/Photo/Lifestyle/2019-08-cleaning-every-pot-and-pan/Dirty-Pans_091.jpg" alt="wok">
                             <div class="flex gap-4">
                                 <div class="flex items-center p-2 px-3 gap-3 rounded-4xl bg-brand-900">
+                                    <div class="font-sans font-semibold text-xl">-1</div>
+
                                     <button>
                                         <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512" class="size-6" fill="currentColor">
                                             <g>

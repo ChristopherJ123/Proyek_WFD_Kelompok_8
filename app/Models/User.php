@@ -89,7 +89,7 @@ class User extends Authenticatable
 
     public function topicsVisited()
     {
-        return $this->belongsToMany(Post::class, 'user_topic_visited', 'user_id', 'topic_id')->withTimestamps();
+        return $this->belongsToMany(Topic::class, 'user_topic_visited', 'user_id', 'topic_id')->withTimestamps();
     }
 
 }

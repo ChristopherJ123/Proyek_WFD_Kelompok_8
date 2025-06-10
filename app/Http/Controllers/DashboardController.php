@@ -14,13 +14,6 @@ class DashboardController extends Controller
 {
     public function create()
     {
-        $credentials = [
-            'username' => 'admin',
-            'password' => 'Admin123*',
-        ];
-
-        Auth::attempt($credentials);
-
         if (Auth::check()) {
             $user = Auth::user();
             $userTopicFollowings = $user->topicFollowings();
@@ -36,14 +29,6 @@ class DashboardController extends Controller
                         $query->where('is_upvote', false);
                     },
                 ])
-                // Gambar ambil 1 sementara
-                ->selectRaw('
-                    (
-                        SELECT image_link FROM post_images
-                        WHERE post_images.id = topics.id
-                        LIMIT 1
-                    ) as image_link
-                ')
                 ->selectRaw('
                     CASE
                         WHEN
@@ -59,6 +44,7 @@ class DashboardController extends Controller
                             (SELECT COUNT(*) FROM user_votes WHERE user_votes.post_id = posts.id AND is_upvote = 0)
                     END as vote_ratio
                 ')
+                ->orderBy('vote_ratio', 'desc')
                 ->get();
             $recentPosts = Post::whereIn('topic_id', $userTopicFollowings->pluck('topics.id'))
                 ->join('topics', 'topics.id', '=', 'posts.topic_id')
@@ -74,7 +60,6 @@ class DashboardController extends Controller
                 ])
                 ->latest()
                 ->get();
-//            dd($bestPosts);
             return view('dashboard', [
                 'userTopicFollowings' => $userTopicFollowings->get(),
                 'recentlyVisitedTopics' => $recentlyVisitedTopics,

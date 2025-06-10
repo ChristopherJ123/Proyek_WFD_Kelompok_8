@@ -23,7 +23,7 @@ Route::get('/', function () {
 //    Route::delete('/profile', [ProfileController::class, 'destroy'])->name('profile.destroy');
 //});
 
-Route::get('dashboard', [DashboardController::class, 'create']);
+Route::get('dashboard', [DashboardController::class, 'create'])->name('dashboard');
 
 Route::view('post', 'post-mockup');
 Route::view('topic', 'topic-mockup');
@@ -38,7 +38,7 @@ Route::middleware('guest')->group(function () {
 
     Route::get('login', [LoginController::class, 'create'])
         ->name('login');
-    Route::post('login', [LoginController::class, 'post'])
+    Route::post('login', [LoginController::class, 'store'])
         ->name('login.store');
 });
 
