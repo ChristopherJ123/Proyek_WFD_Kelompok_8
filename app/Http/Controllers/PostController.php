@@ -4,12 +4,46 @@ namespace App\Http\Controllers;
 
 use App\Models\Genre;
 use App\Models\Post;
+use App\Models\Topic;
+use App\Models\UserVote;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Validation\Rules\File;
 
 class PostController extends Controller
 {
+    public function vote(Request $request, Post $post)
+    {
+        $user = $request->user();
+
+        $request->validate([
+            'post_comment_id' => 'nullable|numeric',
+            'is_upvote' => 'required|boolean',
+        ]);
+
+        $voteExists = $user->votes()->where([
+            'post_id' => $post->id,
+            'post_comment_id' => $request->post_comment_id,
+            'is_upvote' => $request->is_upvote,
+        ])->first();
+
+        if ($voteExists) {
+            $voteExists->delete();
+        } else {
+            $user->votes()->updateOrCreate([
+                'post_id' => $post->id,
+                'post_comment_id' => $request->post_comment_id,
+            ], [
+                'is_upvote' => $request->is_upvote,
+            ]);
+        }
+
+        return response()->json([
+            'upvote_count' => $post->votes()->where('is_upvote', '=', true)->count(),
+            'downvote_count' => $post->votes()->where('is_upvote', '=', false)->count(),
+        ]);
+    }
+
     /**
      * Display a listing of the resource.
      */
@@ -23,14 +57,18 @@ class PostController extends Controller
      */
     public function create()
     {
-        $credentials = [
-            'username' => 'admin',
-            'password' => 'Admin123*',
-        ];
-
-        Auth::attempt($credentials);
-
         $genres = Genre::all();
+
+        if (Auth::check()) {
+            $user = Auth::user();
+
+            return view('register-topic', [
+                'userTopicFollowings' => $user->topicFollowings()->get(),
+                'recentlyVisitedTopics' => $user->topicsVisited()->latest()->get(),
+                'genres' => $genres,
+            ]);
+        }
+
         return view('register-post-mockup', [
             'genres' => $genres,
         ]);
@@ -47,7 +85,6 @@ class PostController extends Controller
             'description' => 'required|string',
             'images.*' => [
                 'nullable',
-//                'mimes:png,jpg,jpeg',
                 File::image()
                     ->extensions('png,jpg,jpeg')
                     ->min(128)
@@ -58,7 +95,7 @@ class PostController extends Controller
     /**
      * Display the specified resource.
      */
-    public function show(Post $post)
+    public function show(Topic $topic, Post $post)
     {
         //
     }

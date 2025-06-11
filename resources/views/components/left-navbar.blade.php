@@ -1,6 +1,6 @@
 <nav
     class="flex flex-col text-2xl font-bold tracking-wider bg-brand-900 text-brand-500 p-2 gap-4 max-w-64 w-full overflow-auto">
-    <div class="flex items-end gap-2">
+    <a href="{{ route('dashboard') }}" class="flex items-end gap-2">
         <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor" class="size-8">
             <path
                 d="M11.47 3.841a.75.75 0 0 1 1.06 0l8.69 8.69a.75.75 0 1 0 1.06-1.061l-8.689-8.69a2.25 2.25 0 0 0-3.182 0l-8.69 8.69a.75.75 0 1 0 1.061 1.06l8.69-8.689Z"/>
@@ -8,7 +8,7 @@
                 d="m12 5.432 8.159 8.159c.03.03.06.058.091.086v6.198c0 1.035-.84 1.875-1.875 1.875H15a.75.75 0 0 1-.75-.75v-4.5a.75.75 0 0 0-.75-.75h-3a.75.75 0 0 0-.75.75V21a.75.75 0 0 1-.75.75H5.625a1.875 1.875 0 0 1-1.875-1.875v-6.198a2.29 2.29 0 0 0 .091-.086L12 5.432Z"/>
         </svg>
         <div>HOME</div>
-    </div>
+    </a>
     <div class="flex items-end gap-2">
         <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor" class="size-8">
             <path fill-rule="evenodd"
@@ -48,9 +48,11 @@
             @endif
             @foreach($recentlyVisitedTopics as $topic)
                 @if($loop->index < 4)
-                    <li class="flex gap-2 cursor-pointer">
-                        <img src="{{ $topic['icon_image_link'] }}" alt="{{ $topic['name'] }}" class="size-8 object-cover rounded-full">
-                        <div>y/{{ $topic['name'] }}</div>
+                    <li>
+                        <a class="flex gap-2 cursor-pointer" href="{{ route('topics.show', $topic) }}">
+                            <img src="{{ asset('storage/'.$topic['icon_image_link']) }}" alt="{{ $topic['name'] }}" class="size-8 object-cover rounded-full">
+                            <div>y/{{ $topic['name'] }}</div>
+                        </a>
                     </li>
                 @else
                     <li class="relative cursor-pointer">
@@ -94,10 +96,12 @@
             @endif
             @foreach($userTopicFollowings as $topicFollowing)
                 @if($loop->index < 5)
-                    <li class="flex gap-2 cursor-pointer">
-                        <img src="{{ $topicFollowing['icon_image_link'] }}" alt="{{ $topicFollowing['name'] }}"
-                             class="size-8 object-cover rounded-full">
-                        <div>y/{{ $topicFollowing['name'] }}</div>
+                    <li >
+                        <a href="{{ route('topics.show', $topicFollowing) }}" class="flex gap-2 cursor-pointer">
+                            <img src="{{ asset('storage/'.$topicFollowing['icon_image_link']) }}" alt="{{ $topicFollowing['name'] }}"
+                                 class="size-8 object-cover rounded-full">
+                            <div>y/{{ $topicFollowing['name'] }}</div>
+                        </a>
                     </li>
                 @else
                     <li class="relative cursor-pointer">

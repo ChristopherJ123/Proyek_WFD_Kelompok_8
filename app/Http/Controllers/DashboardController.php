@@ -12,6 +12,14 @@ use Illuminate\Support\Facades\Auth;
 
 class DashboardController extends Controller
 {
+    public function retrievePosts(Request $request, string $search)
+    {
+        $request->validate([
+            'sort_by' => 'required|string',
+            'order_by' =>'required|string',
+        ]);
+    }
+
     public function create()
     {
         if (Auth::check()) {
@@ -21,14 +29,6 @@ class DashboardController extends Controller
             $bestPosts = Post::whereIn('topic_id', $userTopicFollowings->pluck('topics.id'))
                 ->join('topics', 'topics.id', '=', 'posts.topic_id')
                 ->select('posts.*', 'topics.name AS topic_name')
-                ->withCount([
-                    'votes as upvote_count' => function (Builder $query) {
-                        $query->where('is_upvote', true);
-                    },
-                    'votes as downvote_count' => function (Builder $query) {
-                        $query->where('is_upvote', false);
-                    },
-                ])
                 ->selectRaw('
                     CASE
                         WHEN
@@ -49,15 +49,6 @@ class DashboardController extends Controller
             $recentPosts = Post::whereIn('topic_id', $userTopicFollowings->pluck('topics.id'))
                 ->join('topics', 'topics.id', '=', 'posts.topic_id')
                 ->select('posts.*', 'topics.name AS topic_name')
-                ->withCount([
-                    'votes as upvote_count' => function (Builder $query) {
-                        $query->where('is_upvote', true);
-                    },
-                    'votes as downvote_count' => function (Builder $query) {
-                        $query->where('is_upvote', false);
-                    },
-                    'comments',
-                ])
                 ->latest()
                 ->get();
             return view('dashboard', [

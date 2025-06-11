@@ -4,7 +4,7 @@
 
 @section('content')
     <div class="flex items-center justify-center gap-4">
-        <img src="{{ asset('logo.png') }}" alt="Logo" class="h-12 w-12">
+        <img src="{{ asset('storage/images/logo.png') }}" alt="Logo" class="h-12 w-12">
         <h1 class="text-6xl">Login Page</h1>
     </div>
     <div>

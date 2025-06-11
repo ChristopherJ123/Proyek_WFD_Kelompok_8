@@ -19,6 +19,9 @@ return new class extends Migration
             $table->boolean('is_upvote')->default(false);
             $table->boolean('is_owner_read')->default(false);
             $table->timestamps();
+
+//            butuh ini cuma seeder belum perfect
+//            $table->unique(['user_id', 'post_id']);
         });
     }
 
