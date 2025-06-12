@@ -62,5 +62,5 @@ Route::get('topics/{topic}/posts', [PostController::class, 'index'])->name('topi
 Route::get('topics/{topic}/posts/{post}', [PostController::class, 'show'])->name('topics.posts.show');
 
 Route::middleware(AjaxRequestsOnly::class)->group(function () {
-    Route::get('api/dashboard/posts/{search}', [DashboardController::class, 'retrievePosts'])->name('api.dashboard.posts');
+    Route::get('api/dashboard/posts/{search?}', [DashboardController::class, 'retrievePosts'])->middleware('auth')->name('api.dashboard.posts');
 });
