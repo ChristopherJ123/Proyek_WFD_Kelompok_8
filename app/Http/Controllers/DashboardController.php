@@ -79,9 +79,8 @@ class DashboardController extends Controller
     {
         if (Auth::check()) {
             $user = Auth::user();
-            $userTopicFollowings = $user->topicFollowings();
-            $recentlyVisitedTopics = $user->topicsVisited()->latest()->get();
-            $bestPosts = Post::whereIn('topic_id', $userTopicFollowings->pluck('topics.id'))
+            $userTopicFollowings = $user->topicFollowings()->pluck('topics.id');
+            $bestPosts = Post::whereIn('topic_id', $userTopicFollowings)
                 ->select('*')
                 ->selectRaw('
                     CASE
@@ -100,12 +99,10 @@ class DashboardController extends Controller
                 ')
                 ->orderBy('votes_ratio', 'desc')
                 ->get();
-            $recentPosts = Post::whereIn('topic_id', $userTopicFollowings->pluck('topics.id'))
+            $recentPosts = Post::whereIn('topic_id', $userTopicFollowings)
                 ->latest()
                 ->get();
             return view('dashboard', [
-                'userTopicFollowings' => $userTopicFollowings->get(),
-                'recentlyVisitedTopics' => $recentlyVisitedTopics,
                 'bestPosts' => $bestPosts,
                 'recentPosts' => $recentPosts,
             ]);

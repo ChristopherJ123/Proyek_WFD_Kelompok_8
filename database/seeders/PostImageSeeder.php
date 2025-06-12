@@ -15,6 +15,7 @@ class PostImageSeeder extends Seeder
     {
         PostImage::upsert([
             ['post_id' => 1, 'image_link' => 'images/post_images/post_1_1.png'],
+            ['post_id' => 1, 'image_link' => 'images/post_images/post_1_2.jpg'],
             ['post_id' => 2, 'image_link' => 'images/post_images/post_2_1.png'],
             ['post_id' => 4, 'image_link' => 'images/post_images/post_4_1.png'],
             ['post_id' => 6, 'image_link' => 'images/post_images/post_6_1.png'],

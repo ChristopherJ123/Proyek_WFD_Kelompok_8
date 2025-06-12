@@ -1,3 +1,12 @@
+@php
+    use Illuminate\Support\Facades\Auth;
+
+    if (Auth::check()) {
+        $user = Auth::user();
+        $userTopicFollowings = $user->topicFollowings()->get();
+        $recentlyVisitedTopics = $user->topicsVisited()->latest()->get();
+    }
+@endphp
 <nav
     class="flex flex-col text-2xl font-bold tracking-wider bg-brand-900 text-brand-500 p-2 gap-4 max-w-64 w-full overflow-auto">
     <a href="{{ route('dashboard') }}" class="flex items-end gap-2">
@@ -50,7 +59,8 @@
                 @if($loop->index < 4)
                     <li>
                         <a class="flex gap-2 cursor-pointer" href="{{ route('topics.show', $topic) }}">
-                            <img src="{{ asset('storage/'.$topic['icon_image_link']) }}" alt="{{ $topic['name'] }}" class="size-8 object-cover rounded-full">
+                            <img src="{{ asset('storage/'.$topic['icon_image_link']) }}" alt="{{ $topic['name'] }}"
+                                 class="size-8 object-cover rounded-full">
                             <div>y/{{ $topic['name'] }}</div>
                         </a>
                     </li>
@@ -96,9 +106,10 @@
             @endif
             @foreach($userTopicFollowings as $topicFollowing)
                 @if($loop->index < 5)
-                    <li >
+                    <li>
                         <a href="{{ route('topics.show', $topicFollowing) }}" class="flex gap-2 cursor-pointer">
-                            <img src="{{ asset('storage/'.$topicFollowing['icon_image_link']) }}" alt="{{ $topicFollowing['name'] }}"
+                            <img src="{{ asset('storage/'.$topicFollowing['icon_image_link']) }}"
+                                 alt="{{ $topicFollowing['name'] }}"
                                  class="size-8 object-cover rounded-full">
                             <div>y/{{ $topicFollowing['name'] }}</div>
                         </a>

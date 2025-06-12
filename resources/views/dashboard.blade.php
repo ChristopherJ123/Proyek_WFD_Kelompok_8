@@ -48,7 +48,7 @@
                                 <div class="flex gap-4">
                                     <div class="flex items-center p-2 px-3 gap-3 rounded-4xl bg-brand-900">
                                         <div id="post-{{ $post['id'] }}-{{ $post['comment_id'] ?? 'null' }}-upvote" class="font-sans font-semibold text-xl">{{ $post->votes()->where('is_upvote', '=', true)->count() }}</div>
-                                        <button id="button-{{ $post['id'] }}-{{ $post['comment_id'] ?? 'null' }}-upvote" class="cursor-pointer" onclick="votePost({{ $post['id'] }}, null, 1)">
+                                        <button id="button-{{ $post['id'] }}-{{ $post['comment_id'] ?? 'null' }}-upvote" class="cursor-pointer" onclick="votePost({{ $post->id }}, null, 1)">
                                             <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512"
                                                  @class([
                                                     'size-6',
@@ -62,7 +62,7 @@
                                             </svg>
                                         </button>
                                         <div id="post-{{ $post['id'] }}-{{ $post['comment_id'] ?? 'null' }}-downvote" class="font-sans font-semibold text-xl">{{ $post->votes()->where('is_upvote', '=', false)->count() }}</div>
-                                        <button id="button-{{ $post['id'] }}-{{ $post['comment_id'] ?? 'null' }}-downvote" class="cursor-pointer" onclick="votePost({{ $post['id'] }}, null, 0)">
+                                        <button id="button-{{ $post['id'] }}-{{ $post['comment_id'] ?? 'null' }}-downvote" class="cursor-pointer" onclick="votePost({{ $post->id }}, null, 0)">
                                             <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512"
                                                  @class([
                                                     'size-6 rotate-180',
@@ -156,7 +156,7 @@
     <script>
         function votePost(postId, postCommentId, isUpvote) {
             $.ajax({
-                url: `posts/${postId}/vote`,
+                url: `/posts/${postId}/vote`,
                 method: 'POST',
                 data: {
                     _token: '{{ csrf_token() }}',

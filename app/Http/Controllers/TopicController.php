@@ -28,16 +28,6 @@ class TopicController extends Controller
     {
         $genres = Genre::all();
 
-        if (Auth::check()) {
-            $user = Auth::user();
-
-            return view('register-topic', [
-                'userTopicFollowings' => $user->topicFollowings()->get(),
-                'recentlyVisitedTopics' => $user->topicsVisited()->latest()->get(),
-                'genres' => $genres,
-            ]);
-        }
-
         return view('register-topic', [
             'genres' => $genres,
         ]);
@@ -111,14 +101,15 @@ class TopicController extends Controller
     public function show(Topic $topic)
     {
         $bestPosts = $topic->posts()
-            ->withCount([
-                'votes as upvote_count' => function (Builder $query) {
-                    $query->where('is_upvote', true);
-                },
-                'votes as downvote_count' => function (Builder $query) {
-                    $query->where('is_upvote', false);
-                },
-            ])
+//            ->withCount([
+//                'votes as upvote_count' => function (Builder $query) {
+//                    $query->where('is_upvote', true);
+//                },
+//                'votes as downvote_count' => function (Builder $query) {
+//                    $query->where('is_upvote', false);
+//                },
+//            ])
+            ->select('*')
             ->selectRaw('
                     CASE
                         WHEN
@@ -143,14 +134,6 @@ class TopicController extends Controller
             $topic->usersVisited()->syncWithoutDetaching($user['id']);
             $topic->usersVisited()->updateExistingPivot($user['id'], [
                 'updated_at' => now(),
-            ]);
-
-
-            return view('topic', [
-                'userTopicFollowings' => $user->topicFollowings()->get(),
-                'recentlyVisitedTopics' => $user->topicsVisited()->latest()->get(),
-                'topic' => $topic,
-                'bestPosts' => $bestPosts,
             ]);
         }
 
