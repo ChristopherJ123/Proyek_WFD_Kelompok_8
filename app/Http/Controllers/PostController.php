@@ -59,16 +59,6 @@ class PostController extends Controller
     {
         $genres = Genre::all();
 
-        if (Auth::check()) {
-            $user = Auth::user();
-
-            return view('register-topic', [
-                'userTopicFollowings' => $user->topicFollowings()->get(),
-                'recentlyVisitedTopics' => $user->topicsVisited()->latest()->get(),
-                'genres' => $genres,
-            ]);
-        }
-
         return view('register-post-mockup', [
             'genres' => $genres,
         ]);
@@ -90,14 +80,18 @@ class PostController extends Controller
                     ->min(128)
                     ->max(4096)
             ],
-        ]);    }
+        ]);
+    }
 
     /**
      * Display the specified resource.
      */
     public function show(Topic $topic, Post $post)
     {
-        //
+        return view('post', [
+            'topic' => $topic,
+            'post' => $post,
+        ]);
     }
 
     /**
