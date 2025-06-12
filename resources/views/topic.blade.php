@@ -47,11 +47,12 @@
                                     class="font-sans tracking-normal mx-8 text-xl font-medium line-clamp-2">
                                     {{ $post['title'] }}
                                 </a>
-                                @if(count($post->images) > 0)
+                                @foreach($post->images as $image)
+                                    @php //Ini perlu di update jadi kek twitter image viewer @endphp
                                     <img class="max-h-96 mx-8 object-cover rounded-2xl"
-                                         src="{{ asset('storage/'.$post->images[0]->image_link) }}"
-                                         alt="{{ $post->images[0]->image_link }}">
-                                @endif
+                                         src="{{ asset('storage/'.$image->image_link) }}"
+                                         alt="{{ $topic->name }}">
+                                @endforeach
                                 <div class="flex gap-4">
                                     <div class="flex items-center p-2 px-3 gap-3 rounded-4xl bg-brand-900">
                                         <div id="post-{{ $post['id'] }}-{{ $post['comment_id'] ?? 'null' }}-upvote" class="font-sans font-semibold text-xl">{{ $post->votes()->where('is_upvote', '=', true)->count() }}</div>
