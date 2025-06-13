@@ -41,7 +41,7 @@
                                     @php //Ini perlu di update jadi kek twitter image viewer @endphp
                                     <img class="max-h-96 mx-8 object-cover rounded-2xl"
                                          src="{{ asset('storage/'.$image->image_link) }}"
-                                         alt="{{ $topic->name }}">
+                                         alt="{{ $post->topic->name }}">
                                 @endforeach
                                 <div class="flex gap-4">
                                     <div class="flex items-center p-2 px-3 gap-3 rounded-4xl bg-brand-900">
