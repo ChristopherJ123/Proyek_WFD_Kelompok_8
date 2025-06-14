@@ -79,14 +79,14 @@ class DashboardController extends Controller
                 ->with(['topic', 'votes'])
                 ->get();
 
-            return view('dashboard', [
+            return view('homepage', [
                 'search' => $request->search,
-                'sort_by' => $request->sort_by,
-                'order_by' => $request->order_by,
+                'sortBy' => $request->sort_by,
+                'orderBy' => $request->order_by,
                 'posts' => $posts,
                 'recentPosts' => $recentPosts,
             ]);
         }
-        return view('dashboard');
+        return view('homepage');
     }
 }

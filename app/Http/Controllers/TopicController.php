@@ -13,6 +13,25 @@ use Illuminate\Validation\Rules\File;
 
 class TopicController extends Controller
 {
+    public function followTopic(Request $request, int $topic_id)
+    {
+        $user = $request->user();
+
+        $alreadyFollowing = $user->topicFollowings()->where('topic_id', '=', $topic_id)->exists();
+
+        if ($alreadyFollowing) {
+            $user->topicFollowings()->detach($topic_id);
+            $isFollowing = false;
+        } else {
+            $user->topicFollowings()->attach($topic_id);
+            $isFollowing = true;
+        }
+
+        return response()->json([
+            'is_following' => $isFollowing,
+        ]);
+    }
+
     /**
      * Display a listing of the resource.
      */
@@ -153,18 +172,27 @@ class TopicController extends Controller
         $posts = $postsBuilder->with(['topic', 'author'])->paginate(20);
 
         if (Auth::check()) {
-            $user = Auth::user();
+            $user = $request->user();
 
             $topic->usersVisited()->syncWithoutDetaching($user['id']);
             $topic->usersVisited()->updateExistingPivot($user['id'], [
                 'updated_at' => now(),
             ]);
+
+            return view('topic', [
+                'search' => $request->search,
+                'sortBy' => $request->sort_by,
+                'orderBy' => $request->order_by,
+                'topic' => $topic,
+                'isFollowing' => $user->topicFollowings()->where('topic_id', '=', $topic->id)->exists(),
+                'posts' => $posts,
+            ]);
         }
 
         return view('topic', [
             'search' => $request->search,
-            'sort_by' => $request->sort_by,
-            'order_by' => $request->order_by,
+            'sortBy' => $request->sort_by,
+            'orderBy' => $request->order_by,
             'topic' => $topic,
             'posts' => $posts,
         ]);

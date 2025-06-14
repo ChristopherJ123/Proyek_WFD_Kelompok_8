@@ -30,7 +30,7 @@ class RegisterUserController extends Controller {
         ]);
 
         $memberRoleId = Role::where('name', 'user')->value('id');
-        
+
         // Role 1 = member
         $user = User::create([
             'role_id' => $memberRoleId ?? 1,
@@ -44,11 +44,11 @@ class RegisterUserController extends Controller {
         if ($request->has('genres')) {
             $user->genres()->attach($request->genres);
         }
-        
+
         // Langsung login
         Auth::login($user);
 
-        return redirect()->route('dashboard');
+        return redirect()->route('homepage');
     }
 
 }

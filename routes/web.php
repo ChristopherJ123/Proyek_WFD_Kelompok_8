@@ -61,5 +61,6 @@ Route::get('topics/{topic}/posts', [PostController::class, 'index'])->name('topi
 Route::get('topics/{topic}/posts/{post}', [PostController::class, 'show'])->name('topics.posts.show');
 
 Route::middleware(AjaxRequestsOnly::class)->group(function () {
+    Route::post('topics/{topic_id}/follow', [TopicController::class, 'followTopic'])->middleware('auth')->name('topics.follow');
     Route::post('posts/{post}/vote', [PostController::class, 'vote'])->middleware('auth')->name('posts.vote');
 });
