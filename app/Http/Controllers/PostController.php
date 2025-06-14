@@ -6,6 +6,7 @@ use App\Models\Genre;
 use App\Models\Post;
 use App\Models\Topic;
 use App\Models\UserVote;
+use Illuminate\Database\Query\Builder;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Validation\Rules\File;
@@ -86,9 +87,10 @@ class PostController extends Controller
     /**
      * Display the specified resource.
      */
-    public function show(Topic $topic, Post $post)
+    public function show(Request $request, Topic $topic, Post $post)
     {
         return view('post', [
+            'search' => $request->search,
             'topic' => $topic,
             'post' => $post,
         ]);

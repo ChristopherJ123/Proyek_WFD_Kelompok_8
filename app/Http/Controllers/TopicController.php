@@ -98,19 +98,23 @@ class TopicController extends Controller
     /**
      * Display the specified resource.
      */
-    public function show(Topic $topic)
+    public function show(Request $request, Topic $topic)
     {
-        $bestPosts = $topic->posts()
-//            ->withCount([
-//                'votes as upvote_count' => function (Builder $query) {
-//                    $query->where('is_upvote', true);
-//                },
-//                'votes as downvote_count' => function (Builder $query) {
-//                    $query->where('is_upvote', false);
-//                },
-//            ])
-            ->select('*')
-            ->selectRaw('
+        $request->validate([
+            'search' => 'nullable|string',
+            'sort_by' => 'nullable|string',
+            'order_by' =>'nullable|string',
+        ]);
+
+        $postsBuilder = $topic->posts()
+            ->when($request->search, function (Builder $query, string $search) {
+                $query->where('title', 'like', '%'.$search.'%');
+            });
+
+        match ($request->sort_by) {
+            default => $postsBuilder
+                ->select('*')
+                ->selectRaw('
                     CASE
                         WHEN
                             (SELECT COUNT(*) FROM user_votes WHERE user_votes.post_id = posts.id AND is_upvote = 1) = 0 AND
@@ -123,10 +127,30 @@ class TopicController extends Controller
                         ELSE
                             (SELECT COUNT(*) FROM user_votes WHERE user_votes.post_id = posts.id AND is_upvote = 1) /
                             (SELECT COUNT(*) FROM user_votes WHERE user_votes.post_id = posts.id AND is_upvote = 0)
-                    END as vote_ratio
+                    END as votes_ratio
                 ')
-            ->orderBy('vote_ratio', 'desc')
-            ->get();
+                ->orderBy('votes_ratio', $request->order_by ?? 'desc'),
+            'Popular' => $postsBuilder
+                ->select('*')
+                ->selectRaw('
+                            (
+                                SELECT COUNT(*)
+                                FROM user_votes
+                                WHERE user_votes.post_id = posts.id AND is_upvote = 1
+                            ) -
+                            (
+                                SELECT COUNT(*)
+                                FROM user_votes
+                                WHERE user_votes.post_id = posts.id AND is_upvote = 0
+                            ) AS votes_delta
+                        ')
+                ->orderBy('votes_delta', $request->order_by ?? 'desc'),
+            'Date' => $postsBuilder
+                ->select('*')
+                ->orderBy('created_at', $request->order_by ?? 'desc'),
+        };
+
+        $posts = $postsBuilder->with(['topic', 'author'])->paginate(20);
 
         if (Auth::check()) {
             $user = Auth::user();
@@ -138,8 +162,11 @@ class TopicController extends Controller
         }
 
         return view('topic', [
+            'search' => $request->search,
+            'sort_by' => $request->sort_by,
+            'order_by' => $request->order_by,
             'topic' => $topic,
-            'bestPosts' => $bestPosts,
+            'posts' => $posts,
         ]);
     }
 

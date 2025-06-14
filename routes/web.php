@@ -2,6 +2,7 @@
 
 use App\Http\Controllers\Auth\LoginController;
 use App\Http\Controllers\DashboardController;
+use App\Http\Controllers\PopularPageController;
 use App\Http\Controllers\PostController;
 use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\RegisterTopicController;
@@ -23,8 +24,6 @@ Route::get('/', function () {
 //    Route::patch('/profile', [ProfileController::class, 'update'])->name('profile.update');
 //    Route::delete('/profile', [ProfileController::class, 'destroy'])->name('profile.destroy');
 //});
-
-Route::get('dashboard', [DashboardController::class, 'create'])->name('dashboard');
 
 //Route::view('post', 'post-mockup');
 //Route::view('topic', 'topic-mockup');
@@ -52,15 +51,15 @@ Route::middleware('auth')->group(function () {
     Route::post('topics/{topic}/posts', [PostController::class, 'store'])->name('topics.posts.store');
     Route::put('topics/{topic}/posts/{post}', [PostController::class, 'update'])->name('topics.posts.update');
     Route::delete('topics/{topic}/posts/{post}', [PostController::class, 'destroy'])->name('topics.posts.destroy');
-
-    Route::post('posts/{post}/vote', [PostController::class, 'vote'])->name('posts.vote');
 });
 
+Route::get('dashboard', [DashboardController::class, 'index'])->name('dashboard');
+Route::get('popular', [PopularPageController::class, 'index'])->name('popular');
 Route::get('topics', [TopicController::class, 'index'])->name('topics.index');
 Route::get('topics/{topic}', [TopicController::class, 'show'])->name('topics.show');
 Route::get('topics/{topic}/posts', [PostController::class, 'index'])->name('topics.posts.index');
 Route::get('topics/{topic}/posts/{post}', [PostController::class, 'show'])->name('topics.posts.show');
 
 Route::middleware(AjaxRequestsOnly::class)->group(function () {
-    Route::get('api/dashboard/posts/{search?}', [DashboardController::class, 'retrievePosts'])->middleware('auth')->name('api.dashboard.posts');
+    Route::post('posts/{post}/vote', [PostController::class, 'vote'])->middleware('auth')->name('posts.vote');
 });

@@ -6,26 +6,34 @@ use App\Models\Post;
 use App\Models\Topic;
 use App\Models\User;
 use App\Models\UserTopicFollowing;
-use Illuminate\Database\Eloquent\Builder;
+use Illuminate\Database\Query\Builder;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 
 class DashboardController extends Controller
 {
-    public function retrievePosts(Request $request, ?string $search = '')
+    public function index(Request $request)
     {
         $request->validate([
-            'sort_by' => 'required|string',
-            'order_by' =>'required|string',
+            'search' => 'nullable|string',
+            'sort_by' => 'nullable|string',
+            'order_by' =>'nullable|string',
         ]);
 
-        $user = $request->user();
-        $userTopicFollowings = $user->topicFollowings()->pluck('topics.id');
+        if (Auth::check()) {
+            $user = Auth::user();
+            $userTopicFollowings = $user->topicFollowings()->pluck('topics.id');
+            $postsBuilder = Post::query()
+                ->whereIn('topic_id', $userTopicFollowings)
+                ->when($request->search, function (\Illuminate\Database\Eloquent\Builder $query, string $search) {
+                    $query->where('title', 'like', '%'.$search.'%')
+                        ->orWhereHas('topic', function (\Illuminate\Database\Eloquent\Builder $query) use ($search) {
+                            $query->where('name', 'like', '%'.$search.'%');
+                        });
+                });
 
-        switch ($request->sort_by) {
-            case 'Best':
-                $queriedPosts = Post::whereIn('topic_id', $userTopicFollowings)
-                    ->where('title', 'like', '%'.$search.'%')
+            match ($request->sort_by) {
+                default => $postsBuilder
                     ->select('*')
                     ->selectRaw('
                     CASE
@@ -42,12 +50,8 @@ class DashboardController extends Controller
                             (SELECT COUNT(*) FROM user_votes WHERE user_votes.post_id = posts.id AND is_upvote = 0)
                     END as votes_ratio
                 ')
-                    ->orderBy('votes_ratio', $request->order_by)
-                    ->get();
-                return $queriedPosts;
-            case 'Popular':
-                $queriedPosts = Post::whereIn('topic_id', $userTopicFollowings)
-                    ->where('title', 'like', '%'.$search.'%')
+                    ->orderBy('votes_ratio', $request->order_by ?? 'desc'),
+                'Popular' => $postsBuilder
                     ->select('*')
                     ->selectRaw('
                             (
@@ -61,49 +65,25 @@ class DashboardController extends Controller
                                 WHERE user_votes.post_id = posts.id AND is_upvote = 0
                             ) AS votes_delta
                         ')
-                    ->orderBy('votes_delta', $request->order_by)
-                    ->get();
-                return $queriedPosts;
-            case 'Date':
-                $queriedPosts = Post::whereIn('topic_id', $userTopicFollowings)
-                    ->where('title', 'like', '%'.$search.'%')
-                    ->orderBy('created_at', $request->order_by)
-                    ->get();
-                return $queriedPosts;
-        }
+                    ->orderBy('votes_delta', $request->order_by ?? 'desc'),
+                'Date' => $postsBuilder
+                    ->select('*')
+                    ->orderBy('created_at', $request->order_by ?? 'desc'),
+            };
 
-        abort(500);
-    }
+            $posts = $postsBuilder->with(['topic', 'author'])->paginate(20);
 
-    public function create()
-    {
-        if (Auth::check()) {
-            $user = Auth::user();
-            $userTopicFollowings = $user->topicFollowings()->pluck('topics.id');
-            $bestPosts = Post::whereIn('topic_id', $userTopicFollowings)
-                ->select('*')
-                ->selectRaw('
-                    CASE
-                        WHEN
-                            (SELECT COUNT(*) FROM user_votes WHERE user_votes.post_id = posts.id AND is_upvote = 1) = 0 AND
-                            (SELECT COUNT(*) FROM user_votes WHERE user_votes.post_id = posts.id AND is_upvote = 0) = 0
-                        THEN 0
-                        WHEN
-                            (SELECT COUNT(*) FROM user_votes WHERE user_votes.post_id = posts.id AND is_upvote = 0) = 0
-                        THEN
-                            (SELECT COUNT(*) FROM user_votes WHERE user_votes.post_id = posts.id AND is_upvote = 1)
-                        ELSE
-                            (SELECT COUNT(*) FROM user_votes WHERE user_votes.post_id = posts.id AND is_upvote = 1) /
-                            (SELECT COUNT(*) FROM user_votes WHERE user_votes.post_id = posts.id AND is_upvote = 0)
-                    END as votes_ratio
-                ')
-                ->orderBy('votes_ratio', 'desc')
-                ->get();
             $recentPosts = Post::whereIn('topic_id', $userTopicFollowings)
                 ->latest()
+                ->limit(20)
+                ->with(['topic', 'votes'])
                 ->get();
+
             return view('dashboard', [
-                'bestPosts' => $bestPosts,
+                'search' => $request->search,
+                'sort_by' => $request->sort_by,
+                'order_by' => $request->order_by,
+                'posts' => $posts,
                 'recentPosts' => $recentPosts,
             ]);
         }
