@@ -3,7 +3,7 @@
         @if($showTopic === true)
             <div class="flex gap-2 mx-8">
                 <img class="size-8 object-cover rounded-full" src="{{ asset('storage/'.$post->topic->icon_image_link) }}"
-                     alt="{{ $post->topic->icon_image_link }}">
+                     alt="{{ $post->topic->name }}">
                 <a
                     href="{{ route('topics.show', $post->topic) }}"
                     class="font-bold text-2xl">y/{{ $post->topic->name }}</a>
@@ -15,9 +15,22 @@
             {{ $post['title'] }}
         </a>
         @if(count($post->images) > 0)
-            <img class="max-h-96 mx-8 object-cover rounded-2xl"
-                 src="{{ asset('storage/'.$post->images[0]->image_link) }}"
-                 alt="{{ $post->images[0]->image_link }}">
+                <div
+                    @class([
+                        'grid grid-gap-1',
+                        'grid-cols-1' => count($post->images) === 1,
+                        'grid-cols-2' => count($post->images) >= 2
+                    ])>
+                    @foreach($post->images as $index => $image)
+                        @if($index < 4)
+                            <img
+                                class="w-full h-full rounded-2xl"
+                                src="{{ asset('storage/'.$image->image_link) }}"
+                                alt="{{ $post->topic->name }}"
+                            >
+                        @endif
+                    @endforeach
+                </div>
         @endif
         <x-post-buttons :post="$post"></x-post-buttons>
     </div>

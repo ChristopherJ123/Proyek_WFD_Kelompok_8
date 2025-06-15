@@ -56,11 +56,12 @@ class PostController extends Controller
     /**
      * Show the form for creating a new resource.
      */
-    public function create()
+    public function create(Topic $topic)
     {
         $genres = Genre::all();
 
-        return view('register-post-mockup', [
+        return view('register-post', [
+            'topic' => $topic,
             'genres' => $genres,
         ]);
     }
@@ -68,20 +69,39 @@ class PostController extends Controller
     /**
      * Store a newly created resource in storage.
      */
-    public function store(Request $request)
+    public function store(Request $request, Topic $topic)
     {
         $request->validate([
-            'genre' => 'required|string',
             'title' => 'required|string',
             'description' => 'required|string',
+            'images' => 'nullable|array|max:4',
             'images.*' => [
                 'nullable',
                 File::image()
                     ->extensions('png,jpg,jpeg')
-                    ->min(128)
                     ->max(4096)
             ],
         ]);
+
+        $post = new Post();
+        $post->author_id = $request->user()->id;
+        $post->topic_id = $topic->id;
+        $post->title = $request->title;
+        $post->description = $request->description;
+        $post->save();
+        if ($request->hasFile('images')) {
+            foreach ($request->file('images') as $index => $image) {
+                $extension = $image->extension();
+                $filename = "{$topic->name}_{$post->id}_{$index}.$extension";
+                $path = $image->storeAs('images/post_images', $filename, 'public');
+
+                $post->images()->create([
+                    'image_link' => $path
+                ]);
+            }
+        }
+
+        return redirect()->route('topics.posts.show', [$topic, $post]);
     }
 
     /**

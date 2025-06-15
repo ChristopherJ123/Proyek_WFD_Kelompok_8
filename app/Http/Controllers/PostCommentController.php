@@ -17,6 +17,7 @@ class PostCommentController extends Controller
             'post_id' => 'required|numeric',
             'parent_message_id' => 'nullable|numeric',
             'message' => 'required|string',
+            'images' => 'nullable|array|max:4',
             'images.*' => [
                 'nullable',
                 File::image()

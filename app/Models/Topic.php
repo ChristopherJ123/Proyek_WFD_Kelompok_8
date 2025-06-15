@@ -48,7 +48,7 @@ class Topic extends Model
     }
 
     public function rules() {
-        return $this->hasMany(TopicRules::class);
+        return $this->hasMany(TopicRule::class);
     }
 
     public function usersVisited()

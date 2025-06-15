@@ -48,7 +48,7 @@ class RegisterUserController extends Controller {
         // Langsung login
         Auth::login($user);
 
-        return redirect()->route('homepage');
+        return redirect()->route('dashboard');
     }
 
 }

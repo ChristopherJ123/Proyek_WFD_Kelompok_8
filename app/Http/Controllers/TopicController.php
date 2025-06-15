@@ -75,7 +75,7 @@ class TopicController extends Controller
                     ->extensions('png,jpg,jpeg,webp')
                     ->max(4096)
             ],
-            'rules' => 'required|array|min:1',
+            'rules' => 'required|array|min:1|max:20',
             'rules.*.order' => 'required|numeric|max:20',
             'rules.*.title' => 'required|string|max:255',
             'rules.*.description' => 'nullable|string|max:1000',
