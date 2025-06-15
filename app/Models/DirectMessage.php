@@ -9,22 +9,22 @@ class DirectMessage extends Model
     protected $table = 'direct_messages';
 
 	protected $fillable = [
-        'user_id',
+        'sender_id',
         'target_user_id',
         'message',
         'is_read',
 	];
 
     public function sender() {
-        return $this->belongsTo(User::class, 'user_id');
+        return $this->belongsTo(User::class, 'sender_id');
     }
 
     public function receiver() {
         return $this->belongsTo(User::class, 'target_user_id');
     }
 
-    public function images() {
-        return $this->hasMany(DirectMessageImage::class);
+   public function images() {
+        return $this->hasMany(DirectMessageImage::class, 'direct_messsage_id');
     }
 
 }
