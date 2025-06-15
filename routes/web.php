@@ -6,8 +6,10 @@ use App\Http\Controllers\PostController;
 use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\RegisterTopicController;
 use App\Http\Controllers\Auth\RegisterUserController;
+use App\Http\Controllers\DirectMessageController;
 use App\Http\Controllers\TopicController;
 use App\Http\Middleware\AjaxRequestsOnly;
+use App\Models\DirectMessage;
 use Illuminate\Support\Facades\Route;
 
 Route::get('/', function () {
@@ -52,6 +54,13 @@ Route::middleware('auth')->group(function () {
     Route::post('topics/{topic}/posts', [PostController::class, 'store'])->name('topics.posts.store');
     Route::put('topics/{topic}/posts/{post}', [PostController::class, 'update'])->name('topics.posts.update');
     Route::delete('topics/{topic}/posts/{post}', [PostController::class, 'destroy'])->name('topics.posts.destroy');
+
+    Route::get('messages', [DirectMessageController::class, 'dmMenu'])->name('messages.menu');
+    Route::get('messages/start', [DirectMessageController::class, 'startConversation'])->name('messages.start');
+    Route::get('messages/{user}', [DirectMessageController::class, 'index'])->name('messages.index');
+    Route::post('messages/{user}', [DirectMessageController::class, 'store'])->name('messages.store');
+    
+    
 
     Route::post('posts/{post}/vote', [PostController::class, 'vote'])->name('posts.vote');
 });
