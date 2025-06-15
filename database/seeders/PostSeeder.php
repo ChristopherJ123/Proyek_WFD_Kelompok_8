@@ -124,8 +124,8 @@ class PostSeeder extends Seeder
             [
                 'topic_id' => 16,
                 'author_id' => 16,
-                'title' => 'How can history education be made more engaging in schools?',
-                'description' => 'Memorizing dates isn’t cutting it. What are some creative ways to get students emotionally invested in history?',
+                'title' => 'Favourite Stranger Things character?',
+                'description' => 'title don’t feel like I need to expalain much',
                 'share_count' => 20,
             ],
             [
