@@ -236,7 +236,7 @@ class PostSeeder extends Seeder
             [
                 'topic_id' => 32,
                 'author_id' => 32,
-                'title' => 'What’s your “omfort ghibli move and why?',
+                'title' => 'What’s your comfort ghibli move and why?',
                 'description' => 'The one you go back to when life feels chaotic. Could be childhood nostalgia or a timeless message. mine kiki’s delivery service',
                 'share_count' => 19,
             ],
@@ -314,7 +314,7 @@ class PostSeeder extends Seeder
                 'topic_id' => 43,
                 'author_id' => 43,
                 'title' => 'What makes a college community space feel welcoming to you?',
-                'description' => 'i wanna joing a community in my campus, got any advice?',
+                'description' => 'i wanna join a community in my campus, got any advice?',
                 'share_count' => 23,
             ],
             [
