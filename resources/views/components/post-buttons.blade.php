@@ -3,10 +3,16 @@
         <div id="post-{{ $post->id }}-{{ $comment->id ?? 'null' }}-upvote" class="font-sans font-semibold text-xl">{{ $post->votes()->where('is_upvote', '=', true)->count() }}</div>
         <button id="button-{{ $post->id }}-{{ $comment->id ?? 'null' }}-upvote" class="cursor-pointer" onclick="votePost({{ $post->id }}, null, 1)">
             <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512"
-                 @class([
+                 @if(auth()->check())
+                     @class([
                     'size-6',
                     'text-red-300' => Auth::user()->votes()->where([['post_id', '=', $post['id']], ['is_upvote', '=', true]])->first()
-                ])
+                    ])
+                 @else
+                     @class([
+                    'size-6',
+                    ])
+                 @endif
                  fill="currentColor">
                 <g>
                     <polygon
@@ -17,10 +23,17 @@
         <div id="post-{{ $post->id }}-{{ $comment->id ?? 'null' }}-downvote" class="font-sans font-semibold text-xl">{{ $post->votes()->where('is_upvote', '=', false)->count() }}</div>
         <button id="button-{{ $post->id }}-{{ $comment->id ?? 'null' }}-downvote" class="cursor-pointer" onclick="votePost({{ $post->id }}, null, 0)">
             <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512"
-                 @class([
+                 @if(auth()->check())
+                     @class([
                     'size-6 rotate-180',
                     'text-red-400' => Auth::user()->votes()->where([['post_id', '=', $post->id], ['is_upvote', '=', false]])->first()
-                ])
+                    ])
+                 @else
+                     @class([
+                    'size-6',
+                    ])
+                 @endif
+
                  fill="currentColor">
                 <g>
                     <polygon

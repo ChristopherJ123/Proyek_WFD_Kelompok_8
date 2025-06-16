@@ -87,6 +87,10 @@ class DashboardController extends Controller
                 'recentPosts' => $recentPosts,
             ]);
         }
-        return view('homepage');
+        return view('homepage', [
+            'search' => $request->search,
+            'sortBy' => $request->sort_by,
+            'orderBy' => $request->order_by,
+        ]);
     }
 }

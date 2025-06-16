@@ -48,7 +48,7 @@
                             </svg>
                             <div>Login</div>
                         </a>
-                        <a href="{{ route('login') }}"
+                        <a href="{{ route('popular') }}"
                            class="flex items-center justify-center min-w-48 gap-2 p-2 border-2 border-gray-400 bg-gray-50 hover:bg-gray-100">
                             <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor"
                                  class="size-6">
@@ -65,7 +65,7 @@
         </div>
 
         <div
-            class="hidden lg:flex flex-col min-w-64 max-w-80 xl:max-w-sm bg-brand-500 rounded-4xl p-4 text-brand-900 text-xl gap-2 h-fit">
+            class="hidden lg:flex flex-col min-w-sm max-w-80 xl:max-w-sm bg-brand-500 rounded-4xl p-4 text-brand-900 text-xl gap-2 h-fit">
             <div class="font-bold">RECENT POSTS</div>
             <ul class="flex flex-col divide-y-2 divide-brand-900">
                 @if(isset($recentPosts))
