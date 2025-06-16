@@ -7,11 +7,12 @@ use App\Http\Controllers\PopularPageController;
 use App\Http\Controllers\PostCommentController;
 use App\Http\Controllers\PostController;
 use App\Http\Controllers\ProfileController;
-use App\Http\Controllers\RegisterTopicController;
 use App\Http\Controllers\Auth\RegisterUserController;
 use App\Http\Controllers\DirectMessageController;
 use App\Http\Controllers\TopicController;
 use App\Http\Middleware\AjaxRequestsOnly;
+use App\Http\Middleware\GuestOnly;
+use App\Http\Middleware\UserOnly;
 use App\Models\DirectMessage;
 use Illuminate\Support\Facades\Route;
 
@@ -33,8 +34,7 @@ Route::get('/', function () {
 //Route::view('topic', 'topic-mockup');
 
 
-// TODO middleware bikin sendiri jangan pakai punya laravel
-Route::middleware('guest')->group(function () {
+Route::middleware(GuestOnly::class)->group(function () {
     Route::get('register', [RegisterUserController::class, 'create'])->name('register-user');
     Route::post('register', [RegisterUserController::class, 'store'])->name('register.store');
 
@@ -42,8 +42,7 @@ Route::middleware('guest')->group(function () {
     Route::post('login', [LoginController::class, 'store'])->name('login.store');
 });
 
-// TODO middleware bikin sendiri jangan pakai punya laravel
-Route::middleware('auth')->group(function () {
+Route::middleware(UserOnly::class)->group(function () {
     Route::get('logout', [LoginController::class, 'destroy'])->name('logout');
 
     Route::get('topics/create', [TopicController::class, 'create'])->name('topics.create');
