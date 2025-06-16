@@ -3,6 +3,7 @@
 use App\Http\Controllers\Auth\LoginController;
 use App\Http\Controllers\DashboardController;
 use App\Http\Controllers\PopularPageController;
+use App\Http\Controllers\PostCommentController;
 use App\Http\Controllers\PostController;
 use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\RegisterTopicController;
@@ -53,11 +54,15 @@ Route::middleware('auth')->group(function () {
     Route::post('topics/{topic}/posts', [PostController::class, 'store'])->name('topics.posts.store');
     Route::put('topics/{topic}/posts/{post}', [PostController::class, 'update'])->name('topics.posts.update');
     Route::delete('topics/{topic}/posts/{post}', [PostController::class, 'destroy'])->name('topics.posts.destroy');
+
+    Route::post('topics/{topic}/posts/{post}/comments', [PostCommentController::class, 'store'])->name('topics.posts.comments.store');
+    Route::delete('topics/{topic}/posts/{post}/comments/{comment}', [PostCommentController::class, 'destroy'])->name('topics.posts.comments.destroy');
+
     Route::get('messages', [DirectMessageController::class, 'dmMenu'])->name('messages.menu');
     Route::get('messages/start', [DirectMessageController::class, 'startConversation'])->name('messages.start');
     Route::get('messages/{user}', [DirectMessageController::class, 'index'])->name('messages.index');
     Route::post('messages/{user}', [DirectMessageController::class, 'store'])->name('messages.store');
-    
+
     Route::post('posts/{post}/vote', [PostController::class, 'vote'])->name('posts.vote');
 });
 
@@ -67,6 +72,7 @@ Route::get('topics', [TopicController::class, 'index'])->name('topics.index');
 Route::get('topics/{topic}', [TopicController::class, 'show'])->name('topics.show');
 Route::get('topics/{topic}/posts', [PostController::class, 'index'])->name('topics.posts.index');
 Route::get('topics/{topic}/posts/{post}', [PostController::class, 'show'])->name('topics.posts.show');
+Route::get('topics/{topic}/posts/{post}/comments/{comment}', [PostCommentController::class, 'show'])->name('topics.posts.comments.show');
 
 Route::middleware(AjaxRequestsOnly::class)->group(function () {
     Route::post('topics/{topic_id}/follow', [TopicController::class, 'followTopic'])->middleware('auth')->name('topics.follow');

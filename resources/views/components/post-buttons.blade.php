@@ -1,4 +1,4 @@
-<div class="flex gap-4">
+<div class="flex gap-4 text-white">
     <div class="flex items-center p-2 px-3 gap-3 rounded-4xl bg-brand-900">
         <div id="post-{{ $post->id }}-{{ $comment->id ?? 'null' }}-upvote" class="font-sans font-semibold text-xl">{{ $post->votes()->where('is_upvote', '=', true)->count() }}</div>
         <button id="button-{{ $post->id }}-{{ $comment->id ?? 'null' }}-upvote" class="cursor-pointer" onclick="votePost({{ $post->id }}, null, 1)">
