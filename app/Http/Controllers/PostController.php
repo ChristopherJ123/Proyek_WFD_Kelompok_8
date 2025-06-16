@@ -40,8 +40,8 @@ class PostController extends Controller
         }
 
         return response()->json([
-            'upvote_count' => $post->votes()->where('is_upvote', '=', true)->count(),
-            'downvote_count' => $post->votes()->where('is_upvote', '=', false)->count(),
+            'upvote_count' => $post->votes()->where([['is_upvote', '=', true], ['post_comment_id', '=', $request->post_comment_id]])->count(),
+            'downvote_count' => $post->votes()->where([['is_upvote', '=', false], ['post_comment_id', '=', $request->post_comment_id]])->count(),
         ]);
     }
 

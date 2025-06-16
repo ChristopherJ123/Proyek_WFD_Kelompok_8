@@ -6,7 +6,7 @@
                  @if(auth()->check())
                      @class([
                     'size-6',
-                    'text-red-300' => Auth::user()->votes()->where([['post_id', '=', $post['id']], ['is_upvote', '=', true]])->first()
+                    'text-red-300' => Auth::user()->votes()->where([['post_id', '=', $post->id], ['is_upvote', '=', true]])->first()
                     ])
                  @else
                      @class([

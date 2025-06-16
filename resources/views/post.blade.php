@@ -41,40 +41,23 @@
             @foreach($post->comments as $comment)
                 <div class="flex w-full">
                     <div class="flex flex-1 gap-2">
-                        <img
-                            src="{{ asset('storage/'.$comment->author->profile_picture_link) }}"
-                            alt="{{ $comment->author->username }}"
-                            class="size-12 rounded-full"
-                        >
+                        @if(isset($comment->author->profile_picture_link))
+                            <img
+                                src="{{ asset('storage/'.$comment->author->profile_picture_link) }}"
+                                alt="{{ $comment->author->username }}"
+                                class="size-12 rounded-full"
+                            >
+                        @else
+                            <img
+                                src="{{ asset('storage/profile_default.jpg') }}"
+                                alt="{{ $comment->author->username }}"
+                                class="size-12 rounded-full"
+                            >
+                        @endif
                         <div class="flex flex-col">
                             <div class="uppercase tracking-wider font-lazy-dog font-bold">{{ $comment->author->username }}</div>
                             <div>{{ $comment->message }}</div>
-                            <div class="flex gap-4 text-white">
-                                <div class="flex items-center px-3 gap-2 rounded-4xl bg-brand-900">
-                                    <div class="font-sans font-semibold">{{ $comment->votes()->where('is_upvote', '=', true)->count() }}</div>
-                                    <button>
-                                        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512" class="size-4" fill="currentColor">
-                                            <g>
-                                                <polygon points="256,0 56,300 163.8,300 163.8,512 348.2,512 348.2,300 456,300  "/>
-                                            </g>
-                                        </svg>
-                                    </button>
-                                    <div class="font-sans font-semibold">{{ $comment->votes()->where('is_upvote', '=', false)->count() }}</div>
-                                    <button>
-                                        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512" class="size-4 rotate-180" fill="currentColor">
-                                            <g>
-                                                <polygon points="256,0 56,300 163.8,300 163.8,512 348.2,512 348.2,300 456,300  "/>
-                                            </g>
-                                        </svg>
-                                    </button>
-                                </div>
-                                <div class="flex items-center px-3 gap-2 rounded-4xl bg-brand-900">
-                                    <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="size-4">
-                                        <path stroke-linecap="round" stroke-linejoin="round" d="m16.49 12 3.75 3.75m0 0-3.75 3.75m3.75-3.75H3.74V4.499" />
-                                    </svg>
-                                    <div class="font-sans font-semibold">Reply</div>
-                                </div>
-                            </div>
+
                         </div>
                     </div>
                     <div class="flex flex-1 justify-end items-center">
@@ -85,6 +68,7 @@
                         </button>
                     </div>
                 </div>
+                <x-post-comment-buttons :post="$post" :comment="$comment"></x-post-comment-buttons>
             @endforeach
 
         </div>
