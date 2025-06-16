@@ -2,6 +2,7 @@
 
 use App\Http\Controllers\Auth\LoginController;
 use App\Http\Controllers\DashboardController;
+use App\Http\Controllers\ExplorePageController;
 use App\Http\Controllers\PopularPageController;
 use App\Http\Controllers\PostCommentController;
 use App\Http\Controllers\PostController;
@@ -68,6 +69,7 @@ Route::middleware('auth')->group(function () {
 
 Route::get('dashboard', [DashboardController::class, 'index'])->name('dashboard');
 Route::get('popular', [PopularPageController::class, 'index'])->name('popular');
+Route::get('explore', [ExplorePageController::class, 'index'])->name('explore');
 Route::get('topics', [TopicController::class, 'index'])->name('topics.index');
 Route::get('topics/{topic}', [TopicController::class, 'show'])->name('topics.show');
 Route::get('topics/{topic}/posts', [PostController::class, 'index'])->name('topics.posts.index');

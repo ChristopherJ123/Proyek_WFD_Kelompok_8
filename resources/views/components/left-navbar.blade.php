@@ -26,7 +26,7 @@
         </svg>
         <div>POPULAR</div>
     </a>
-    <div class="flex items-end gap-2">
+    <a href="{{ route('explore') }}" class="flex items-end gap-2">
         <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor" class="size-8">
             <path d="M8.25 10.875a2.625 2.625 0 1 1 5.25 0 2.625 2.625 0 0 1-5.25 0Z"/>
             <path fill-rule="evenodd"
@@ -34,7 +34,7 @@
                   clip-rule="evenodd"/>
         </svg>
         <div>EXPLORE</div>
-    </div>
+    </a>
     <hr class="border border-brand-500">
     <div id="recent-bar" class="flex justify-between cursor-pointer">
         <div class="font-bold">RECENT</div>
