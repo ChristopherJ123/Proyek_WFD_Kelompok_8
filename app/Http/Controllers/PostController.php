@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Models\Genre;
 use App\Models\Post;
+use App\Models\PostComment;
 use App\Models\Topic;
 use App\Models\UserVote;
 use Illuminate\Database\Query\Builder;
@@ -39,9 +40,17 @@ class PostController extends Controller
             ]);
         }
 
+        if ($request->filled('post_comment_id')) {
+            $comment = PostComment::find($request->post_comment_id);
+            return response()->json([
+                'upvote_count' => $comment->votes()->where('is_upvote', true)->count(),
+                'downvote_count' => $comment->votes()->where('is_upvote', false)->count(),
+            ]);
+        }
+
         return response()->json([
-            'upvote_count' => $post->votes()->where([['is_upvote', '=', true], ['post_comment_id', '=', $request->post_comment_id]])->count(),
-            'downvote_count' => $post->votes()->where([['is_upvote', '=', false], ['post_comment_id', '=', $request->post_comment_id]])->count(),
+            'upvote_count' => $post->votes()->where('is_upvote', '=', true)->count(),
+            'downvote_count' => $post->votes()->where('is_upvote', '=', false)->count(),
         ]);
     }
 

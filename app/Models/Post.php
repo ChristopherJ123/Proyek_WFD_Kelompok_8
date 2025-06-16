@@ -42,7 +42,7 @@ class Post extends Model
     }
 
     public function votes() {
-        return $this->hasMany(UserVote::class);
+        return $this->hasMany(UserVote::class)->whereNull('post_comment_id');
     }
 
 }
