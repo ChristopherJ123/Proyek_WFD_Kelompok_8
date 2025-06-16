@@ -4,11 +4,10 @@ namespace App\Http\Controllers;
 
 use App\Models\Genre;
 use App\Models\Topic;
-use App\Models\UserTopicFollowing;
+use App\Models\User;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
-use Illuminate\Validation\Rule;
 use Illuminate\Validation\Rules\File;
 
 class TopicController extends Controller
@@ -79,6 +78,8 @@ class TopicController extends Controller
             'rules.*.order' => 'required|numeric|max:20',
             'rules.*.title' => 'required|string|max:255',
             'rules.*.description' => 'nullable|string|max:1000',
+            'moderators' => 'nullable|array',
+            'moderators.*' => 'required|string',
         ], [
             'title.regex' => 'Topic Name must not contain spaces.'
         ]);
@@ -104,6 +105,13 @@ class TopicController extends Controller
                 'title' => $rule['title'],
                 'description' => $rule['description'],
             ]);
+        }
+
+        foreach ($request->moderators as $moderator) {
+            $moderatorUserExists = User::where('username', '=', $moderator)->first();
+            if ($moderatorUserExists) {
+                $topic->moderators()->attach($moderatorUserExists->id);
+            }
         }
 
         // Owner follows the topic automatically

@@ -59,9 +59,15 @@
                 @if($loop->index < 4)
                     <li>
                         <a class="flex gap-2 cursor-pointer" href="{{ route('topics.show', $topic) }}">
-                            <img src="{{ asset('storage/'.$topic['icon_image_link']) }}" alt="{{ $topic['name'] }}"
-                                 class="size-8 object-cover rounded-full">
-                            <div>y/{{ $topic['name'] }}</div>
+                            @if(isset($topic->icon_image_link))
+                                <img src="{{ asset('storage/'.$topic->icon_image_link) }}" alt="{{ $topic->name }}"
+                                     class="size-8 object-cover rounded-full">
+                                <div>y/{{ $topic->name }}</div>
+                            @else
+                                <img src="{{ asset('storage/topic_default.jpg') }}" alt="{{ $topic->name }}"
+                                     class="size-8 object-cover rounded-full">
+                                <div>y/{{ $topic->name }}</div>
+                            @endif
                         </a>
                     </li>
                 @else
@@ -104,14 +110,18 @@
                     </div>
                 </li>
             @endif
-            @foreach($userTopicFollowings as $topicFollowing)
+            @foreach($userTopicFollowings as $topic)
                 @if($loop->index < 5)
                     <li>
-                        <a href="{{ route('topics.show', $topicFollowing) }}" class="flex gap-2 cursor-pointer">
-                            <img src="{{ asset('storage/'.$topicFollowing['icon_image_link']) }}"
-                                 alt="{{ $topicFollowing['name'] }}"
-                                 class="size-8 object-cover rounded-full">
-                            <div>y/{{ $topicFollowing['name'] }}</div>
+                        <a href="{{ route('topics.show', $topic) }}" class="flex gap-2 cursor-pointer">
+                            @if(isset($topic->icon_image_link))
+                                <img src="{{ asset('storage/'.$topic->icon_image_link) }}" alt="{{ $topic->name }}"
+                                     class="size-8 object-cover rounded-full">
+                            @else
+                                <img src="{{ asset('storage/topic_default.jpg') }}" alt="{{ $topic->name }}"
+                                     class="size-8 object-cover rounded-full">
+                            @endif
+                            <div>y/{{ $topic->name }}</div>
                         </a>
                     </li>
                 @else

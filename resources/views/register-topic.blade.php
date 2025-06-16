@@ -45,7 +45,7 @@
             </div>
         </div>
 
-        <div class="rule-tab flex flex-col gap-2 bg-brand-500 p-4 max-w-sm font-sans rounded-2xl w-sm">
+        <div class="rule-tab flex flex-col gap-2 bg-brand-500 p-4 max-w-sm font-sans rounded-2xl w-sm overflow-y-auto">
             <div class="text-2xl font-bold font-lazy-dog whitespace-nowrap">
                 y/topic_name rules
             </div>
@@ -78,6 +78,25 @@
                     </svg>
                 </div>
             </div>
+
+            <hr class="border border-gray-800">
+
+            <div class="text-2xl font-bold font-lazy-dog whitespace-nowrap">
+                y/topic_name moderators
+            </div>
+
+            <div class="flex">
+                <div class="flex flex-1 justify-center">
+                    <svg id="add-moderator" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor" class="size-8 rounded-full bg-brand-100 cursor-pointer">
+                        <path fill-rule="evenodd" d="M12 3.75a.75.75 0 0 1 .75.75v6.75h6.75a.75.75 0 0 1 0 1.5h-6.75v6.75a.75.75 0 0 1-1.5 0v-6.75H4.5a.75.75 0 0 1 0-1.5h6.75V4.5a.75.75 0 0 1 .75-.75Z" clip-rule="evenodd" />
+                    </svg>
+                </div>
+                <div class="flex flex-1 justify-center">
+                    <svg id="remove-moderator" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor" class="size-8 rounded-full bg-brand-100 cursor-pointer">
+                        <path fill-rule="evenodd" d="M4.25 12a.75.75 0 0 1 .75-.75h14a.75.75 0 0 1 0 1.5H5a.75.75 0 0 1-.75-.75Z" clip-rule="evenodd" />
+                    </svg>
+                </div>
+            </div>
         </div>
 
         <input type="file" name="banner" id="banner" class="hidden" accept="image/*">
@@ -99,7 +118,7 @@
 
         $('#remove-rule').on('click', function () {
             const rules = $('.rule-container')
-            if (rules.length > 0) {
+            if (rules.length > 1) {
                 rules.last().remove();
             }
         })
@@ -124,6 +143,32 @@
                     </div>
                     <textarea name="rules[${index}][description]" id="rules[${index}][description]" class="hidden border-2 focus:outline-brand-300 focus:outline-2 border-brand-300 rounded-2xl p-2 resize-none" placeholder="Rule description (optional)" cols="30" rows="2"></textarea>
                     <input type="hidden" name="rules[${index}][order]" value="${index + 1}">
+                </div>
+            `;
+        }
+
+        $('#add-moderator').on('click', function () {
+            let moderatorCount = $('.moderator-container').length;
+            const newModerator = generateModeratorTemplate(moderatorCount);
+            $(newModerator).insertBefore($(this).parent().parent());
+        })
+
+        $('#remove-moderator').on('click', function () {
+            const moderators = $('.moderator-container')
+            if (moderators.length > 0) {
+                moderators.last().remove();
+            }
+        })
+
+        function generateModeratorTemplate(index) {
+            return `
+                <div id="moderator-container-${index}" class="moderator-container flex flex-col bg-brand-100 p-2 rounded-2xl">
+                    <div class="flex space-x-4 items-center">
+                        <span class="text-xl">${index + 1}</span>
+                        <div class="flex relative justify-between w-full font-semibold">
+                            <input type="text" name="moderators[${index}]" id="moderators[${index}]" placeholder="Username">
+                        </div>
+                    </div>
                 </div>
             `;
         }

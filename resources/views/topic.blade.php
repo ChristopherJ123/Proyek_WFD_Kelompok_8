@@ -3,9 +3,17 @@
 @section('content')
     <div class="flex w-full">
         <div class="flex flex-col w-full relative overflow-y-auto">
-            <img class="max-h-60 w-full object-cover" src="{{ asset('storage/'.$topic['banner_image_link']) }}" alt="{{ $topic['name'] }}">
+            @if(isset($topic['banner_image_link']))
+                <img class="max-h-60 w-full object-cover" src="{{ asset('storage/'.$topic['banner_image_link']) }}" alt="{{ $topic['name'] }}">
+            @else
+                <img class="max-h-60 w-full object-cover" src="{{ asset('storage/banner_default.jpg') }}" alt="{{ $topic['name'] }}">
+            @endif
             <div class="flex w-full p-4 absolute top-30 tracking-widest">
-                <img class="size-48 object-cover min-w-48 rounded-full border-8 border-white" src="{{ asset('storage/'.$topic['icon_image_link']) }}" alt="{{ $topic['name'] }}">
+                @if(isset($topic['icon_image_link']))
+                    <img class="size-48 object-cover min-w-48 rounded-full border-8 border-white" src="{{ asset('storage/'.$topic['icon_image_link']) }}" alt="{{ $topic['name'] }}">
+                @else
+                    <img class="size-48 object-cover min-w-48 rounded-full border-8 border-white" src="{{ asset('storage/topic_default.jpg') }}" alt="{{ $topic['name'] }}">
+                @endif
                 <div class="flex w-full items-end p-4">
                     <div class="flex w-full flex-col">
                         <div class="flex justify-between font-bold text-4xl">

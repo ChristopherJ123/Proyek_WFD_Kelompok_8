@@ -12,7 +12,7 @@ class TopicRuleSeeder extends Seeder
      */
     public function run(): void
     {
-         DB::table('topic_rules')->insert([
+         DB::table('topic_rules')->upsert([
             // Topic ID 1 - Medieval
             [
                 'topic_id' => 1,
@@ -726,7 +726,7 @@ class TopicRuleSeeder extends Seeder
                 'order' => 2,
                 'title' => 'No hate speech or denial',
                 'description' => 'Any form of hate speech or human rights abuse denial will not be tolerated.',
-            ],          
-        ]);
+            ],
+        ], uniqueBy: 'id');
     }
 }
