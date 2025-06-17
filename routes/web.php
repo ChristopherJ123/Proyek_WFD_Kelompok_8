@@ -74,6 +74,8 @@ Route::get('topics/{topic}', [TopicController::class, 'show'])->name('topics.sho
 Route::get('topics/{topic}/posts', [PostController::class, 'index'])->name('topics.posts.index');
 Route::get('topics/{topic}/posts/{post}', [PostController::class, 'show'])->name('topics.posts.show');
 Route::get('topics/{topic}/posts/{post}/comments/{comment}', [PostCommentController::class, 'show'])->name('topics.posts.comments.show');
+Route::post('topics/{topic}/posts/{post}/comments/{comment}/mark-answer', [PostCommentController::class, 'markAsAnswer'])->name('topics.posts.comments.mark-answer');
+
 
 Route::middleware(AjaxRequestsOnly::class)->group(function () {
     Route::post('topics/{topic_id}/follow', [TopicController::class, 'followTopic'])->middleware('auth')->name('topics.follow');

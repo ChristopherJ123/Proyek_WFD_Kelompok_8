@@ -58,4 +58,22 @@ class PostCommentController extends Controller
 
         return redirect()->route('topics.posts.show', [$topic, $post]);
     }
+
+    public function markAsAnswer(Topic $topic, Post $post, PostComment $comment) {
+        if (auth()->id() !== $post->author->id) {
+            abort(403);
+        }
+
+        PostComment::where('post_id', $post->id)->update(['is_answer' => false]);
+
+        $comment->is_answer = true;
+        $comment->save();
+
+        // dd($comment);
+
+       return back()->with('success', 'Marked as answer.');
+    }
+
+
+
 }

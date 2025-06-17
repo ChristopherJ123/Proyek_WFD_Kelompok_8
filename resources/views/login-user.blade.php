@@ -17,10 +17,10 @@
             <div class="relative">
                 <label class="block" for="password">Password</label>
                 <input id="password" class="border border-brand-500 rounded-md w-full px-4 py-2 bg-brand-500" type="password" name="password" required>
-                <span class="absolute right-3 top-[3.6rem] transform -translate-y-1/2 cursor-pointer" onclick="togglePassword()">
+                <span class="absolute right-3 top-[3.6rem] transform -translate-y-1/2 cursor-pointer hover:text-blue-500" onclick="togglePassword()">
 
                     {{-- Eye icon --}}
-                    <svg id="eye-show" xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                    <svg id="eye-show" xmlns="http://www.w3.org/2000/svg" class="h-6 w-6 " fill="none" viewBox="0 0 24 24" stroke="currentColor">
                         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
                             d="M15 12a3 3 0 11-6 0 3 3 0 016 0z"/>
                         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
@@ -43,7 +43,7 @@
         </form>
         <p class="text-center text-xl mt-4">
                 Don't have an account?
-                <a href="{{ route('register-user') }}" class="text-brand-700 hover:underline">Register</a>
+                <a href="{{ route('register-user') }}" class="text-brand-700 hover:underline hover:text-white">Register</a>
         </p>
     </div>
 

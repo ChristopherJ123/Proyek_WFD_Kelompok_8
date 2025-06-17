@@ -15,7 +15,7 @@ class PostComment extends Model
         'author_id',
         'parent_message_id',
         'message',
-        'is_marked_answer',
+        'is_answer',
         'is_post_owner_read',
         'is_parent_message_owner_read',
         'share_count',
