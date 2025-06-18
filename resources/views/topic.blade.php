@@ -20,7 +20,7 @@
                             <div>y/{{ $topic->name }}</div>
                             <div class="flex">
                                 <button id="bell" onclick="followTopic({{ $topic->id }})" class="cursor-pointer group">
-                                    @if($isFollowing)
+                                    @if(isset($isFollowing))
                                         <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor"
                                              class="following size-10 text-yellow-400">
                                             <path d="M5.85 3.5a.75.75 0 0 0-1.117-1 9.719 9.719 0 0 0-2.348 4.876.75.75 0 0 0 1.479.248A8.219 8.219 0 0 1 5.85 3.5ZM19.267 2.5a.75.75 0 1 0-1.118 1 8.22 8.22 0 0 1 1.987 4.124.75.75 0 0 0 1.48-.248A9.72 9.72 0 0 0 19.266 2.5Z" />

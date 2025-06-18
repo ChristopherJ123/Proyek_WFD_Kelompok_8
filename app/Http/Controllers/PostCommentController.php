@@ -41,10 +41,17 @@ class PostCommentController extends Controller
      */
     public function show(Request $request, Topic $topic, Post $post, PostComment $comment)
     {
+        $comments = PostComment::where('post_id', $post->id)
+            ->whereNull('parent_message_id')
+            ->with('childrenRecursive')
+            ->orderBy('created_at')
+            ->get();
+
         return view('post', [
             'search' => $request->search,
             'topic' => $topic,
             'post' => $post,
+            'comments' => $comments,
             'comment' => $comment,
         ]);
     }

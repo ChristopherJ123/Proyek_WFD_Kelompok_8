@@ -10,7 +10,7 @@ class PostComment extends Model
     use HasFactory;
 
     protected $table = 'post_comments';
-    
+
     protected $fillable = [
         'author_id',
         'parent_message_id',
@@ -22,6 +22,22 @@ class PostComment extends Model
         'is_deleted',
         'moderator_notice',
     ];
+
+    public function children()
+    {
+        return $this->hasMany(self::class, 'parent_message_id')->latest();
+    }
+
+    // children with infinite depth, eager‑loadable in one go
+    public function childrenRecursive()
+    {
+        return $this->children()->with('childrenRecursive');
+    }
+
+    public function parent()
+    {
+        return $this->belongsTo(self::class, 'parent_message_id');
+    }
 
     public function post() {
         return $this->belongsTo(Post::class);
@@ -42,5 +58,5 @@ class PostComment extends Model
     public function images() {
         return $this->hasMany(PostImage::class);
     }
-    
+
 }

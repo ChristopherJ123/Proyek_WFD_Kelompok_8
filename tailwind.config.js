@@ -26,5 +26,9 @@ export default {
         },
     },
 
+    safelist: [
+        'ml-0', 'ml-8', 'ml-16', 'ml-24', 'ml-32', 'ml-40', 'ml-48', 'ml-56', 'ml-64', // etc., as needed (classes pre rendered)
+    ],
+
     plugins: [forms],
 };

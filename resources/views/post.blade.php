@@ -52,55 +52,11 @@
                 <input class="hidden" type="file" name="images[]" id="images" accept="image/*" multiple>
             </form>
 
-            @foreach($post->comments as $comment)
-                <div class="flex w-full">
-                    <div class="flex flex-1 gap-2">
-                        @if(isset($comment->author->profile_picture_link))
-                            <img
-                                src="{{ asset('storage/'.$comment->author->profile_picture_link) }}"
-                                alt="{{ $comment->author->username }}"
-                                class="size-12 rounded-full"
-                            >
-                        @else
-                            <img
-                                src="{{ asset('storage/profile_default.jpg') }}"
-                                alt="{{ $comment->author->username }}"
-                                class="size-12 rounded-full"
-                            >
-                        @endif
-                        <div class="flex flex-col">
-                            <div class="uppercase tracking-wider font-lazy-dog font-bold">{{ $comment->author->username }}</div>
-                            <div>{{ $comment->message }}</div>
-                             @if ($comment->is_answer)
-                                <span class="text-green-600 font-bold text-sm mt-1">✓ Marked as Answer</span>
-                            @endif
-                        </div>
-                    </div>
-                    <div class="flex flex-1 justify-end items-center">
-                        <button 
-                            class="p-2 rounded-full cursor-pointer hover:bg-brand-900 hover:text-white report-comment-btn" 
-                            title="Report Comment"
-                            data-comment-id="{{ $comment->id }}"
-                            data-post-id="{{ $post->id }}"
-                        >
-                            <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="size-6">
-                                    <path stroke-linecap="round" stroke-linejoin="round" d="M3 3v1.5M3 21v-6m0 0 2.77-.693a9 9 0 0 1 6.208.682l.108.054a9 9 0 0 0 6.086.71l3.114-.732a48.524 48.524 0 0 1-.005-10.499l-3.11.732a9 9 0 0 1-6.085-.711l-.108-.054a9 9 0 0 0-6.208-.682L3 4.5M3 15V4.5" />
-                            </svg>
-                        </button>
-                         @if (auth()->check() && auth()->id() === $post->author->id && !$comment->is_marked_answer)
-                            <form method="POST" action="{{ route('topics.posts.comments.mark-answer', [$topic, $post, $comment]) }}">
-                                @csrf
-                                <button class="text-sm text-green-600 hover:bg-green-600 rounded-full p-2 hover:text-white" title="Marked As Answer">
-                                    <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="size-6">
-                                        <path stroke-linecap="round" stroke-linejoin="round" d="m4.5 12.75 6 6 9-13.5" />
-                                    </svg>
-                                </button>
-                            </form>
-                        @endif
-                    </div>
-                </div>
-                <x-post-comment-buttons :post="$post" :comment="$comment"></x-post-comment-buttons>
-            @endforeach
+            <div class="flex flex-col gap-4 overflow-x-auto min-h-fit">
+                @foreach($comments as $comment)
+                    <x-comment-item :post="$post" :comment="$comment"></x-comment-item>
+                @endforeach
+            </div>
 
         </div>
 

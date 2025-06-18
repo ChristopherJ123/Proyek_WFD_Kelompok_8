@@ -17,6 +17,10 @@ class UserOnly
     public function handle(Request $request, Closure $next): Response
     {
         if (!Auth::check()) {
+            if ($request->expectsJson()) {
+                return response()->json(['message' => 'Not authenticated.'], 401);
+            }
+
             return redirect()->route('dashboard');
         }
         return $next($request);

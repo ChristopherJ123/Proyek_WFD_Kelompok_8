@@ -747,14 +747,14 @@ class PostCommentSeeder extends Seeder
             ],
             [
                 'post_id' => 1,
-                'parent_message_id' => 2,
+                'parent_message_id' => 202,
                 'author_id' => User::all()->random()['id'],
                 'message' => 'Why is that?',
                 'share_count' => 2,
             ],
             [
                 'post_id' => 1,
-                'parent_message_id' => 3,
+                'parent_message_id' => 203,
                 'author_id' => User::all()->random()['id'],
                 'message' => 'If you were unlucky to be born into a peasant, there’s really nothing you can do to get up the feudal hierarchy.',
                 'share_count' => 2,

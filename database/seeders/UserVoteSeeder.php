@@ -16,7 +16,7 @@ class UserVoteSeeder extends Seeder
     public function run(): void
     {
         UserVote::factory()
-            ->count(500)
+            ->count(750)
             ->state(new Sequence(
                 fn (Sequence $sequence) => ['post_comment_id' => $sequence->index % 4 === 0 ? PostComment::all()->random() : null]
             ))

@@ -79,8 +79,8 @@ Route::post('topics/{topic}/posts/{post}/comments/{comment}/mark-answer', [PostC
 
 
 Route::middleware(AjaxRequestsOnly::class)->group(function () {
-    Route::post('topics/{topic_id}/follow', [TopicController::class, 'followTopic'])->middleware('auth')->name('topics.follow');
-    Route::post('posts/{post}/vote', [PostController::class, 'vote'])->middleware('auth')->name('posts.vote');
-    Route::post('/report/post/{postId}', [ReportController::class, 'reportPost'])->name('report.post');
-    Route::post('/report/comment/{commentId}', [ReportController::class, 'reportComment'])->name('report.comment');
+    Route::post('topics/{topic_id}/follow', [TopicController::class, 'followTopic'])->middleware(UserOnly::class)->name('topics.follow');
+    Route::post('posts/{post}/vote', [PostController::class, 'vote'])->middleware(UserOnly::class)->name('posts.vote');
+    Route::post('/report/post/{postId}', [ReportController::class, 'reportPost'])->middleware(UserOnly::class)->name('report.post');
+    Route::post('/report/comment/{commentId}', [ReportController::class, 'reportComment'])->middleware(UserOnly::class)->name('report.comment');
 });
