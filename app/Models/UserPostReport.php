@@ -9,6 +9,7 @@ class UserPostReport extends Model
      protected $table = 'user_post_reports';
 
     protected $fillable = [
+        'user_id',
         'post_id',
         'post_comment_id',
         'report_reason',

@@ -7,6 +7,7 @@ use App\Http\Controllers\PopularPageController;
 use App\Http\Controllers\PostCommentController;
 use App\Http\Controllers\PostController;
 use App\Http\Controllers\ProfileController;
+use App\Http\Controllers\ReportController;
 use App\Http\Controllers\Auth\RegisterUserController;
 use App\Http\Controllers\DirectMessageController;
 use App\Http\Controllers\TopicController;
@@ -80,4 +81,6 @@ Route::post('topics/{topic}/posts/{post}/comments/{comment}/mark-answer', [PostC
 Route::middleware(AjaxRequestsOnly::class)->group(function () {
     Route::post('topics/{topic_id}/follow', [TopicController::class, 'followTopic'])->middleware('auth')->name('topics.follow');
     Route::post('posts/{post}/vote', [PostController::class, 'vote'])->middleware('auth')->name('posts.vote');
+    Route::post('/report/post/{postId}', [ReportController::class, 'reportPost'])->name('report.post');
+    Route::post('/report/comment/{commentId}', [ReportController::class, 'reportComment'])->name('report.comment');
 });

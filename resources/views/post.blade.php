@@ -10,8 +10,22 @@
                     <div class="font-bold text-gray-700 uppercase">{{ $post->author->username }}</div>
                 </div>
             </div>
-            <div class="text-3xl font-extrabold">
-                {{ $post->title }}
+            <div class="flex justify-between items-center">
+                <div class="text-3xl font-extrabold">
+                    {{ $post->title }}
+                </div>
+                <div class="relative">
+                    <button id="post-options-toggle" class="text-gray-700 hover:text-black focus:outline-none p-2 rounded-full hover:bg-gray-200 transition">
+                        &#x22EE;
+                    </button>
+                    <div id="post-options-menu" class="hidden absolute right-0 z-10 mt-2 w-36 bg-white border border-gray-300 rounded shadow-md">
+                        <a href="#" class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100 cursor-not-allowed">Edit</a>
+                        <a href="#" class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100 cursor-not-allowed">Delete</a>
+                        <button class="block w-full text-left px-4 py-2 text-sm text-red-600 hover:bg-gray-100 report-post-btn" data-post-id="{{ $post->id }}">
+                            Report
+                        </button>
+                    </div>
+                </div>
             </div>
             <div class="text-lg">
                 {{ $post->description }}
@@ -63,9 +77,14 @@
                         </div>
                     </div>
                     <div class="flex flex-1 justify-end items-center">
-                        <button class="p-2 rounded-full cursor-pointer hover:bg-brand-900 hover:text-white" title="Report Comment">
+                        <button 
+                            class="p-2 rounded-full cursor-pointer hover:bg-brand-900 hover:text-white report-comment-btn" 
+                            title="Report Comment"
+                            data-comment-id="{{ $comment->id }}"
+                            data-post-id="{{ $post->id }}"
+                        >
                             <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="size-6">
-                                <path stroke-linecap="round" stroke-linejoin="round" d="M3 3v1.5M3 21v-6m0 0 2.77-.693a9 9 0 0 1 6.208.682l.108.054a9 9 0 0 0 6.086.71l3.114-.732a48.524 48.524 0 0 1-.005-10.499l-3.11.732a9 9 0 0 1-6.085-.711l-.108-.054a9 9 0 0 0-6.208-.682L3 4.5M3 15V4.5" />
+                                    <path stroke-linecap="round" stroke-linejoin="round" d="M3 3v1.5M3 21v-6m0 0 2.77-.693a9 9 0 0 1 6.208.682l.108.054a9 9 0 0 0 6.086.71l3.114-.732a48.524 48.524 0 0 1-.005-10.499l-3.11.732a9 9 0 0 1-6.085-.711l-.108-.054a9 9 0 0 0-6.208-.682L3 4.5M3 15V4.5" />
                             </svg>
                         </button>
                          @if (auth()->check() && auth()->id() === $post->author->id && !$comment->is_marked_answer)
@@ -154,5 +173,112 @@
             });
         }
 
+        // SCRIPT TAMBAHAN UNTUK REPORT COMMENT VIA AJAX
+         $('.report-comment-btn').on('click', function () {
+            const postId = $(this).data('post-id');
+            const commentId = $(this).data('comment-id');
+
+            Swal.fire({
+                title: 'Report Comment',
+                input: 'text',
+                inputLabel: 'Reason',
+                inputPlaceholder: 'Enter the reason for reporting...',
+                inputAttributes: {
+                    'aria-label': 'Reason'
+                },
+                showCancelButton: true,
+                confirmButtonText: 'Report',
+                preConfirm: (reason) => {
+                    if (!reason) {
+                        Swal.showValidationMessage('You must provide a reason!');
+                    }
+                    return reason;
+                }
+            }).then((result) => {
+                if (result.isConfirmed) {
+                    $.ajax({
+                        url: `/report/comment/${commentId}`,
+                        method: 'POST',
+                        data: {
+                            _token: '{{ csrf_token() }}',
+                            post_id: postId,
+                            post_comment_id: commentId,
+                            reason: result.value,
+                        },
+                        success: function (response) {
+                            Swal.fire({
+                                icon: 'success',
+                                title: 'Reported',
+                                text: response.message || 'Comment has been reported.'
+                            });
+                        },
+                        error: function (response) {
+                            Swal.fire({
+                                icon: 'error',
+                                title: 'Failed',
+                                text: response.responseJSON?.message || 'Could not report comment.'
+                            });
+                        }
+                    });
+                }
+            });
+        });
+
+        // dropdown tiga titik
+        $('#post-options-toggle').on('click', function () {
+            $('#post-options-menu').toggle();
+        });
+
+        // report post
+        $('.report-post-btn').on('click', function () {
+            const postId = $(this).data('post-id');
+
+            Swal.fire({
+                title: 'Report Post',
+                input: 'text',
+                inputLabel: 'Reason',
+                inputPlaceholder: 'Enter the reason for reporting...',
+                inputAttributes: {
+                    'aria-label': 'Reason'
+                },
+                showCancelButton: true,
+                confirmButtonText: 'Report',
+                preConfirm: (reason) => {
+                    if (!reason) {
+                        Swal.showValidationMessage('You must provide a reason!');
+                    }
+                    return reason;
+                }
+            }).then((result) => {
+                if (result.isConfirmed) {
+                    $.ajax({
+                        url: `/report/post/${postId}`,
+                        method: 'POST',
+                        data: {
+                            _token: '{{ csrf_token() }}',
+                            post_id: postId,
+                            reason: result.value,
+                        },
+                        success: function (response) {
+                            Swal.fire({
+                                icon: 'success',
+                                title: 'Reported',
+                                text: response.message || 'Post has been reported.'
+                            });
+                        },
+                        error: function (response) {
+                            Swal.fire({
+                                icon: 'error',
+                                title: 'Failed',
+                                text: response.responseJSON?.message || 'Could not report post.'
+                            });
+                        }
+                    });
+                }
+            });
+        });
+
+
     </script>
+
 @endsection
