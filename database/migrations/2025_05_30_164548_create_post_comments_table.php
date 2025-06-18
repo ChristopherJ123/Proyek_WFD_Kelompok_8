@@ -17,10 +17,10 @@ return new class extends Migration
             $table->foreignId('author_id')->constrained('users')->onDelete('cascade');
             $table->foreignId('parent_message_id')->nullable()->constrained('post_comments')->onDelete('cascade');
             $table->string('message');
-            $table->boolean('is_answer')->default(false);
+            $table->boolean('is_marked_answer')->default(false);
             $table->boolean('is_post_owner_read')->default(false);
-            $table->boolean('is_post_comment_owner')->default(false);
-            $table->boolean('is_parent_message')->default(false);
+            $table->boolean('is_post_comment_owner_read')->default(false);
+            $table->boolean('is_parent_message_owner_read')->default(false);
             $table->integer('share_count')->default(0);
             $table->boolean('is_deleted')->default(false);
             $table->string('moderator_notice')->nullable();

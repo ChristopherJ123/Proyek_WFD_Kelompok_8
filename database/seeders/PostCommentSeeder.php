@@ -729,5 +729,36 @@ class PostCommentSeeder extends Seeder
             ['post_id' => 86, 'author_id' => User::all()->random()['id'], 'message' => 'It’s like a toy that can be a car or a plane—same interface, different function.', 'sharecount' => rand(0, 30)],
             ['post_id' => 86, 'author_id' => User::all()->random()['id'], 'message' => 'When one method works differently depending on the object—neat and powerful!', 'sharecount' => rand(0, 30)],
         ], uniqueBy: 'id');
+
+        PostComment::upsert([
+            [
+                'post_id' => 1,
+                'parent_message_id' => 1,
+                'author_id' => User::all()->random()['id'],
+                'message' => 'Yep. I agree with you',
+                'share_count' => 2,
+            ],
+            [
+                'post_id' => 1,
+                'parent_message_id' => 1,
+                'author_id' => User::all()->random()['id'],
+                'message' => 'The reality is, that system really sucks in practice',
+                'share_count' => 2,
+            ],
+            [
+                'post_id' => 1,
+                'parent_message_id' => 2,
+                'author_id' => User::all()->random()['id'],
+                'message' => 'Why is that?',
+                'share_count' => 2,
+            ],
+            [
+                'post_id' => 1,
+                'parent_message_id' => 3,
+                'author_id' => User::all()->random()['id'],
+                'message' => 'If you were unlucky to be born into a peasant, there’s really nothing you can do to get up the feudal hierarchy.',
+                'share_count' => 2,
+            ],
+        ], uniqueBy: 'id');
     }
 }
