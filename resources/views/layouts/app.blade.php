@@ -28,6 +28,16 @@
         </script>
     @endif
 
+    @if(session()->has('success'))
+        <script>
+            Swal.fire({
+                title: "Success",
+                text: "{{ session('success') }}",
+                icon: "success"
+            });
+        </script>
+    @endif
+
     @include('components.top-navbar')
 
     <div class="flex h-full">

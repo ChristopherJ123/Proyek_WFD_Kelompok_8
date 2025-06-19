@@ -93,9 +93,9 @@ class PostCommentController extends Controller
             abort(403);
         }
 
-        PostComment::where('post_id', $post->id)->update(['is_answer' => false]);
+        PostComment::where('post_id', $post->id)->update(['is_marked_answer' => false]);
 
-        $comment->is_answer = true;
+        $comment->is_marked_answer = true;
         $comment->save();
 
         // dd($comment);

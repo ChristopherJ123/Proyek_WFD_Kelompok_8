@@ -31,7 +31,7 @@
         <div class="flex flex-col w-full">
             <div class="uppercase tracking-wider font-lazy-dog font-bold">{{ $comment->author->username }}</div>
             <div>{{ $comment->message }}</div>
-            @if ($comment->is_answer)
+            @if ($comment->is_marked_answer)
                 <span class="text-green-600 font-bold text-sm mt-1">✓ Marked as Answer</span>
             @endif
             @if(count($comment->images) > 0)
@@ -93,7 +93,7 @@
             </svg>
         </button>
         @if (auth()->check() && auth()->id() === $post->author->id && !$comment->is_marked_answer)
-            <form method="POST" action="{{ route('topics.posts.comments.mark-answer', [$topic, $post, $comment]) }}">
+            <form method="POST" action="{{ route('topics.posts.comments.mark-answer', [$post->topic, $post, $comment]) }}">
                 @csrf
                 <button class="text-sm text-green-600 hover:bg-green-600 rounded-full p-2 hover:text-white" title="Marked As Answer">
                     <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="size-6">
