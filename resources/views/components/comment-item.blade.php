@@ -30,10 +30,17 @@
                 <span class="text-green-600 font-bold text-sm mt-1">✓ Marked as Answer</span>
             @endif
             <x-post-comment-buttons :post="$post" :comment="$comment"></x-post-comment-buttons>
-            <form action="{{ route('topics.posts.comments.store', [$post->topic, $post]) }}" method="post" enctype="multipart/form-data" class="border-4 border-brand-900 rounded-4xl p-2 relative mt-2">
+            <form action="{{ route('topics.posts.comments.store', [$post->topic, $post]) }}" method="post" enctype="multipart/form-data"
+                  class="comment-reply-form border-4 hidden border-brand-900 rounded-4xl p-2 relative mt-2">
                 @csrf
-                <input class="w-full focus:outline-0 placeholder-transparent peer" type="text" name="message" id="message" placeholder="Join the discussion">
-                <label class="absolute left-2 peer-placeholder-shown:text-gray-600 peer-placeholder-shown:visible peer-focus:invisible invisible cursor-text" for="comment">Join the discussion<span class="text-red-500 font-bold">*</span></label>
+                @if(!auth()->check())
+                    <input class="w-full focus:outline-0 placeholder-transparent peer" type="text" name="message-{{ $comment->id }}" id="message-{{ $comment->id }}" placeholder="Login to join the discussion" disabled>
+                    <label class="absolute left-2 peer-placeholder-shown:text-gray-600 peer-placeholder-shown:visible peer-focus:invisible invisible cursor-text" for="message-{{ $comment->id }}">Login to join the discussion</label>
+                @else
+                    <input class="w-full focus:outline-0 placeholder-transparent peer" type="text" name="message-{{ $comment->id }}" id="message-{{ $comment->id }}" placeholder="Join the discussion">
+                    <label class="absolute left-2 peer-placeholder-shown:text-gray-600 peer-placeholder-shown:visible peer-focus:invisible invisible cursor-text" for="message-{{ $comment->id }}">Join the discussion<span class="text-red-500 font-bold">*</span></label>
+                @endif
+
                 <div class="flex w-fit mt-4 items-center gap-2 p-2 rounded-4xl font-semibold bg-brand-900 text-brand-300">
                 <span class="bg-brand-300 rounded-full p-1">
                     <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor" class="size-6 text-white">
@@ -43,7 +50,7 @@
                 </span>
                     Add Pictures
                 </div>
-                <input class="hidden" type="file" name="images[]" id="images" accept="image/*" multiple>
+                <input class="hidden" type="file" name="images-{{ $comment->id }}[]" id="images-{{ $comment->id }}" accept="image/*" multiple>
                 <input type="hidden" name="parentMessageId" id="parentMessageId" value="{{ $comment->id }}">
             </form>
         </div>

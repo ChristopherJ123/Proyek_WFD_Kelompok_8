@@ -38,8 +38,15 @@
             <x-post-buttons :post="$post"></x-post-buttons>
             <form action="{{ route('topics.posts.comments.store', [$topic, $post]) }}" method="post" enctype="multipart/form-data" class="border-4 border-brand-900 rounded-4xl p-2 relative">
                 @csrf
-                <input class="w-full focus:outline-0 placeholder-transparent peer" type="text" name="message" id="message" placeholder="Join the discussion">
-                <label class="absolute left-2 peer-placeholder-shown:text-gray-600 peer-placeholder-shown:visible peer-focus:invisible invisible cursor-text" for="comment">Join the discussion<span class="text-red-500 font-bold">*</span></label>
+                @if(!auth()->check())
+                    <input class="w-full focus:outline-0 placeholder-transparent peer"
+                           type="text" name="message" id="message" placeholder="Login to join the discussion" disabled>
+                    <label class="absolute left-2 peer-placeholder-shown:text-gray-600 peer-placeholder-shown:visible peer-focus:invisible invisible cursor-text" for="message">Login to join the discussion</label>
+                @else
+                    <input class="w-full focus:outline-0 placeholder-transparent peer"
+                           type="text" name="message" id="message" placeholder="Join the discussion">
+                    <label class="absolute left-2 peer-placeholder-shown:text-gray-600 peer-placeholder-shown:visible peer-focus:invisible invisible cursor-text" for="message">Join the discussion<span class="text-red-500 font-bold">*</span></label>
+                @endif
                 <div class="flex w-fit mt-4 items-center gap-2 p-2 rounded-4xl font-semibold bg-brand-900 text-brand-300">
                     <span class="bg-brand-300 rounded-full p-1">
                         <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor" class="size-6 text-white">
@@ -128,6 +135,10 @@
                 }
             });
         }
+
+        $('.comment-reply-button').on('click', function () {
+            $(this).parent().parent().children('.comment-reply-form').toggle();
+        })
 
         // SCRIPT TAMBAHAN UNTUK REPORT COMMENT VIA AJAX
          $('.report-comment-btn').on('click', function () {
