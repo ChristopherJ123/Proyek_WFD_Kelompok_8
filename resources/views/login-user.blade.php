@@ -11,8 +11,8 @@
         <form action="{{ route('login.store') }}" method="POST" class="text-2xl">
             @csrf
             <div>
-                <label class="block" for="email">Email / Username</label>
-                <input class="border border-brand-500 rounded-md w-full px-4 py-2 bg-brand-500" type="text" name="username-email" placeholder="placeholder@gmail.com" required>
+                <label class="block" for="username-email">Email / Username</label>
+                <input id="username-email" class="border border-brand-500 rounded-md w-full px-4 py-2 bg-brand-500" type="text" name="username-email" placeholder="placeholder@gmail.com" required>
             </div>
             <div class="relative">
                 <label class="block" for="password">Password</label>

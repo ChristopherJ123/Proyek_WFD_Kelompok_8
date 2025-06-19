@@ -44,7 +44,7 @@
         }
     </style>
 </head>
-<body class="flex items-center justify-center min-h-screen bg-[url('/public/logo.png')] bg-repeat bg-[length:75px_75px] bg-[position:top_left] bg-brand-300 backdrop-brightness-50">
+<body style="background-image: url('{{ asset('storage/logo.png') }}');" class="flex items-center justify-center min-h-screen bg-repeat bg-[length:75px_75px] bg-[position:top_left] bg-brand-300 backdrop-brightness-50">
     @if($errors->any())
         <script>
             Swal.fire({
