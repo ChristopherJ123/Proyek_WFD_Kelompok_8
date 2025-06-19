@@ -1,5 +1,5 @@
 <div class="rule cursor-pointer flex space-x-4 items-center">
-    <span class="text-xl">1</span>
+    <span class="text-xl">{{ $rule->order }}</span>
     <div class="flex justify-between w-full font-semibold">
         <span>{{ $rule->title }}</span>
         <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2"
