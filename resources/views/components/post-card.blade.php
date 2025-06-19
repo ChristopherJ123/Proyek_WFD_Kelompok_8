@@ -2,11 +2,14 @@
     <div class="flex flex-col gap-3">
         @if($showTopic === true)
             <div class="flex gap-2 mx-8">
-                <img class="size-8 object-cover rounded-full" src="{{ asset('storage/'.$post->topic->icon_image_link) }}"
+                <img class="size-16 object-cover rounded-full" src="{{ asset('storage/'.$post->topic->icon_image_link) }}"
                      alt="{{ $post->topic->name }}">
-                <a
-                    href="{{ route('topics.show', $post->topic) }}"
-                    class="font-bold text-2xl">y/{{ $post->topic->name }}</a>
+                <div class="flex flex-col">
+                    <a
+                        href="{{ route('topics.show', $post->topic) }}"
+                        class="font-bold text-3xl">y/{{ $post->topic->name }}</a>
+                    <div class="font-sans tracking-wide text-gray-200 text-sm font-medium">{{ $post->created_at->format('d M Y') }}</div>
+                </div>
             </div>
         @endif
         <a

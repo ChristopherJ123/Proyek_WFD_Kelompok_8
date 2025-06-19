@@ -16,7 +16,7 @@
                         {{ $post->title }}
                     </div>
                     <div class="text-gray-500 tracking-wider text-sm">
-                        CREATED AT: {{ $post->created_at->format('m-d-Y') }}
+                        CREATED AT: {{ $post->created_at->format('d-m-Y') }}
                     </div>
                 </div>
                 <div class="relative">

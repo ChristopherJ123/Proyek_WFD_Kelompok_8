@@ -30,7 +30,7 @@
                     ])
                  @else
                      @class([
-                    'size-4',
+                    'size-4 rotate-180',
                     ])
                  @endif
 
