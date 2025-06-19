@@ -6,6 +6,7 @@ use App\Models\Post;
 use App\Models\PostComment;
 use App\Models\Topic;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Validation\Rules\File;
 
 class PostCommentController extends Controller
@@ -32,6 +33,18 @@ class PostCommentController extends Controller
         $comment->post_id = $post->id;
         $comment->message = $request->message;
         $comment->save();
+        if ($request->hasFile('images')) {
+            foreach ($request->file('images') as $index => $image) {
+                $extension = $image->extension();
+                $filename = "{$topic->name}_{$post->id}_{$comment->id}_$index.$extension";
+                $path = $image->storeAs('images/post_images', $filename, 'public');
+
+                $comment->images()->create([
+                    'post_id' => $post->id,
+                    'image_link' => $path
+                ]);
+            }
+        }
 
         return redirect()->route('topics.posts.comments.show', [$topic, $post, $comment]);
     }
@@ -47,12 +60,21 @@ class PostCommentController extends Controller
             ->orderBy('created_at')
             ->get();
 
+        if (Auth::check()) {
+            $user = $request->user();
+
+            $topic->usersVisited()->syncWithoutDetaching($user['id']);
+            $topic->usersVisited()->updateExistingPivot($user['id'], [
+                'updated_at' => now(),
+            ]);
+        }
+
         return view('post', [
             'search' => $request->search,
             'topic' => $topic,
             'post' => $post,
             'comments' => $comments,
-            'comment' => $comment,
+            'newComment' => $comment,
         ]);
     }
 

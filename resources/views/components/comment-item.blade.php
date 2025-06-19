@@ -1,6 +1,11 @@
 @props(['post', 'comment', 'depth' => 0])
 
-<div class="flex w-full">
+<div
+    @class([
+        "flex w-full",
+        'border border-dashed border-brand-300 rounded-lg' => isset($newComment) && $newComment->id === $comment->id
+    ])
+>
     @if($depth > 0)
         <div class="flex ml-{{ $depth > 1 ? $depth * 8 : 0}} size-12 items-center justify-center">
             <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor"
@@ -29,29 +34,49 @@
             @if ($comment->is_answer)
                 <span class="text-green-600 font-bold text-sm mt-1">✓ Marked as Answer</span>
             @endif
+            @if(count($comment->images) > 0)
+                <div
+                    @class([
+                        'grid grid-gap-1 max-w-sm mb-2',
+                        'grid-cols-1' => count($comment->images) === 1,
+                        'grid-cols-2' => count($comment->images) >= 2
+                    ])>
+                    @foreach($comment->images as $index => $image)
+                        @if($index < 4)
+                            <img
+                                class="w-full h-full rounded-2xl"
+                                src="{{ asset('storage/'.$image->image_link) }}"
+                                alt="{{ $comment->title }}"
+                            >
+                        @endif
+                    @endforeach
+                </div>
+            @endif
             <x-post-comment-buttons :post="$post" :comment="$comment"></x-post-comment-buttons>
             <form action="{{ route('topics.posts.comments.store', [$post->topic, $post]) }}" method="post" enctype="multipart/form-data"
                   class="comment-reply-form border-4 hidden border-brand-900 rounded-4xl p-2 relative mt-2">
                 @csrf
                 @if(!auth()->check())
-                    <input class="w-full focus:outline-0 placeholder-transparent peer" type="text" name="message-{{ $comment->id }}" id="message-{{ $comment->id }}" placeholder="Login to join the discussion" disabled>
+                    <input class="w-full focus:outline-0 placeholder-transparent peer" type="text" name="message" id="message-{{ $comment->id }}" placeholder="Login to join the discussion" disabled>
                     <label class="absolute left-2 peer-placeholder-shown:text-gray-600 peer-placeholder-shown:visible peer-focus:invisible invisible cursor-text" for="message-{{ $comment->id }}">Login to join the discussion</label>
                 @else
-                    <input class="w-full focus:outline-0 placeholder-transparent peer" type="text" name="message-{{ $comment->id }}" id="message-{{ $comment->id }}" placeholder="Join the discussion">
+                    <input class="w-full focus:outline-0 placeholder-transparent peer" type="text" name="message" id="message-{{ $comment->id }}" placeholder="Join the discussion">
                     <label class="absolute left-2 peer-placeholder-shown:text-gray-600 peer-placeholder-shown:visible peer-focus:invisible invisible cursor-text" for="message-{{ $comment->id }}">Join the discussion<span class="text-red-500 font-bold">*</span></label>
                 @endif
 
-                <div class="flex w-fit mt-4 items-center gap-2 p-2 rounded-4xl font-semibold bg-brand-900 text-brand-300">
-                <span class="bg-brand-300 rounded-full p-1">
-                    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor" class="size-6 text-white">
-                        <path d="M9.97.97a.75.75 0 0 1 1.06 0l3 3a.75.75 0 0 1-1.06 1.06l-1.72-1.72v3.44h-1.5V3.31L8.03 5.03a.75.75 0 0 1-1.06-1.06l3-3ZM9.75 6.75v6a.75.75 0 0 0 1.5 0v-6h3a3 3 0 0 1 3 3v7.5a3 3 0 0 1-3 3h-7.5a3 3 0 0 1-3-3v-7.5a3 3 0 0 1 3-3h3Z" />
-                        <path d="M7.151 21.75a2.999 2.999 0 0 0 2.599 1.5h7.5a3 3 0 0 0 3-3v-7.5c0-1.11-.603-2.08-1.5-2.599v7.099a4.5 4.5 0 0 1-4.5 4.5H7.151Z" />
-                    </svg>
-                </span>
-                    Add Pictures
+                <div class="comment-add-picture flex w-fit mt-4 items-center gap-2 p-2 rounded-4xl font-semibold bg-brand-900 text-brand-300 cursor-pointer">
+                    <span class="bg-brand-300 rounded-full p-1">
+                        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor" class="size-6 text-white">
+                            <path d="M9.97.97a.75.75 0 0 1 1.06 0l3 3a.75.75 0 0 1-1.06 1.06l-1.72-1.72v3.44h-1.5V3.31L8.03 5.03a.75.75 0 0 1-1.06-1.06l3-3ZM9.75 6.75v6a.75.75 0 0 0 1.5 0v-6h3a3 3 0 0 1 3 3v7.5a3 3 0 0 1-3 3h-7.5a3 3 0 0 1-3-3v-7.5a3 3 0 0 1 3-3h3Z" />
+                            <path d="M7.151 21.75a2.999 2.999 0 0 0 2.599 1.5h7.5a3 3 0 0 0 3-3v-7.5c0-1.11-.603-2.08-1.5-2.599v7.099a4.5 4.5 0 0 1-4.5 4.5H7.151Z" />
+                        </svg>
+                    </span>
+                    <div>
+                        Add Pictures
+                    </div>
                 </div>
-                <input class="hidden" type="file" name="images-{{ $comment->id }}[]" id="images-{{ $comment->id }}" accept="image/*" multiple>
-                <input type="hidden" name="parentMessageId" id="parentMessageId" value="{{ $comment->id }}">
+                <input class="hidden images-input" type="file" name="images[]" id="images-{{ $comment->id }}" accept="image/*" multiple>
+                <input type="hidden" name="parent_message_id" id="parent_message_id-{{ $comment->id }}" value="{{ $comment->id }}">
             </form>
         </div>
     </div>

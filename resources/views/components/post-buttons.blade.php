@@ -6,7 +6,7 @@
                  @if(auth()->check())
                      @class([
                     'size-6',
-                    'text-red-300' => Auth::user()->votes()->where([['post_id', '=', $post->id], ['is_upvote', '=', true]])->first()
+                    'text-red-300' => Auth::user()->votes()->where([['post_id', '=', $post->id], ['is_upvote', '=', true]])->whereNull('post_comment_id')->exists()
                     ])
                  @else
                      @class([
@@ -26,7 +26,7 @@
                  @if(auth()->check())
                      @class([
                     'size-6 rotate-180',
-                    'text-red-400' => Auth::user()->votes()->where([['post_id', '=', $post->id], ['is_upvote', '=', false]])->first()
+                    'text-red-400' => Auth::user()->votes()->where([['post_id', '=', $post->id], ['is_upvote', '=', false]])->whereNull('post_comment_id')->exists()
                     ])
                  @else
                      @class([

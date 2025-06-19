@@ -36,7 +36,7 @@
                 <div class="flex flex-row-reverse">
                     <button class="p-2 rounded-4xl font-semibold bg-brand-900 text-brand-100 w-36" type="submit">Post</button>
                 </div>
-                <input class="hidden" type="file" name="images[]" id="images" accept="image/*" multiple>
+                <input class="hidden images-input" type="file" name="images[]" id="images" accept="image/*" multiple>
             </form>
         </div>
 

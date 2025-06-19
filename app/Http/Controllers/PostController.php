@@ -101,7 +101,7 @@ class PostController extends Controller
         if ($request->hasFile('images')) {
             foreach ($request->file('images') as $index => $image) {
                 $extension = $image->extension();
-                $filename = "{$topic->name}_{$post->id}_{$index}.$extension";
+                $filename = "{$topic->name}_{$post->id}_$index.$extension";
                 $path = $image->storeAs('images/post_images', $filename, 'public');
 
                 $post->images()->create([
@@ -123,6 +123,15 @@ class PostController extends Controller
             ->with('childrenRecursive')
             ->orderBy('created_at')
             ->get();
+
+        if (Auth::check()) {
+            $user = $request->user();
+
+            $topic->usersVisited()->syncWithoutDetaching($user['id']);
+            $topic->usersVisited()->updateExistingPivot($user['id'], [
+                'updated_at' => now(),
+            ]);
+        }
 
         return view('post', [
             'search' => $request->search,

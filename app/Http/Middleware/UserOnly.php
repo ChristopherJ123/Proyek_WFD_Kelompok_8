@@ -21,7 +21,7 @@ class UserOnly
                 return response()->json(['message' => 'Not authenticated.'], 401);
             }
 
-            return redirect()->route('dashboard');
+            return redirect()->route('login');
         }
         return $next($request);
     }

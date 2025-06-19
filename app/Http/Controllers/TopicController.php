@@ -186,15 +186,6 @@ class TopicController extends Controller
             $topic->usersVisited()->updateExistingPivot($user['id'], [
                 'updated_at' => now(),
             ]);
-
-            return view('topic', [
-                'search' => $request->search,
-                'sortBy' => $request->sort_by,
-                'orderBy' => $request->order_by,
-                'topic' => $topic,
-                'isFollowing' => $user->topicFollowings()->where('topic_id', '=', $topic->id)->exists(),
-                'posts' => $posts,
-            ]);
         }
 
         return view('topic', [

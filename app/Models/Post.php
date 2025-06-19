@@ -30,7 +30,7 @@ class Post extends Model
     }
 
     public function images() {
-        return $this->hasMany(PostImage::class);
+        return $this->hasMany(PostImage::class)->whereNull('post_comment_id');
     }
 
     public function reports() {
