@@ -14,7 +14,7 @@ class PostSeeder extends Seeder
      */
     public function run(): void
     {
-        Post::upsert([
+        $posts = [
             [
                 'topic_id' => 1,
                 'author_id' => 1,
@@ -730,7 +730,14 @@ class PostSeeder extends Seeder
                 'description' => 'Let’s bring awareness to global causes.',
                 'share_count' => rand(0, 30),
             ],
-        ], uniqueBy: 'id');
+        ];
 
+        foreach ($posts as &$post) {
+            $created = fake()->dateTimeBetween(startDate: '-2 years');
+            $post['created_at'] = $created;
+            $post['updated_at'] = $created;
+        }
+
+        Post::upsert($posts, uniqueBy: 'id');
     }
 }

@@ -730,6 +730,13 @@ class PostCommentSeeder extends Seeder
             ['post_id' => 86, 'author_id' => User::all()->random()['id'], 'message' => 'When one method works differently depending on the object—neat and powerful!', 'sharecount' => rand(0, 30)],
         ], uniqueBy: 'id');
 
+        foreach (PostComment::all() as $comment) {
+            $created = fake()->dateTimeBetween(startDate: $comment->post->created_at);
+            $comment->created_at = $created;
+            $comment->updated_at = $created;
+            $comment->save();
+        }
+
         PostComment::upsert([
             [
                 'post_id' => 1,
