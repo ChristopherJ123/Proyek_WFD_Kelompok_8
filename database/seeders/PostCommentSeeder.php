@@ -686,48 +686,6 @@ class PostCommentSeeder extends Seeder
 
             ['post_id' => 86, 'author_id' => User::all()->random()['id'], 'message' => 'It’s like a toy that can be a car or a plane—same interface, different function.', 'sharecount' => rand(0, 30)],
             ['post_id' => 86, 'author_id' => User::all()->random()['id'], 'message' => 'When one method works differently depending on the object—neat and powerful!', 'sharecount' => rand(0, 30)],
-
-            ['post_id' => 73, 'author_id' => User::all()->random()['id'], 'message' => 'That ‘screaming cat with a party hat’ meme cracked me up—anyone else see that?', 'sharecount' => rand(0, 30)],
-            ['post_id' => 73, 'author_id' => User::all()->random()['id'], 'message' => 'Taylor’s new video dropped and the fan theories are wild this week.', 'sharecount' => rand(0, 30)],
-
-            ['post_id' => 74, 'author_id' => User::all()->random()['id'], 'message' => 'Can’t believe Leo didn’t win for The Wolf of Wall Street. Robbery.', 'sharecount' => rand(0, 30)],
-            ['post_id' => 74, 'author_id' => User::all()->random()['id'], 'message' => 'Toni Collette in Hereditary—how did the Academy miss that performance?', 'sharecount' => rand(0, 30)],
-
-            ['post_id' => 75, 'author_id' => User::all()->random()['id'], 'message' => 'When Itachi smiled at Sasuke before he died… man, my heart broke.', 'sharecount' => rand(0, 30)],
-            ['post_id' => 75, 'author_id' => User::all()->random()['id'], 'message' => 'Neji’s death in the war arc hit me hard too. He deserved better.', 'sharecount' => rand(0, 30)],
-
-            ['post_id' => 76, 'author_id' => User::all()->random()['id'], 'message' => 'Surprisingly loved Buggy’s portrayal. Didn’t think they’d pull him off.', 'sharecount' => rand(0, 30)],
-            ['post_id' => 76, 'author_id' => User::all()->random()['id'], 'message' => 'Luffy’s actor nailed the optimism. Hoping for more seasons!', 'sharecount' => rand(0, 30)],
-
-            ['post_id' => 77, 'author_id' => User::all()->random()['id'], 'message' => 'Depends on your POV—he was fighting for freedom, but at what cost?', 'sharecount' => rand(0, 30)],
-            ['post_id' => 77, 'author_id' => User::all()->random()['id'], 'message' => 'He became what he hated. That’s the tragedy of Eren.', 'sharecount' => rand(0, 30)],
-
-            ['post_id' => 78, 'author_id' => User::all()->random()['id'], 'message' => '“Is mayonnaise an instrument?” will always be top-tier.', 'sharecount' => rand(0, 30)],
-            ['post_id' => 78, 'author_id' => User::all()->random()['id'], 'message' => 'Patrick: “The inner machinations of my mind are an enigma.” *milk spills*', 'sharecount' => rand(0, 30)],
-
-            ['post_id' => 79, 'author_id' => User::all()->random()['id'], 'message' => 'Zuko’s arc might be the best redemption story in any cartoon ever.', 'sharecount' => rand(0, 30)],
-            ['post_id' => 79, 'author_id' => User::all()->random()['id'], 'message' => 'That moment in Ba Sing Se with Iroh… absolutely gut-wrenching.', 'sharecount' => rand(0, 30)],
-
-            ['post_id' => 80, 'author_id' => User::all()->random()['id'], 'message' => 'Giyu and Tanjiro vs Akaza gave me chills. That animation!', 'sharecount' => rand(0, 30)],
-            ['post_id' => 80, 'author_id' => User::all()->random()['id'], 'message' => 'Uzui’s fight with Gyutaro was chaotic and flashy in the best way.', 'sharecount' => rand(0, 30)],
-
-            ['post_id' => 81, 'author_id' => User::all()->random()['id'], 'message' => '“I Remember You” had no right to be that emotional.', 'sharecount' => rand(0, 30)],
-            ['post_id' => 81, 'author_id' => User::all()->random()['id'], 'message' => 'Simon and Marcy’s backstory still breaks me every time.', 'sharecount' => rand(0, 30)],
-
-            ['post_id' => 82, 'author_id' => User::all()->random()['id'], 'message' => 'That underwater episode showed how isolating life can feel.', 'sharecount' => rand(0, 30)],
-            ['post_id' => 82, 'author_id' => User::all()->random()['id'], 'message' => 'BoJack wasn’t always likable, but that’s what made him real.', 'sharecount' => rand(0, 30)],
-
-            ['post_id' => 83, 'author_id' => User::all()->random()['id'], 'message' => 'Mine’s Princess Mononoke. That forest spirit was haunting and beautiful.', 'sharecount' => rand(0, 30)],
-            ['post_id' => 83, 'author_id' => User::all()->random()['id'], 'message' => 'Howl’s Moving Castle always puts me in a dreamlike mood.', 'sharecount' => rand(0, 30)],
-
-            ['post_id' => 84, 'author_id' => User::all()->random()['id'], 'message' => 'The Breadwinner was powerful and beautifully done.', 'sharecount' => rand(0, 30)],
-            ['post_id' => 84, 'author_id' => User::all()->random()['id'], 'message' => 'Loved Ernest & Celestine—such a soft and charming story.', 'sharecount' => rand(0, 30)],
-
-            ['post_id' => 85, 'author_id' => User::all()->random()['id'], 'message' => 'They hit about 11.2 km/s—called escape velocity. Insane, right?', 'sharecount' => rand(0, 30)],
-            ['post_id' => 85, 'author_id' => User::all()->random()['id'], 'message' => 'Basically: enough thrust + angle + timing = freedom from gravity.', 'sharecount' => rand(0, 30)],
-
-            ['post_id' => 86, 'author_id' => User::all()->random()['id'], 'message' => 'It’s like a toy that can be a car or a plane—same interface, different function.', 'sharecount' => rand(0, 30)],
-            ['post_id' => 86, 'author_id' => User::all()->random()['id'], 'message' => 'When one method works differently depending on the object—neat and powerful!', 'sharecount' => rand(0, 30)],
         ], uniqueBy: 'id');
 
         foreach (PostComment::all() as $comment) {
@@ -754,14 +712,14 @@ class PostCommentSeeder extends Seeder
             ],
             [
                 'post_id' => 1,
-                'parent_message_id' => 202,
+                'parent_message_id' => 174,
                 'author_id' => User::all()->random()['id'],
                 'message' => 'Why is that?',
                 'share_count' => 2,
             ],
             [
                 'post_id' => 1,
-                'parent_message_id' => 203,
+                'parent_message_id' => 175,
                 'author_id' => User::all()->random()['id'],
                 'message' => 'If you were unlucky to be born into a peasant, there’s really nothing you can do to get up the feudal hierarchy.',
                 'share_count' => 2,

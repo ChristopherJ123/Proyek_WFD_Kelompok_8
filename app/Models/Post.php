@@ -34,7 +34,7 @@ class Post extends Model
     }
 
     public function reports() {
-        return $this->hasMany(UserPostReport::class);
+        return $this->hasMany(UserPostReport::class)->whereNull('post_comment_id');
     }
 
     public function topic() {

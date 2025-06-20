@@ -22,7 +22,7 @@
     <div class="flex gap-1 ml-12 items-center">
         <div>
             <span
-                class="cursor-pointer hover:text-blue-500"
+                class="cursor-pointer hover:text-brand-700"
                 title="Notifications"
                 onclick="window.location.href='{{ route('notifications.index') }}'"
             >
@@ -33,7 +33,7 @@
                 </svg>
             </span>
         </div>
-        <a href="{{ route('topics.create') }}" class="flex items-center hover:text-blue-500">
+        <a href="{{ route('topics.create') }}" class="flex items-center hover:text-brand-700">
             <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor" class="size-8">
                 <path fill-rule="evenodd"
                       d="M12 2.25c-5.385 0-9.75 4.365-9.75 9.75s4.365 9.75 9.75 9.75 9.75-4.365 9.75-9.75S17.385 2.25 12 2.25ZM12.75 9a.75.75 0 0 0-1.5 0v2.25H9a.75.75 0 0 0 0 1.5h2.25V15a.75.75 0 0 0 1.5 0v-2.25H15a.75.75 0 0 0 0-1.5h-2.25V9Z"
@@ -45,7 +45,7 @@
         </a>
         <div>
             <span
-                class="cursor-pointer hover:text-blue-500"
+                class="cursor-pointer hover:text-brand-700"
                 title="Direct Messages"
                 onclick="window.location.href='{{ route('messages.menu') }}'">
                 <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor" class="size-8">
@@ -57,7 +57,7 @@
         </div>
         <div class="relative group">
             @if(Auth::check() && isset(Auth::user()->profile_picture_link) )
-                <img class="size-8" src="{{ asset('storage/' . Auth::user()->profile_picture_link) }}" alt="pp">
+                <img class="size-8 rounded-full" src="{{ asset('storage/' . Auth::user()->profile_picture_link) }}" alt="pp">
             @else
                 <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor" class="size-8">
                     <path fill-rule="evenodd"
@@ -69,7 +69,15 @@
             <div
                 class="group-hover:flex hidden flex-col gap-2 w-48 absolute right-0 p-2 uppercase font-semibold tracking-wider bg-brand-900 text-brand-500">
                 @if(Auth::check())
-                    <a href="#" class="flex gap-2">
+                    @if(Auth::user()->role_id === 2)
+                        <a href="{{ route('admin') }}" class="flex gap-2">
+                            <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="size-6">
+                                <path stroke-linecap="round" stroke-linejoin="round" d="M10.5 6h9.75M10.5 6a1.5 1.5 0 1 1-3 0m3 0a1.5 1.5 0 1 0-3 0M3.75 6H7.5m3 12h9.75m-9.75 0a1.5 1.5 0 0 1-3 0m3 0a1.5 1.5 0 0 0-3 0m-3.75 0H7.5m9-6h3.75m-3.75 0a1.5 1.5 0 0 1-3 0m3 0a1.5 1.5 0 0 0-3 0m-9.75 0h9.75" />
+                            </svg>
+                            <div>Admin Dashboard</div>
+                        </a>
+                    @endif
+                    <a href="{{ route('profile.index') }}" class="flex gap-2">
                         <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor" class="size-6">
                             <path fill-rule="evenodd"
                                   d="M7.5 6a4.5 4.5 0 1 1 9 0 4.5 4.5 0 0 1-9 0ZM3.751 20.105a8.25 8.25 0 0 1 16.498 0 .75.75 0 0 1-.437.695A18.683 18.683 0 0 1 12 22.5c-2.786 0-5.433-.608-7.812-1.7a.75.75 0 0 1-.437-.695Z"
@@ -86,6 +94,12 @@
                         <div>Logout</div>
                     </a>
                 @else
+                    <a href="{{ route('register-user') }}" class="flex gap-2">
+                        <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="size-6">
+                            <path stroke-linecap="round" stroke-linejoin="round" d="M18 7.5v3m0 0v3m0-3h3m-3 0h-3m-2.25-4.125a3.375 3.375 0 1 1-6.75 0 3.375 3.375 0 0 1 6.75 0ZM3 19.235v-.11a6.375 6.375 0 0 1 12.75 0v.109A12.318 12.318 0 0 1 9.374 21c-2.331 0-4.512-.645-6.374-1.766Z" />
+                        </svg>
+                        <div>Register</div>
+                    </a>
                     <a href="{{ route('login') }}" class="flex gap-2">
                         <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="size-6">
                             <path stroke-linecap="round" stroke-linejoin="round" d="M8.25 9V5.25A2.25 2.25 0 0 1 10.5 3h6a2.25 2.25 0 0 1 2.25 2.25v13.5A2.25 2.25 0 0 1 16.5 21h-6a2.25 2.25 0 0 1-2.25-2.25V15M12 9l3 3m0 0-3 3m3-3H2.25" />

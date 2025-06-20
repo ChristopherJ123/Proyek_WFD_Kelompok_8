@@ -7,7 +7,12 @@ use App\Models\Topic;
 use App\Models\User;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Http\Request;
+use Illuminate\Support\Arr;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Storage;
+use Illuminate\Support\Str;
+use Illuminate\Validation\Rule;
 use Illuminate\Validation\Rules\File;
 
 class TopicController extends Controller
@@ -36,7 +41,7 @@ class TopicController extends Controller
      */
     public function index()
     {
-        //
+        return redirect()->route('popular');
     }
 
     /**
@@ -60,8 +65,8 @@ class TopicController extends Controller
 
         $request->validate([
             'genre' => 'required|string',
-            'title' => 'required|string|regex:/^\S+$/',
-            'description' => 'required|string',
+            'name' => 'required|unique:topics|string|max:64|regex:/^\S+$/',
+            'description' => 'required|string|max:255',
             'icon' => [
                 'nullable',
                 File::image()
@@ -81,13 +86,13 @@ class TopicController extends Controller
             'moderators' => 'nullable|array',
             'moderators.*' => 'required|string',
         ], [
-            'title.regex' => 'Topic Name must not contain spaces.'
+            'name.regex' => 'Topic Name must not contain spaces.'
         ]);
 
         $topic = new Topic();
         $topic->owner_id = $user;
         $topic->genre_id = $request->genre;
-        $topic->name = $request->title;
+        $topic->name = $request->name;
         $topic->description = $request->description;
         if ($request->hasFile('icon')) {
             $extension = $request->icon->extension();
@@ -107,10 +112,12 @@ class TopicController extends Controller
             ]);
         }
 
-        foreach ($request->moderators as $moderator) {
-            $moderatorUserExists = User::where('username', '=', $moderator)->first();
-            if ($moderatorUserExists) {
-                $topic->moderators()->attach($moderatorUserExists->id);
+        if (filled($request->moderators)) {
+            foreach ($request->moderators as $moderator) {
+                $moderatorUserExists = User::where('username', '=', $moderator)->first();
+                if ($moderatorUserExists) {
+                    $topic->moderators()->attach($moderatorUserExists->id);
+                }
             }
         }
 
@@ -202,7 +209,9 @@ class TopicController extends Controller
      */
     public function edit(Topic $topic)
     {
-        //
+        $genres = Genre::all();
+
+        return view('edit-topic', compact('topic', 'genres'));
     }
 
     /**
@@ -210,7 +219,75 @@ class TopicController extends Controller
      */
     public function update(Request $request, Topic $topic)
     {
-        //
+        $data = $request->validate([
+            'genre'          => ['required','integer','exists:genres,id'],
+            'name'           => ['required',
+                Rule::unique('topics','name')->ignore($topic->id),
+                'string','max:64','regex:/^\S+$/'],
+            'description'    => ['required','string','max:255'],
+            'icon'           => ['nullable', File::image()->extensions(['png','jpg','jpeg','webp'])->max(4096)],
+            'banner'         => ['nullable', File::image()->extensions(['png','jpg','jpeg','webp'])->max(4096)],
+            'rules'          => ['required','array','min:1','max:20'],
+            'rules.*.id'         => ['nullable','integer','exists:rules,id'],
+            'rules.*.order'      => ['required','integer','max:20'],
+            'rules.*.title'      => ['required','string','max:255'],
+            'rules.*.description'=> ['nullable','string','max:1000'],
+            'moderators'     => ['nullable','array'],
+            'moderators.*'   => ['required','string'],
+        ], [
+            'name.regex' => 'Topic Name must not contain spaces.'
+        ]);
+
+        DB::transaction(function () use ($topic, $data, $request) {
+
+            /* ---------- Core topic fields ---------- */
+            $topic->fill([
+                'genre_id'    => $data['genre'],
+                'name'        => $data['name'],
+                'description' => $data['description'],
+            ]);
+
+            /* ---------- File uploads (delete old first) ---------- */
+            foreach (['icon' => 'icon_image_link', 'banner' => 'banner_image_link'] as $field => $column) {
+                if ($request->hasFile($field)) {
+                    // Optionally delete the previous file
+                    if ($topic->$column) {
+                        Storage::disk('public')->delete($topic->$column);
+                    }
+                    $ext               = $request->$field->extension();
+                    $filename          = Str::slug($topic->name).".$ext";
+                    $topic->$column    = $request->$field
+                        ->storeAs("images/topic_{$field}s", $filename, 'public');
+                }
+            }
+
+            $topic->save();
+
+            /* ---------- Rules (diff + upsert pattern) ---------- */
+            $incoming     = collect($data['rules']);
+            $incomingIds  = $incoming->pluck('id')->filter();   // existing rule IDs
+
+            // delete removed
+            $topic->rules()->whereNotIn('id', $incomingIds)->delete();
+
+            // update or create
+            foreach ($incoming as $rule) {
+                $topic->rules()->updateOrCreate(
+                    ['id' => $rule['id'] ?? null],
+                    Arr::only($rule, ['order','title','description'])
+                );
+            }
+
+            /* ---------- Moderators ---------- */
+            if (!empty($data['moderators'])) {
+                $moderatorIds = User::whereIn('username', $data['moderators'])
+                    ->where('username','!=',$topic->owner->username)
+                    ->pluck('id');
+                $topic->moderators()->sync($moderatorIds);
+            }
+        });
+
+        return redirect()->route('topics.show', $topic);
     }
 
     /**
@@ -218,6 +295,8 @@ class TopicController extends Controller
      */
     public function destroy(Topic $topic)
     {
-        //
+        $topic->delete();
+
+        return redirect()->route('dashboard')->with('success', 'Topic deleted succesfully');
     }
 }

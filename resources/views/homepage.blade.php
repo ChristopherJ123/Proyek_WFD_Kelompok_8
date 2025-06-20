@@ -21,7 +21,7 @@
                          stroke="currentColor"
                         @class([
                             'size-6 transition',
-                            'desc' => $orderBy === 'desc',
+                            'desc' => $orderBy === 'desc' || empty($orderBy),
                             'asc rotate-180' => $orderBy === 'asc',
                         ])>
                         <path stroke-linecap="round" stroke-linejoin="round" d="m19.5 8.25-7.5 7.5-7.5-7.5"/>
@@ -36,6 +36,30 @@
                         <x-post-card :post="$post"></x-post-card>
                     @endforeach
                     {{ $posts->links() }}
+                    @if(!filled($posts))
+                        <li class="flex flex-col gap-2 h-96 w-full justify-center items-center text-2xl text-gray-500">
+                            <div class="max-w-lg text-center">
+                                Start following a topic. Check out the popular page or the explore page
+                            </div>
+                            <a href="{{ route('popular') }}"
+                               class="flex items-center justify-center min-w-48 gap-2 p-2 border-2 border-gray-400 bg-gray-50 hover:bg-gray-100">
+                                <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor"
+                                     class="size-6">
+                                    <path fill-rule="evenodd"
+                                          d="M15.22 6.268a.75.75 0 0 1 .968-.431l5.942 2.28a.75.75 0 0 1 .431.97l-2.28 5.94a.75.75 0 1 1-1.4-.537l1.63-4.251-1.086.484a11.2 11.2 0 0 0-5.45 5.173.75.75 0 0 1-1.199.19L9 12.312l-6.22 6.22a.75.75 0 0 1-1.06-1.061l6.75-6.75a.75.75 0 0 1 1.06 0l3.606 3.606a12.695 12.695 0 0 1 5.68-4.974l1.086-.483-4.251-1.632a.75.75 0 0 1-.432-.97Z"
+                                          clip-rule="evenodd"/>
+                                </svg>
+                                <div>Popular</div>
+                            </a>
+                            <a href="{{ route('explore') }}"
+                               class="flex items-center justify-center min-w-48 gap-2 p-2 border-2 border-gray-400 bg-gray-50 hover:bg-gray-100">
+                                <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="size-6">
+                                    <path stroke-linecap="round" stroke-linejoin="round" d="m21 21-5.197-5.197m0 0A7.5 7.5 0 1 0 5.196 5.196a7.5 7.5 0 0 0 10.607 10.607Z" />
+                                </svg>
+                                <div>Explore</div>
+                            </a>
+                        </li>
+                    @endif
                 @else
                     <li class="flex flex-col gap-2 h-96 w-full justify-center items-center text-2xl text-gray-500">
                         <div>
@@ -92,6 +116,9 @@
                             </div>
                         </li>
                     @endforeach
+                    @if(!filled($recentPosts))
+                        <li>No recent posts yet!</li>
+                    @endif
                 @endif
             </ul>
         </div>
@@ -169,5 +196,32 @@
 
             changeQueryStringParams('order_by', nextOrder);
         })
+
+        $('.share-post-button').on('click', function () {
+            let postId = $(this).data('post-id');
+            let postUrl = $(this).data('url');
+
+            // Copy to clipboard
+            navigator.clipboard.writeText(postUrl).then(() => {
+                // AJAX to increment share count
+                $.ajax({
+                    url: '/posts/' + postId + '/share',
+                    method: 'POST',
+                    headers: {
+                        'X-CSRF-TOKEN': '{{ csrf_token() }}'
+                    },
+                    success: function (response) {
+                        if (response.success) {
+                            $('#share-count-' + postId).text(response.share_count);
+                            Swal.fire({
+                                icon: 'success',
+                                title: 'Success',
+                                text: 'Link copied to clipboard.'
+                            });
+                        }
+                    }
+                });
+            });
+        });
     </script>
 @endsection

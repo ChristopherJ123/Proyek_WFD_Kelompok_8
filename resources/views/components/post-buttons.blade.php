@@ -53,14 +53,17 @@
         <div
             class="font-sans font-semibold text-xl">{{ $post->comments()->count() }}</div>
     </a>
-    <div class="flex items-center p-2 px-3 gap-3 rounded-4xl bg-brand-900">
+    <button type="button"
+            class="share-post-button flex items-center p-2 px-3 gap-3 rounded-4xl bg-brand-900 cursor-pointer"
+            data-post-id="{{ $post->id }}"
+            data-url="{{ route('topics.posts.show', [$post->topic, $post]) }}">
         <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"
-             fill="currentColor"
-             class="size-6">
+             fill="currentColor" class="size-6">
             <path
                 d="M3.478 2.404a.75.75 0 0 0-.926.941l2.432 7.905H13.5a.75.75 0 0 1 0 1.5H4.984l-2.432 7.905a.75.75 0 0 0 .926.94 60.519 60.519 0 0 0 18.445-8.986.75.75 0 0 0 0-1.218A60.517 60.517 0 0 0 3.478 2.404Z"/>
         </svg>
-        <div
-            class="font-sans font-semibold text-xl">{{ $post['share_count'] }}</div>
-    </div>
+        <span class="font-sans font-semibold text-xl share-count" id="share-count-{{ $post->id }}">
+            {{ $post->share_count }}
+        </span>
+    </button>
 </div>

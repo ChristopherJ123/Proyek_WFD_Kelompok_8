@@ -1,12 +1,13 @@
 @extends('layouts.app')
 
-@section('title', 'Topic')
+@section('title', 'Edit')
 
 @section('content')
-    <form action="{{ route('topics.store') }}" method="post" enctype="multipart/form-data" class="flex gap-4 w-full m-4">
+    <form action="{{ route('topics.update', $topic) }}" method="post" enctype="multipart/form-data" class="flex gap-4 w-full m-4">
         @csrf
+        @method('PUT')
         <div class="flex flex-col w-full gap-4">
-            <div class="text-xl font-bold tracking-wide">CREATE TOPIC</div>
+            <div class="text-xl font-bold tracking-wide">UPDATE TOPIC</div>
             <hr class="border-1">
             <div class="flex flex-col bg-brand-300 p-4 rounded-2xl gap-4 font-sans">
                 <div class="flex">
@@ -14,19 +15,19 @@
                         <div id="icon-add-button" class="size-8 rounded-full bg-brand-500 cursor-pointer">
                             <img id="icon-preview" src="{{ asset('storage/add.png') }}" alt="add" class="size-8">
                         </div>
-                        <span>y/topic_name</span>
+                        <span>y/{{ $topic->name }}</span>
                     </div>
                 </div>
                 <div class="relative">
-                    <input type="text" name="name" id="name" value="{{ old('name') }}" class="bg-brand-100 focus:outline-brand-500 lowercase focus:outline-2 w-full p-4 rounded-3xl text-lg peer placeholder-transparent" placeholder="Title*">
+                    <input type="text" name="name" id="name" value="{{ $topic->name }}" class="bg-brand-100 focus:outline-brand-500 lowercase focus:outline-2 w-full p-4 rounded-3xl text-lg peer placeholder-transparent" placeholder="Title*">
                     <label class="absolute left-4 top-4 text-lg peer-placeholder-shown:visible peer-focus:invisible invisible" for="name">Topic name<span class="font-bold text-red-500">*</span></label>
                 </div>
                 <div class="flex gap-8">
                     <div class="flex w-fit bg-brand-900 items-center rounded-4xl focus:outline-brand-500">
                         <select id="genre" name="genre" class="p-2 appearance-none font-semibold text-brand-300 focus:outline-0">
-                            <option disabled selected value="">-- Select a genre --</option>
                             @foreach($genres as $genre)
-                                <option value="{{ $genre->id }}" {{ old('genre') == $genre->id ? 'selected' : '' }}>{{ $genre->name }}</option>
+                                <option value="{{ $genre->id }}"
+                                    {{ old('genre', $topic->genre_id) == $genre->id ? 'selected' : '' }}>{{ $genre->name }}</option>
                             @endforeach
                         </select>
                         <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="size-6 text-brand-300">
@@ -38,7 +39,7 @@
                     </div>
                 </div>
                 <div class="relative">
-                    <textarea class="resize-none w-full bg-brand-100 focus:outline-brand-500 focus:outline-2 p-4 rounded-3xl text-lg peer" name="description" id="description" cols="30" rows="8" placeholder="Description*">{{ old('description') }}</textarea>
+                    <textarea class="resize-none w-full bg-brand-100 focus:outline-brand-500 focus:outline-2 p-4 rounded-3xl text-lg peer" name="description" id="description" cols="30" rows="8" placeholder="Description*">{{ old('description') ?? $topic->description }}</textarea>
                     <label class="absolute left-4 top-4 text-lg peer-placeholder-shown:visible peer-focus:invisible invisible" for="description">Description<span class="font-bold text-red-500">*</span></label>
                 </div>
 
@@ -50,25 +51,28 @@
 
         <div class="rule-tab flex flex-col gap-2 bg-brand-500 p-4 max-w-sm font-sans rounded-2xl w-sm overflow-y-auto">
             <div class="text-2xl font-bold font-lazy-dog whitespace-nowrap">
-                y/topic_name rules
+                y/{{ $topic->name }} rules
             </div>
-            <div id="rule-container-1" class="rule-container flex flex-col bg-brand-100 p-2 rounded-2xl">
-                <div class="flex space-x-4 items-center">
-                    <span class="text-xl">1</span>
-                    <div class="flex relative justify-between w-full font-semibold">
-                        <input class="peer placeholder-transparent focus:outline-brand-500 focus:outline-2" type="text" name="rules[0][title]" id="rules[0][title]" placeholder="Rule 1*">
-                        <label class="absolute invisible peer-placeholder-shown:visible peer-focus:invisible" for="rules[0][title]"><span>Rule 1<span class="text-red-500 font-bold">*</span></span></label>
-                        <div class="rule cursor-pointer">
-                            <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2"
-                                 stroke="currentColor" class="transition size-6">
-                                <path stroke-linecap="round" stroke-linejoin="round" d="m19.5 8.25-7.5 7.5-7.5-7.5" />
-                            </svg>
+            @foreach($topic->rules as $rule)
+                <div id="rule-container-1" class="rule-container flex flex-col bg-brand-100 p-2 rounded-2xl">
+                    <div class="flex space-x-4 items-center">
+                        <span class="text-xl">{{ $rule->order }}</span>
+                        <div class="flex relative justify-between w-full font-semibold">
+                            <input class="peer placeholder-transparent focus:outline-brand-500 focus:outline-2" type="text" name="rules[{{ $loop->index }}][title]" id="rules[{{ $loop->index }}][title]" value="{{ $rule->title }}" placeholder="Rule 1*">
+                            <label class="absolute invisible peer-placeholder-shown:visible peer-focus:invisible" for="rules[{{ $loop->index }}][title]"><span>Rule 1<span class="text-red-500 font-bold">*</span></span></label>
+                            <div class="rule cursor-pointer">
+                                <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2"
+                                     stroke="currentColor" class="transition size-6">
+                                    <path stroke-linecap="round" stroke-linejoin="round" d="m19.5 8.25-7.5 7.5-7.5-7.5" />
+                                </svg>
+                            </div>
                         </div>
                     </div>
+                    <textarea name="rules[{{ $loop->index }}][description]" id="rules[{{ $loop->index }}][description]" class="hidden border-2 focus:outline-brand-300 focus:outline-2 border-brand-300 rounded-2xl p-2 resize-none" placeholder="Rule description (optional)" cols="30" rows="2">{{ $rule->description }}</textarea>
+                    <input type="hidden" name="rules[{{ $loop->index }}][order]" value="{{ $rule->order }}">
                 </div>
-                <textarea name="rules[0][description]" id="rules[0][description]" class="hidden border-2 focus:outline-brand-300 focus:outline-2 border-brand-300 rounded-2xl p-2 resize-none" placeholder="Rule description (optional)" cols="30" rows="2"></textarea>
-                <input type="hidden" name="rules[0][order]" value="1">
-            </div>
+            @endforeach
+
             <div class="flex">
                 <div class="flex flex-1 justify-center">
                     <svg id="add-rule" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor" class="size-8 rounded-full bg-brand-100 cursor-pointer">
@@ -85,8 +89,23 @@
             <hr class="border border-gray-800">
 
             <div class="text-2xl font-bold font-lazy-dog whitespace-nowrap">
-                y/topic_name moderators
+                y/{{ $topic->name }} moderators
             </div>
+
+            @foreach($topic->moderators as $moderator)
+                <div id="moderator-container-{{ $loop->index }}" class="moderator-container flex flex-col bg-brand-100 p-2 rounded-2xl">
+                    <div class="flex space-x-4 items-center">
+                        <span class="text-xl">{{ $loop->iteration }}</span>
+                        <div class="flex relative justify-between w-full font-semibold">
+                            @if($loop->first)
+                                <input type="text" name="moderators[{{ $loop->index }}]" id="moderators[{{ $loop->index }}]" placeholder="Username" class="focus:outline-brand-500 focus:outline-2 text-brand-500" value="{{ $moderator->username }}" disabled>
+                            @else
+                                <input type="text" name="moderators[{{ $loop->index }}]" id="moderators[{{ $loop->index }}]" placeholder="Username" class="focus:outline-brand-500 focus:outline-2" value="{{ $moderator->username }}">
+                            @endif
+                        </div>
+                    </div>
+                </div>
+            @endforeach
 
             <div class="flex">
                 <div class="flex flex-1 justify-center">
@@ -158,7 +177,7 @@
 
         $('#remove-moderator').on('click', function () {
             const moderators = $('.moderator-container')
-            if (moderators.length > 0) {
+            if (moderators.length > 1) {
                 moderators.last().remove();
             }
         })

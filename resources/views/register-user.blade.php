@@ -13,22 +13,22 @@
             {{-- Username --}}
             <div>
                 <label class="block" for="username">Username</label>
-                <input class="border border-brand-500 rounded-md w-full px-4 py-2 bg-brand-500" name="username" type="text" required placeholder="username">
+                <input class="border border-brand-500 rounded-md w-full px-4 py-2 bg-brand-500" name="username" type="text" placeholder="username" value="{{ old('username') }}" required >
             </div>
             {{-- Email --}}
             <div>
                 <label class="block" for="email">Email</label>
-                <input class="border border-brand-500 rounded-md w-full px-4 py-2 bg-brand-500" type="email" name="email" placeholder="placeholder@gmail.com" required>
+                <input class="border border-brand-500 rounded-md w-full px-4 py-2 bg-brand-500" type="email" name="email" placeholder="placeholder@gmail.com" value="{{ old('email') }}" required>
             </div>
             {{-- birth date --}}
             <div>
                 <label class="block" for="birth_date">Birth Date</label>
-                <input class="border border-brand-500 rounded-md w-full px-4 py-2 bg-brand-500" type="date" name="birth_date" required id="birth_date">
+                <input class="border border-brand-500 rounded-md w-full px-4 py-2 bg-brand-500" type="date" name="birth_date" required id="birth_date" value="{{ old('birth_date') }}">
             </div>
             {{-- favorite genre --}}
             <div>
-                <label for="">Favorite Genre(s)</label>
-                <select  name="genres[]" id="genres" multiple >
+                <label for="genres">Favorite Genre(s)</label>
+                <select name="genres[]" id="genres" class="border border-brand-500 rounded-md w-full px-4 py-2 bg-brand-500" multiple>
                     @foreach ($genres as $genre)
                         <option value="{{ $genre->id }}">{{ $genre->name }}</option>
                     @endforeach
@@ -48,14 +48,14 @@
                     </svg>
 
                     {{-- Hidden Eye Icon --}}
-                    <svg id="eye-hide" class="h-6 w-6 hidden" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="size-6">
+                    <svg id="eye-hide" class="size-6 hidden" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor">
                         <path stroke-linecap="round" stroke-linejoin="round" d="M3.98 8.223A10.477 10.477 0 0 0 1.934 12C3.226 16.338 7.244 19.5 12 19.5c.993 0 1.953-.138 2.863-.395M6.228 6.228A10.451 10.451 0 0 1 12 4.5c4.756 0 8.773 3.162 10.065 7.498a10.522 10.522 0 0 1-4.293 5.774M6.228 6.228 3 3m3.228 3.228 3.65 3.65m7.894 7.894L21 21m-3.228-3.228-3.65-3.65m0 0a3 3 0 1 0-4.243-4.243m4.242 4.242L9.88 9.88" />
                     </svg>
                 </span>
             </div>
             <div>
                 <label class="block" for="password_confirmation">Confirm Password</label>
-                <input class="border border-brand-500 rounded-md w-full px-4 py-2 bg-brand-500" 
+                <input class="border border-brand-500 rounded-md w-full px-4 py-2 bg-brand-500"
                     type="password" name="password_confirmation" id="password_confirmation" required placeholder="Confirm password">
             </div>
             <div class="flex justify-center items-center py-3">

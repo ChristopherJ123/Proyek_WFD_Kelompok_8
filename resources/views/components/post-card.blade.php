@@ -12,6 +12,9 @@
                 </div>
             </div>
         @endif
+        @if($post->reports()->exists() && auth()->check() && (auth()->user()->role_id == 2 || auth()->user()->moderatedTopics()->where('topic_id', $post->topic_id)->exists()))
+            <span class="bg-red-100 text-red-400 py-1 px-2 rounded-full font-sans text-sm font-semibold">Has been reported {{ $post->reports()->count() }} time(s)</span>
+        @endif
         <a
             href="{{ route('topics.posts.show', [$post->topic, $post]) }}"
             class="font-sans tracking-normal mx-8 text-xl font-medium line-clamp-2">

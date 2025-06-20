@@ -10,6 +10,7 @@ use App\Models\UserVote;
 use Illuminate\Database\Query\Builder;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Storage;
 use Illuminate\Validation\Rules\File;
 
 class PostController extends Controller
@@ -57,12 +58,22 @@ class PostController extends Controller
         ]);
     }
 
+    public function share(Post $post)
+    {
+        $post->increment('share_count');
+
+        return response()->json([
+            'success' => true,
+            'share_count' => $post->share_count
+        ]);
+    }
+
     /**
      * Display a listing of the resource.
      */
-    public function index()
+    public function index(Topic $topic)
     {
-        //
+        return redirect()->route('topics.show', $topic);
     }
 
     /**
@@ -166,24 +177,69 @@ class PostController extends Controller
     /**
      * Show the form for editing the specified resource.
      */
-    public function edit(Post $post)
+    public function edit(Topic $topic, Post $post)
     {
-        //
+        return view('edit-post', compact('topic', 'post'));
     }
 
     /**
      * Update the specified resource in storage.
      */
-    public function update(Request $request, Post $post)
+    public function update(Request $request, Topic $topic, Post $post)
     {
-        //
+        if ($request->user()->id !== $post->author_id) {
+            abort(403, 'You are not authorized to update this post.');
+        }
+
+        if ($request->user()->isBannedFromTopic($topic->id)) {
+            return redirect()->back()->withErrors(['message' => 'You are banned from posting in this topic.']);
+        }
+
+        $validated = $request->validate([
+            'title' => 'required|string',
+            'description' => 'required|string',
+            'images' => 'nullable|array|max:4',
+            'images.*' => [
+                'nullable',
+                File::image()
+                    ->extensions(['png','jpg','jpeg'])
+                    ->max(4096)
+            ],
+        ]);
+
+        $post->title = $validated['title'];
+        $post->description = $validated['description'];
+        $post->save();
+
+        if ($request->hasFile('images')) {
+            foreach ($post->images as $image) {
+                Storage::disk('public')->delete($image->image_link);
+                $image->delete();
+            }
+
+            // Upload new images
+            foreach ($request->file('images') as $index => $imageFile) {
+                $extension = $imageFile->extension();
+                $filename = "{$topic->name}_{$post->id}_{$index}.{$extension}";
+                $path = $imageFile->storeAs('images/post_images', $filename, 'public');
+
+                $post->images()->create([
+                    'image_link' => $path
+                ]);
+            }
+        }
+
+        return redirect()->route('topics.posts.show', [$topic, $post])
+            ->with('success', 'Post updated successfully.');
     }
 
     /**
      * Remove the specified resource from storage.
      */
-    public function destroy(Post $post)
+    public function destroy(Topic $topic, Post $post)
     {
-        //
+        $post->delete();
+
+        return redirect()->route('topics.show', $topic)->with('success', 'Post deleted successfully.');
     }
 }

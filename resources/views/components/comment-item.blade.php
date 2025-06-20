@@ -35,7 +35,12 @@
             >
         @endif
         <div class="flex flex-col w-full">
-            <div class="uppercase tracking-wider font-lazy-dog font-bold">{{ $comment->author->username }}</div>
+            <div class="uppercase tracking-wider font-lazy-dog font-bold">
+                <span>{{ $comment->author->username }}</span>
+                @if($comment->reports()->exists() && auth()->check() && (auth()->user()->role_id == 2 || auth()->user()->moderatedTopics()->where('topic_id', $post->topic_id)->exists()))
+                    <span class="bg-red-100 text-red-400 py-1 px-2 rounded-full sans normal-case font-sans text-sm">Has been reported {{ $comment->reports()->count() }} time(s)</span>
+                @endif
+            </div>
             <div>{{ $comment->message }}</div>
             @if ($comment->is_marked_answer)
                 <span class="text-green-600 font-bold text-sm mt-1">✓ Marked as Answer</span>
@@ -125,7 +130,7 @@
             @endif
         @endif
 
-        
+
         {{-- Tombol mark asnwer --}}
         @if (auth()->check() && auth()->id() === $post->author->id && !$comment->is_marked_answer)
             <form method="POST" action="{{ route('topics.posts.comments.mark-answer', [$post->topic, $post, $comment]) }}">

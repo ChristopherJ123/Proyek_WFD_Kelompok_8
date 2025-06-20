@@ -29,6 +29,16 @@
         </script>
     @endif
 
+    @if(session()->has('warning'))
+        <script>
+            Swal.fire({
+                title: "Error",
+                text: "{{ session('warning') }}",
+                icon: "warning"
+            });
+        </script>
+    @endif
+
     @if(session()->has('success'))
         <script>
             Swal.fire({
