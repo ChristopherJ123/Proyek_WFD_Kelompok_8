@@ -14,14 +14,14 @@ class NotificationController extends Controller {
     $comments = PostComment::with(['post.topic', 'author', 'parent'])
         ->where(function ($query) use ($userId) {
             $query
-                // CASE 1: Comment on my post (not yet read)
+                // CASE 1: Marked as answer (and unread)
                 ->orWhere(function ($q) use ($userId) {
-                    $q->whereHas('post', function ($postQuery) use ($userId) {
-                        $postQuery->where('author_id', $userId);
-                    })->where('is_post_owner_read', false);
+                    $q->where('author_id', $userId)
+                      ->where('is_marked_answer', true)
+                      ->where('is_post_comment_owner_read', false); // fix here
                 })
 
-                // CASE 2: Reply to my comment (must be reply & unread)
+                // CASE 2: Reply to comment
                 ->orWhere(function ($q) use ($userId) {
                     $q->whereNotNull('parent_message_id')
                       ->where('is_parent_message_owner_read', false)
@@ -30,11 +30,11 @@ class NotificationController extends Controller {
                       });
                 })
 
-                // CASE 3: My comment was marked as answer (show only if marked & flag = true)
+                // CASE 3: comment was marked as answer 
                 ->orWhere(function ($q) use ($userId) {
-                    $q->where('author_id', $userId)
-                      ->where('is_marked_answer', true)
-                      ->where('is_post_comment_owner_read', true);
+                    $q->whereHas('post', function ($postQuery) use ($userId) {
+                        $postQuery->where('author_id', $userId);
+                    })->where('is_post_owner_read', false);
                 });
         })
         ->get()
@@ -54,7 +54,7 @@ class NotificationController extends Controller {
             'data' => $item
         ]);
 
-    // ❤️ Upvotes
+    //  Upvotes
         $upvotes = UserVote::with(['user', 'post', 'comment'])
         ->where('is_upvote', true)
         ->where('is_owner_read', false)
@@ -69,7 +69,7 @@ class NotificationController extends Controller {
             'data' => $item
         ]);
 
-        // 🧩 Combine and sort all by created_at
+        // Combine and sort all by created_at
         $notifications = collect()
             ->merge($comments)
             ->merge($dms)
@@ -78,6 +78,75 @@ class NotificationController extends Controller {
 
         // $dd();
     return view('notifications', compact('notifications'));
+}
+
+public function redirect($type, $id) {
+    $userId = auth()->id();
+
+    switch ($type) {
+        case 'comment':
+            $comment = \App\Models\PostComment::with(['post.topic', 'parent'])->findOrFail($id);
+
+            $isUpdated = false;
+
+            // CASE 1: Marked as answer
+            if ($comment->is_marked_answer && $comment->author_id === $userId) {
+                $comment->is_post_comment_owner_read = true;
+                $isUpdated = true;
+            }
+
+            // CASE 2: Reply to your comment
+            if (
+                $comment->parent &&
+                $comment->parent->author_id === $userId 
+            ) {
+                $comment->is_parent_message_owner_read = true;
+                $isUpdated = true;
+            }
+
+            // CASE 3: Commented on your post
+            if (
+                $comment->post->author_id === $userId &&
+                !$comment->is_post_owner_read
+            ) {
+                $comment->is_post_owner_read = true;
+                $isUpdated = true;
+            }
+
+            if ($isUpdated) {
+                $comment->save();
+            }
+            return redirect()->route('topics.posts.show', [$comment->post->topic, $comment->post]);
+        
+        case 'upvote':
+            $vote = \App\Models\UserVote::with(['post.topic', 'comment.post.topic'])->findOrFail($id);
+
+            if (
+                ($vote->post && $vote->post->author_id === $userId) ||
+                ($vote->comment && $vote->comment->author_id === $userId)
+            ) {
+                $vote->is_owner_read = true;
+                $vote->save();
+            }
+
+            if ($vote->post) {
+                return redirect()->route('topics.posts.show', [$vote->post->topic, $vote->post]);
+            } elseif ($vote->comment) {
+                return redirect()->route('topics.posts.show', [$vote->comment->post->topic, $vote->comment->post]);
+            }
+            break;
+
+        case 'dm':
+            $dm = \App\Models\DirectMessage::findOrFail($id);
+            if ($dm->target_user_id === $userId) {
+                $dm->is_read = true;
+                $dm->save();
+            }
+            return redirect()->route('messages.index', $dm->sender_id);
+
+        default:
+            abort(404);
+    }
 }
 
 }

@@ -66,6 +66,8 @@ Route::middleware(UserOnly::class)->group(function () {
     Route::post('messages/{user}', [DirectMessageController::class, 'store'])->name('messages.store');
 
     Route::get('notifications', [NotificationController::class, 'index'])->name('notifications.index');
+    Route::get('/notifications/redirect/{type}/{id}', [NotificationController::class, 'redirect'])->name('notifications.redirect');
+
 
     Route::post('posts/{post}/vote', [PostController::class, 'vote'])->name('posts.vote');
 });
