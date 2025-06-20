@@ -10,6 +10,7 @@
     <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
     <title>@yield('title', 'Document')</title>
     @vite(['resources/css/app.css', 'resources/js/app.js'])
+    <link rel="icon" href="{{ asset('storage/images/logo.png') }}" type="image/png">
     <style>
         body {
             font-family: "Lazy Dog", sans-serif;
