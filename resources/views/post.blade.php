@@ -29,6 +29,27 @@
                         <button class="block w-full text-left px-4 py-2 text-sm text-red-600 hover:bg-gray-100 report-post-btn" data-post-id="{{ $post->id }}">
                             Report
                         </button>
+                        @if(auth()->check() && (auth()->user()->role_id === 2 || auth()->user()->moderatedTopics()->where('topic_id', $topic->id)->exists()))
+                            <button class="block w-full text-left px-4 py-2 text-sm text-red-600 hover:bg-gray-100 ban-from-topic-btn"
+                                data-post-id="{{ $post->id }}"
+                                data-topic-id="{{ $topic->id }}"
+                                data-user-id="{{ $post->author->id }}">
+                                Ban from Topic
+                            </button>
+                        @endif
+                        @if(auth()->check() && (auth()->user()->role_id === 2 || auth()->user()->moderatedTopics()->where('topic_id', $topic->id)->exists()))
+                            <button class="block w-full text-left px-4 py-2 text-sm text-red-600 hover:bg-gray-100 ban-from-topic-btn"
+                                data-post-id="{{ $post->id }}"
+                                data-topic-id="{{ $topic->id }}"
+                                data-user-id="{{ $post->author->id }}">
+                                Ban from Topic
+                            </button>
+                            <button class="block w-full text-left px-4 py-2 text-sm text-green-600 hover:bg-gray-100 unban-from-topic-btn"
+                                data-topic-id="{{ $topic->id }}"
+                                data-user-id="{{ $post->author->id }}">
+                                Unban from Topic
+                            </button>
+                        @endif
                     </div>
                 </div>
             </div>
@@ -42,28 +63,35 @@
             </div>
             <x-post-buttons :post="$post"></x-post-buttons>
             <form action="{{ route('topics.posts.comments.store', [$topic, $post]) }}" method="post" enctype="multipart/form-data" class="border-4 border-brand-900 rounded-4xl p-2 relative">
-                @csrf
                 @if(!auth()->check())
-                    <input class="w-full focus:outline-0 placeholder-transparent peer"
-                           type="text" name="message" id="message" placeholder="Login to join the discussion" disabled>
-                    <label class="absolute left-2 peer-placeholder-shown:text-gray-600 peer-placeholder-shown:visible peer-focus:invisible invisible cursor-text" for="message">Login to join the discussion</label>
+                    <form class="border-4 border-brand-900 rounded-4xl p-2 relative">
+                        <input class="w-full focus:outline-0 placeholder-transparent peer"
+                            type="text" name="message" id="message" placeholder="Login to join the discussion" disabled>
+                        <label class="absolute left-2 peer-placeholder-shown:text-gray-600 peer-placeholder-shown:visible peer-focus:invisible invisible cursor-text" for="message">Login to join the discussion</label>
+                    </form>
+                @elseif($isBanned)
+                    <form class="border-4 border-red-900 bg-red-50 rounded-4xl p-4">
+                        <div class="text-red-800 font-semibold">You are banned from commenting in this topic.</div>
+                    </form>
                 @else
-                    <input class="w-full focus:outline-0 placeholder-transparent peer"
-                           type="text" name="message" id="message" placeholder="Join the discussion">
-                    <label class="absolute left-2 peer-placeholder-shown:text-gray-600 peer-placeholder-shown:visible peer-focus:invisible invisible cursor-text" for="message">Join the discussion<span class="text-red-500 font-bold">*</span></label>
+                    <form action="{{ route('topics.posts.comments.store', [$topic, $post]) }}" method="post" enctype="multipart/form-data" class="border-4 border-brand-900 rounded-4xl p-2 relative">
+                        @csrf
+                        <input class="w-full focus:outline-0 placeholder-transparent peer"
+                            type="text" name="message" id="message" placeholder="Join the discussion">
+                        <label class="absolute left-2 peer-placeholder-shown:text-gray-600 peer-placeholder-shown:visible peer-focus:invisible invisible cursor-text" for="message">Join the discussion<span class="text-red-500 font-bold">*</span></label>
+
+                        <div class="comment-add-picture flex w-fit mt-4 items-center gap-2 p-2 rounded-4xl font-semibold bg-brand-900 text-brand-300 cursor-pointer">
+                            <span class="bg-brand-300 rounded-full p-1">
+                                <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor" class="size-6 text-white">
+                                    <path d="M9.97.97a.75.75 0 0 1 1.06 0l3 3a.75.75 0 0 1-1.06 1.06l-1.72-1.72v3.44h-1.5V3.31L8.03 5.03a.75.75 0 0 1-1.06-1.06l3-3ZM9.75 6.75v6a.75.75 0 0 0 1.5 0v-6h3a3 3 0 0 1 3 3v7.5a3 3 0 0 1-3 3h-7.5a3 3 0 0 1-3-3v-7.5a3 3 0 0 1 3-3h3Z" />
+                                    <path d="M7.151 21.75a2.999 2.999 0 0 0 2.599 1.5h7.5a3 3 0 0 0 3-3v-7.5c0-1.11-.603-2.08-1.5-2.599v7.099a4.5 4.5 0 0 1-4.5 4.5H7.151Z" />
+                                </svg>
+                            </span>
+                            <div>Add Pictures</div>
+                        </div>
+                        <input class="hidden images-input" type="file" name="images[]" id="images" accept="image/*" multiple>
+                    </form>
                 @endif
-                <div class="comment-add-picture flex w-fit mt-4 items-center gap-2 p-2 rounded-4xl font-semibold bg-brand-900 text-brand-300 cursor-pointer">
-                    <span class="bg-brand-300 rounded-full p-1">
-                        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor" class="size-6 text-white">
-                            <path d="M9.97.97a.75.75 0 0 1 1.06 0l3 3a.75.75 0 0 1-1.06 1.06l-1.72-1.72v3.44h-1.5V3.31L8.03 5.03a.75.75 0 0 1-1.06-1.06l3-3ZM9.75 6.75v6a.75.75 0 0 0 1.5 0v-6h3a3 3 0 0 1 3 3v7.5a3 3 0 0 1-3 3h-7.5a3 3 0 0 1-3-3v-7.5a3 3 0 0 1 3-3h3Z" />
-                            <path d="M7.151 21.75a2.999 2.999 0 0 0 2.599 1.5h7.5a3 3 0 0 0 3-3v-7.5c0-1.11-.603-2.08-1.5-2.599v7.099a4.5 4.5 0 0 1-4.5 4.5H7.151Z" />
-                        </svg>
-                    </span>
-                    <div>
-                        Add Pictures
-                    </div>
-                </div>
-                <input class="hidden images-input" type="file" name="images[]" id="images" accept="image/*" multiple>
             </form>
 
             <div class="flex flex-col gap-4 overflow-x-auto min-h-fit">
@@ -326,6 +354,137 @@
             });
         });
 
+        // ban dari topic
+        $('.ban-from-topic-btn').on('click', function () {
+            const postId = $(this).data('post-id');
+            const topicId = $(this).data('topic-id');
+            const userId = $(this).data('user-id');
+
+            Swal.fire({
+                title: 'Ban User from Topic',
+                input: 'text',
+                inputLabel: 'Reason',
+                inputPlaceholder: 'Enter reason for banning...',
+                showCancelButton: true,
+                confirmButtonText: 'Ban',
+                preConfirm: (reason) => {
+                    if (!reason) {
+                        Swal.showValidationMessage('Reason is required.');
+                    }
+                    return reason;
+                }
+            }).then((result) => {
+                if (result.isConfirmed) {
+                    $.ajax({
+                        url: `/topics/${topicId}/ban/${userId}`,
+                        method: 'POST',
+                        data: {
+                            _token: '{{ csrf_token() }}',
+                            user_id: userId,
+                            reason: result.value,
+                        },
+                        success: function (response) {
+                            Swal.fire({
+                                icon: 'success',
+                                title: 'User Banned',
+                                text: response.message || 'User has been banned from this topic.'
+                            });
+                        },
+                        error: function (response) {
+                            Swal.fire({
+                                icon: 'error',
+                                title: 'Failed',
+                                text: response.responseJSON?.message || 'Ban failed.'
+                            });
+                        }
+                    });
+                }
+            });
+        });
+
+        //ban topic comment
+        $('.ban-user-btn').on('click', function () {
+            const topicId = $(this).data('topic-id');
+            const userId = $(this).data('user-id');
+
+            Swal.fire({
+                title: 'Ban User from Topic',
+                input: 'text',
+                inputLabel: 'Reason',
+                inputPlaceholder: 'Enter reason for banning...',
+                showCancelButton: true,
+                confirmButtonText: 'Ban',
+                preConfirm: (reason) => {
+                    if (!reason) {
+                        Swal.showValidationMessage('Reason is required.');
+                    }
+                    return reason;
+                }
+            }).then((result) => {
+                if (result.isConfirmed) {
+                    $.ajax({
+                        url: `/topics/${topicId}/ban/${userId}`,
+                        method: 'POST',
+                        data: {
+                            _token: '{{ csrf_token() }}',
+                            reason: result.value,
+                        },
+                        success: function (response) {
+                            Swal.fire({
+                                icon: 'success',
+                                title: 'User Banned',
+                                text: response.message || 'User has been banned from this topic.'
+                            });
+                        },
+                        error: function (response) {
+                            Swal.fire({
+                                icon: 'error',
+                                title: 'Failed',
+                                text: response.responseJSON?.message || 'Ban failed.'
+                            });
+                        }
+                    });
+                }
+            });
+        });
+
+        // unban dari topic
+        $('.unban-from-topic-btn').on('click', function () {
+            const topicId = $(this).data('topic-id');
+            const userId = $(this).data('user-id');
+
+            Swal.fire({
+                title: 'Unban User from Topic',
+                text: 'Are you sure you want to unban this user?',
+                icon: 'warning',
+                showCancelButton: true,
+                confirmButtonText: 'Yes, unban',
+            }).then((result) => {
+                if (result.isConfirmed) {
+                    $.ajax({
+                        url: `/topics/${topicId}/unban/${userId}`,
+                        method: 'POST',
+                        data: {
+                            _token: '{{ csrf_token() }}',
+                        },
+                        success: function (response) {
+                            Swal.fire({
+                                icon: 'success',
+                                title: 'User Unbanned',
+                                text: response.message || 'User has been unbanned from this topic.'
+                            });
+                        },
+                        error: function (response) {
+                            Swal.fire({
+                                icon: 'error',
+                                title: 'Failed',
+                                text: response.responseJSON?.message || 'Could not unban user.'
+                            });
+                        }
+                    });
+                }
+            });
+        });
 
     </script>
 

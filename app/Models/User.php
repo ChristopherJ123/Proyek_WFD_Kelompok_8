@@ -92,4 +92,19 @@ class User extends Authenticatable
         return $this->belongsToMany(Topic::class, 'user_topic_visited', 'user_id', 'topic_id')->withTimestamps();
     }
 
+    public function isBannedFromTopic($topicId)
+    {
+        return \DB::table('topic_blocked_users')
+            ->where('user_id', $this->id)
+            ->where('topic_id', $topicId)
+            ->exists();
+    }
+
+    public function moderatedTopics()
+    {
+        return $this->belongsToMany(Topic::class, 'topic_moderators', 'user_id', 'topic_id');
+    }
+
+
+
 }

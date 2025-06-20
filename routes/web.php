@@ -65,6 +65,8 @@ Route::middleware(UserOnly::class)->group(function () {
     Route::post('messages/{user}', [DirectMessageController::class, 'store'])->name('messages.store');
 
     Route::post('posts/{post}/vote', [PostController::class, 'vote'])->name('posts.vote');
+    Route::post('/topics/{topic}/ban-user', [\App\Http\Controllers\TopicBanController::class, 'banUser'])->name('topics.ban-user');
+
 });
 
 Route::get('dashboard', [DashboardController::class, 'index'])->name('dashboard');
@@ -83,4 +85,7 @@ Route::middleware(AjaxRequestsOnly::class)->group(function () {
     Route::post('posts/{post}/vote', [PostController::class, 'vote'])->middleware(UserOnly::class)->name('posts.vote');
     Route::post('/report/post/{postId}', [ReportController::class, 'reportPost'])->middleware(UserOnly::class)->name('report.post');
     Route::post('/report/comment/{commentId}', [ReportController::class, 'reportComment'])->middleware(UserOnly::class)->name('report.comment');
+    Route::post('/topic/{topic}/ban-user', [TopicBanController::class, 'banUser'])->middleware(UserOnly::class)->name('topics.ban.user');
+    Route::post('/topics/{topic}/ban/{user}', [\App\Http\Controllers\TopicBanController::class, 'ban'])->middleware(UserOnly::class)->name('topics.ban');
+    Route::post('/topics/{topic}/unban/{user}', [TopicBanController::class, 'unban'])->name('topics.unban');
 });
