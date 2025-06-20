@@ -45,7 +45,10 @@ class PostCommentPolicy
      */
     public function delete(User $user, PostComment $postComment): bool
     {
-        return $user->id === $postComment->author_id;
+        return $user->id === $postComment->author_id ||
+            $user->id === $postComment->post->author_id ||
+            $user->moderatedTopics()->where('topic_id', $postComment->post->topic_id)->exists() ||
+            $user->role_id === 2;
     }
 
     /**

@@ -64,9 +64,11 @@ class TopicController extends Controller
     {
         $user = $request->user()->id;
 
+        $request['name'] = str_replace(' ', '_', $request->name);
+
         $request->validate([
             'genre' => 'required|string',
-            'name' => 'required|unique:topics|string|max:64|regex:/^\S+$/',
+            'name' => 'required|unique:topics|string|max:64|regex:/^[a-zA-Z0-9_-]+$/',
             'description' => 'required|string|max:255',
             'icon' => [
                 'nullable',
@@ -87,7 +89,7 @@ class TopicController extends Controller
             'moderators' => 'nullable|array',
             'moderators.*' => 'required|string',
         ], [
-            'name.regex' => 'Topic Name must not contain spaces.'
+            'name.regex' => 'The topic name may only contain letters, numbers, underscores, or dashes.'
         ]);
 
         $topic = new Topic();

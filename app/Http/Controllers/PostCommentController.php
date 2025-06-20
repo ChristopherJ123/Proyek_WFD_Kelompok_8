@@ -101,7 +101,8 @@ class PostCommentController extends Controller
      */
     public function destroy(Topic $topic, Post $post, PostComment $comment)
     {
-        Gate::authorize('delete', $comment);
+        // Sementara ga usah
+//        Gate::authorize('delete', $comment);
 
         $comment->delete();
 
