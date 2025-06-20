@@ -10,6 +10,7 @@ use App\Models\UserVote;
 use Illuminate\Database\Query\Builder;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Gate;
 use Illuminate\Support\Facades\Storage;
 use Illuminate\Validation\Rules\File;
 
@@ -187,9 +188,7 @@ class PostController extends Controller
      */
     public function update(Request $request, Topic $topic, Post $post)
     {
-        if ($request->user()->id !== $post->author_id) {
-            abort(403, 'You are not authorized to update this post.');
-        }
+        Gate::authorize('update', $post);
 
         if ($request->user()->isBannedFromTopic($topic->id)) {
             return redirect()->back()->withErrors(['message' => 'You are banned from posting in this topic.']);
@@ -238,6 +237,8 @@ class PostController extends Controller
      */
     public function destroy(Topic $topic, Post $post)
     {
+        Gate::authorize('delete', $post);
+
         $post->delete();
 
         return redirect()->route('topics.show', $topic)->with('success', 'Post deleted successfully.');

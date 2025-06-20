@@ -10,6 +10,7 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Arr;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Gate;
 use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Str;
 use Illuminate\Validation\Rule;
@@ -219,6 +220,8 @@ class TopicController extends Controller
      */
     public function update(Request $request, Topic $topic)
     {
+        Gate::authorize('update', $topic);
+
         $data = $request->validate([
             'genre'          => ['required','integer','exists:genres,id'],
             'name'           => ['required',
@@ -295,6 +298,8 @@ class TopicController extends Controller
      */
     public function destroy(Topic $topic)
     {
+        Gate::authorize('delete', $topic);
+
         $topic->delete();
 
         return redirect()->route('dashboard')->with('success', 'Topic deleted succesfully');

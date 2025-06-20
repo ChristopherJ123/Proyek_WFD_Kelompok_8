@@ -7,6 +7,7 @@ use App\Models\PostComment;
 use App\Models\Topic;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Gate;
 use Illuminate\Validation\Rules\File;
 
 class PostCommentController extends Controller
@@ -100,6 +101,8 @@ class PostCommentController extends Controller
      */
     public function destroy(Topic $topic, Post $post, PostComment $comment)
     {
+        Gate::authorize('delete', $comment);
+
         $comment->delete();
 
         return redirect()->route('topics.posts.show', [$topic, $post]);
