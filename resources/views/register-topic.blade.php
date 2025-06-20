@@ -1,5 +1,7 @@
 @extends('layouts.app')
 
+@section('title', 'Topic')
+
 @section('content')
     <form action="{{ route('topics.store') }}" method="post" enctype="multipart/form-data" class="flex gap-4 w-full m-4">
         @csrf

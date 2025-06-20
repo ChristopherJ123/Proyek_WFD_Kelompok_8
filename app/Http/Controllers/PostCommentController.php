@@ -113,6 +113,7 @@ class PostCommentController extends Controller
         PostComment::where('post_id', $post->id)->update(['is_marked_answer' => false]);
 
         $comment->is_marked_answer = true;
+        $comment->is_post_comment_owner_read = true;
         $comment->save();
 
         // dd($comment);

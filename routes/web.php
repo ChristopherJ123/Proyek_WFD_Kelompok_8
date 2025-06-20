@@ -15,6 +15,7 @@ use App\Http\Middleware\AjaxRequestsOnly;
 use App\Http\Middleware\GuestOnly;
 use App\Http\Middleware\UserOnly;
 use App\Models\DirectMessage;
+use App\Http\Controllers\NotificationController;
 use Illuminate\Support\Facades\Route;
 
 Route::get('/', function () {
@@ -63,6 +64,8 @@ Route::middleware(UserOnly::class)->group(function () {
     Route::get('messages/start', [DirectMessageController::class, 'startConversation'])->name('messages.start');
     Route::get('messages/{user}', [DirectMessageController::class, 'index'])->name('messages.index');
     Route::post('messages/{user}', [DirectMessageController::class, 'store'])->name('messages.store');
+
+    Route::get('notifications', [NotificationController::class, 'index'])->name('notifications.index');
 
     Route::post('posts/{post}/vote', [PostController::class, 'vote'])->name('posts.vote');
     Route::post('/topics/{topic}/ban-user', [\App\Http\Controllers\TopicBanController::class, 'banUser'])->name('topics.ban-user');

@@ -21,13 +21,19 @@
     </div>
     <div class="flex gap-1 ml-12 items-center">
         <div>
-            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor" class="size-8">
+            <span
+                class="cursor-pointer hover:text-blue-500"
+                title="Notifications"
+                onclick="window.location.href='{{ route('notifications.index') }}'"
+            >
+                <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor" class="size-8">
                 <path fill-rule="evenodd"
                       d="M5.25 9a6.75 6.75 0 0 1 13.5 0v.75c0 2.123.8 4.057 2.118 5.52a.75.75 0 0 1-.297 1.206c-1.544.57-3.16.99-4.831 1.243a3.75 3.75 0 1 1-7.48 0 24.585 24.585 0 0 1-4.831-1.244.75.75 0 0 1-.298-1.205A8.217 8.217 0 0 0 5.25 9.75V9Zm4.502 8.9a2.25 2.25 0 1 0 4.496 0 25.057 25.057 0 0 1-4.496 0Z"
                       clip-rule="evenodd"/>
-            </svg>
+                </svg>
+            </span>
         </div>
-        <a href="{{ route('topics.create') }}" class="flex items-center">
+        <a href="{{ route('topics.create') }}" class="flex items-center hover:text-blue-500">
             <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor" class="size-8">
                 <path fill-rule="evenodd"
                       d="M12 2.25c-5.385 0-9.75 4.365-9.75 9.75s4.365 9.75 9.75 9.75 9.75-4.365 9.75-9.75S17.385 2.25 12 2.25ZM12.75 9a.75.75 0 0 0-1.5 0v2.25H9a.75.75 0 0 0 0 1.5h2.25V15a.75.75 0 0 0 1.5 0v-2.25H15a.75.75 0 0 0 0-1.5h-2.25V9Z"
@@ -39,7 +45,7 @@
         </a>
         <div>
             <span
-                class="cursor-pointer"
+                class="cursor-pointer hover:text-blue-500"
                 title="Direct Messages"
                 onclick="window.location.href='{{ route('messages.menu') }}'">
                 <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor" class="size-8">

@@ -1,0 +1,82 @@
+@extends('layouts.app')
+
+@section('title', 'Notifications')
+
+@section('content')
+    <div class="bg-brand-300 p-8 w-full overflow-y-auto text-lg">
+        <div class="text-2xl font-bold text-center">
+            Your Notifications
+        </div>
+        @if (session('error'))
+            <div class="mb-4 text-red-500">{{ session('error') }}</div>
+        @endif
+
+        @foreach ($notifications as $notif)
+            @php
+                $type = $notif['type'];
+                $data = $notif['data'];
+                $me = auth()->id();
+            @endphp
+
+            <div
+                class="p-4 bg-brand-500 rounded  border-l-4 text-white
+        @if ($type === 'comment' && $data->is_marked_answer) border-green-500
+        @elseif ($type === 'comment' && $data->parent_message_id)
+            border-blue-500
+        @elseif ($type === 'comment')
+            border-yellow-500
+        @elseif ($type === 'dm')
+            border-indigo-500
+        @elseif ($type === 'upvote')
+            border-red-500 @endif
+    ">
+                <div class="text-gray-700">
+                    @if ($type === 'comment')
+                        @if ($data->is_marked_answer && $data->is_post_comment_owner_read)
+                            <div>{{ $data->author->username }} Marked your comment as answer.</div>
+                            <a class="text-blue-600  underline"
+                                href="{{ route('topics.posts.show', [$data->post->topic, $data->post]) }}">Open Post</a>
+                        @elseif (!$data->is_parent_message_owner_read && $data->parent_message_id)
+                            <div>{{ $data->author->username }} replied to your comment.</div>
+                            <a class="text-blue-600  underline"
+                                href="{{ route('topics.posts.show', [$data->post->topic, $data->post]) }}">Open Post</a>
+                        @elseif (!$data->is_post_owner_read)
+                            <div>{{ $data->author->username }} comment your post.</div>
+                            <a class="text-blue-600  underline"
+                                href="{{ route('topics.posts.show', [$data->post->topic, $data->post]) }}">Open Post</a>
+                        @endif
+                    @elseif ($type === 'dm')
+                        {{ $data->sender->username }} sent you a direct message.
+                        <div class="text-gray-500 italic">"{{ Str::limit($data->message, 25) }}"</div>
+                        <a href="{{ route('messages.index', $data->sender_id) }}" class="text-blue-600  underline">Open
+                            message</a>
+                    @elseif ($type === 'upvote')
+                        {{ $data->user->username }} up voted
+                        @if ($data->post)
+                            your post.
+                            <br>
+                            <a href="{{ route('topics.posts.show', [$data->post->topic, $data->post]) }}"
+                                class="text-blue-600  underline">
+                                Open Post
+                            </a>
+                        @elseif ($data->comment)
+                            comment.
+                            <br>
+                            <a href="{{ route('topics.posts.show', [$data->comment->post->topic, $data->comment->post]) }}"
+                                class="text-blue-600  underline">
+                                Open Comment
+                            </a>
+                        @endif
+                    @endif
+                </div>
+
+                <div class="text-white mt-1">
+                    {{ $notif['created_at']->diffForHumans() }}
+                </div>
+            </div>
+        @endforeach
+
+    </div>
+    </div>
+    </div>
+@endsection

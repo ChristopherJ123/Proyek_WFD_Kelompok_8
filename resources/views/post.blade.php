@@ -1,5 +1,7 @@
 @extends('layouts.app')
 
+@section('title', 'Post')
+
 @section('content')
     <div class="flex gap-4 w-full font-sans">
         <div class="flex flex-col w-full gap-4 p-4 overflow-y-auto">

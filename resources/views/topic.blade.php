@@ -1,5 +1,7 @@
 @extends('layouts.app')
 
+@section('title', 'Topic')
+
 @section('content')
     <div class="flex w-full">
         <div class="flex flex-col w-full relative overflow-y-auto">
