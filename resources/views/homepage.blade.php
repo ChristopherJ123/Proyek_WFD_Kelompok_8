@@ -2,6 +2,8 @@
 
 @extends('layouts.app')
 
+@section('title', 'Homepage')
+
 @section('content')
     <div class="flex w-full m-4 gap-4 tracking-widest overflow-auto">
         <div class="flex flex-grow-1 flex-col">

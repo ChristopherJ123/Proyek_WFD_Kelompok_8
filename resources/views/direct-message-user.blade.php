@@ -1,5 +1,7 @@
 @extends('layouts.app')
 
+@section('title', 'DM User')
+
 
 @section('content')
     <div class="bg-brand-300 w-full"> 

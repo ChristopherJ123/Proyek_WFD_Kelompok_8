@@ -1,5 +1,8 @@
 @extends('layouts.app')
 
+@section('title', 'DM Menu')
+
+
 @section('content')
     <div class="ml-64 w-[calc(100%-16rem)] flex justify-start items-center min-h-screen pl-20">
         <div class="bg-brand-300 p-8 rounded-xl shadow-md w-full max-w-md -translate-y-32">
