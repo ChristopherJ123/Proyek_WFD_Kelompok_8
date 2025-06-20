@@ -12,6 +12,7 @@
         @endif
         @if ($notifications->isEmpty())
             <div class="text-center text-gray-500 italic mt-4">No notifications</div>
+        @else
             @foreach ($notifications as $notif)
                 @php
                     $type = $notif['type'];
