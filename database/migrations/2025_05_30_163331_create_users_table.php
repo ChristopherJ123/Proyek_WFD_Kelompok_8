@@ -23,7 +23,7 @@ return new class extends Migration
             $table->string('education')->nullable();
             $table->string('university')->nullable();
             $table->date('birth_date');
-            $table->string('profile_picture_url')->nullable();
+            $table->string('profile_picture_link')->nullable();
             $table->timestamps();
         });
 
