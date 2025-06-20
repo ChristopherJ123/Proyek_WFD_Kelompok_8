@@ -16,6 +16,10 @@ class PostCommentController extends Controller
      */
     public function store(Request $request, Topic $topic, Post $post)
     {
+        if ($request->user()->isBannedFromTopic($topic->id)) {
+            return redirect()->back()->withErrors(['message' => 'You are banned from commenting in this topic.']);
+        }
+
         $request->validate([
             'parent_message_id' => 'nullable|numeric',
             'message' => 'required|string',
@@ -69,12 +73,25 @@ class PostCommentController extends Controller
             ]);
         }
 
+        $isBanned = false;
+
+        if (Auth::check()) {
+            $user = $request->user();
+            $isBanned = $user->isBannedFromTopic($topic->id);
+
+            $topic->usersVisited()->syncWithoutDetaching($user['id']);
+            $topic->usersVisited()->updateExistingPivot($user['id'], [
+                'updated_at' => now(),
+            ]);
+        }
+
         return view('post', [
             'search' => $request->search,
             'topic' => $topic,
             'post' => $post,
             'comments' => $comments,
             'newComment' => $comment,
+            'isBanned' => $isBanned,
         ]);
     }
 

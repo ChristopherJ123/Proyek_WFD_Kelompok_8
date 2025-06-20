@@ -1,4 +1,10 @@
 @props(['post', 'comment', 'depth' => 0])
+@php
+    $isBanned = \DB::table('topic_blocked_users')
+        ->where('topic_id', $post->topic_id)
+        ->where('user_id', $comment->author->id)
+        ->exists();
+@endphp
 
 <div
     @class([
@@ -81,7 +87,8 @@
         </div>
     </div>
 
-    <div class="flex flex-1 justify-end items-center">
+    <div class="flex flex-1 justify-end items-center gap-2">
+        {{-- Tombol Report --}}
         <button
             class="p-2 rounded-full cursor-pointer hover:bg-brand-900 hover:text-white report-comment-btn"
             title="Report Comment"
@@ -92,6 +99,34 @@
                 <path stroke-linecap="round" stroke-linejoin="round" d="M3 3v1.5M3 21v-6m0 0 2.77-.693a9 9 0 0 1 6.208.682l.108.054a9 9 0 0 0 6.086.71l3.114-.732a48.524 48.524 0 0 1-.005-10.499l-3.11.732a9 9 0 0 1-6.085-.711l-.108-.054a9 9 0 0 0-6.208-.682L3 4.5M3 15V4.5" />
             </svg>
         </button>
+
+        {{-- Tombol Ban (hanya admin atau moderator) --}}
+        @if(auth()->check() && (auth()->user()->role_id == 2 || auth()->user()->moderatedTopics()->where('topic_id', $post->topic_id)->exists()))
+            @if($isBanned)
+                <button class="p-2 rounded-full cursor-pointer hover:bg-green-100 text-green-600 hover:text-green-800 unban-from-topic-btn"
+                    title="Unban user from topic"
+                    data-topic-id="{{ $post->topic_id }}"
+                    data-user-id="{{ $comment->author->id }}">
+                    <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5"
+                        stroke="currentColor" class="size-6">
+                        <path stroke-linecap="round" stroke-linejoin="round" d="M6 18 18 6M6 6l12 12" />
+                    </svg>
+                </button>
+            @else
+                <button class="p-2 rounded-full cursor-pointer hover:bg-red-100 text-red-600 hover:text-red-800 ban-user-btn"
+                    title="Ban user from topic"
+                    data-topic-id="{{ $post->topic_id }}"
+                    data-user-id="{{ $comment->author->id }}">
+                    <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5"
+                        stroke="currentColor" class="size-6">
+                        <path stroke-linecap="round" stroke-linejoin="round" d="M18.364 5.636a9 9 0 1 1-12.728 0M12 9v3.75"/>
+                    </svg>
+                </button>
+            @endif
+        @endif
+
+        
+        {{-- Tombol mark asnwer --}}
         @if (auth()->check() && auth()->id() === $post->author->id && !$comment->is_marked_answer)
             <form method="POST" action="{{ route('topics.posts.comments.mark-answer', [$post->topic, $post, $comment]) }}">
                 @csrf

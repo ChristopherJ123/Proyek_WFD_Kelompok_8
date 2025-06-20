@@ -47,6 +47,11 @@ Route::middleware(GuestOnly::class)->group(function () {
 Route::middleware(UserOnly::class)->group(function () {
     Route::get('logout', [LoginController::class, 'destroy'])->name('logout');
 
+    Route::get('/profile', [ProfileController::class, 'show'])->name('profile.show');
+    Route::get('/profile/edit', [ProfileController::class, 'edit'])->name('profile.edit');
+    Route::put('/profile', [ProfileController::class, 'update'])->name('profile.update');
+    Route::delete('/profile', [ProfileController::class, 'destroy'])->name('profile.destroy');
+
     Route::get('topics/create', [TopicController::class, 'create'])->name('topics.create');
     Route::post('topics', [TopicController::class, 'store'])->name('topics.store');
     Route::put('topics/{topic}', [TopicController::class, 'update'])->name('topics.update');
@@ -70,6 +75,8 @@ Route::middleware(UserOnly::class)->group(function () {
 
 
     Route::post('posts/{post}/vote', [PostController::class, 'vote'])->name('posts.vote');
+    Route::post('/topics/{topic}/ban-user', [\App\Http\Controllers\TopicBanController::class, 'banUser'])->name('topics.ban-user');
+
 });
 
 Route::get('dashboard', [DashboardController::class, 'index'])->name('dashboard');
@@ -88,4 +95,7 @@ Route::middleware(AjaxRequestsOnly::class)->group(function () {
     Route::post('posts/{post}/vote', [PostController::class, 'vote'])->middleware(UserOnly::class)->name('posts.vote');
     Route::post('/report/post/{postId}', [ReportController::class, 'reportPost'])->middleware(UserOnly::class)->name('report.post');
     Route::post('/report/comment/{commentId}', [ReportController::class, 'reportComment'])->middleware(UserOnly::class)->name('report.comment');
+    Route::post('/topic/{topic}/ban-user', [TopicBanController::class, 'banUser'])->middleware(UserOnly::class)->name('topics.ban.user');
+    Route::post('/topics/{topic}/ban/{user}', [\App\Http\Controllers\TopicBanController::class, 'ban'])->middleware(UserOnly::class)->name('topics.ban');
+    Route::post('/topics/{topic}/unban/{user}', [TopicBanController::class, 'unban'])->name('topics.unban');
 });

@@ -17,6 +17,9 @@ class PostController extends Controller
     public function vote(Request $request, Post $post)
     {
         $user = $request->user();
+        if ($user->isBannedFromTopic($post->topic_id)) {
+        return response()->json(['message' => 'You are banned from voting in this topic.'], 403);
+    }
 
         $request->validate([
             'post_comment_id' => 'nullable|numeric',
@@ -67,6 +70,9 @@ class PostController extends Controller
      */
     public function create(Topic $topic)
     {
+        if (auth()->user()->isBannedFromTopic($topic->id)) {
+            return redirect()->route('topics.show', $topic)->withErrors(['message' => 'You are banned from this topic.']);
+        }
         $genres = Genre::all();
 
         return view('register-post', [
@@ -80,6 +86,9 @@ class PostController extends Controller
      */
     public function store(Request $request, Topic $topic)
     {
+        if ($request->user()->isBannedFromTopic($topic->id)) {
+            return redirect()->back()->withErrors(['message' => 'You are banned from posting in this topic.']);
+        }
         $request->validate([
             'title' => 'required|string',
             'description' => 'required|string',
@@ -133,11 +142,24 @@ class PostController extends Controller
             ]);
         }
 
+        $isBanned = false;
+
+        if (Auth::check()) {
+            $user = $request->user();
+            $isBanned = $user->isBannedFromTopic($topic->id);
+
+            $topic->usersVisited()->syncWithoutDetaching($user['id']);
+            $topic->usersVisited()->updateExistingPivot($user['id'], [
+                'updated_at' => now(),
+            ]);
+        }
+
         return view('post', [
             'search' => $request->search,
             'topic' => $topic,
             'post' => $post,
             'comments' => $comments,
+            'isBanned' => $isBanned,
         ]);
     }
 
