@@ -47,6 +47,11 @@ Route::middleware(GuestOnly::class)->group(function () {
 Route::middleware(UserOnly::class)->group(function () {
     Route::get('logout', [LoginController::class, 'destroy'])->name('logout');
 
+    Route::get('/profile', [ProfileController::class, 'show'])->name('profile.show');
+    Route::get('/profile/edit', [ProfileController::class, 'edit'])->name('profile.edit');
+    Route::put('/profile', [ProfileController::class, 'update'])->name('profile.update');
+    Route::delete('/profile', [ProfileController::class, 'destroy'])->name('profile.destroy');
+
     Route::get('topics/create', [TopicController::class, 'create'])->name('topics.create');
     Route::post('topics', [TopicController::class, 'store'])->name('topics.store');
     Route::put('topics/{topic}', [TopicController::class, 'update'])->name('topics.update');
