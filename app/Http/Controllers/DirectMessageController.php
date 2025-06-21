@@ -12,7 +12,7 @@ class DirectMessageController extends Controller
 {
     public function dmMenu() {
         $userId = auth()->id();
-        
+
         $messagedUser = DirectMessage::where('sender_id', $userId)
         ->orWhere('target_user_id', $userId)
         ->orderByDesc('created_at')
@@ -25,7 +25,7 @@ class DirectMessageController extends Controller
     }
 
     public function startConversation(Request $request) {
-        
+
         $request->validate([
             'username' => 'required|exists:users,username',
         ]);
@@ -36,13 +36,13 @@ class DirectMessageController extends Controller
             return back()->with('error', 'You cannot message yourself.');
         }
 
-        return redirect()->route('messages.index', $targetUser->id);
+        return redirect()->route('messages.index', $targetUser->username);
     }
 
 
     public function index(User $user) {
        $authId = auth()->id();
-       
+
        DirectMessage::where('sender_id', $user->id)
        ->where('target_user_id', $authId)
        ->where('is_read', false)
@@ -58,7 +58,7 @@ class DirectMessageController extends Controller
         ->get();
 
         return view('direct-message-user', compact('user', 'messages'));
-        
+
     }
 
     public function store(Request $request, User $user) {
@@ -85,9 +85,7 @@ class DirectMessageController extends Controller
             }
         }
 
-
-
-        return redirect()->route('messages.index', $user->id);
+        return redirect()->route('messages.index', $user->username);
     }
-    
+
 }

@@ -7,9 +7,9 @@
         <div class="flex flex-col w-full gap-4 p-4 overflow-y-auto">
             <div class="flex gap-2 font-lazy-dog tracking-widest">
                 <img class="size-16 object-cover rounded-full" src="{{ asset('storage/'.$topic->icon_image_link) }}" alt="{{ $topic->name }}">
-                <div>
+                <div class="flex flex-col">
                     <a href="{{ route('topics.show', $topic) }}" class="font-bold text-4xl">y/{{ $topic->name }}</a>
-                    <div class="font-bold text-gray-700 uppercase">{{ $post->author->username }}</div>
+                    <a href="{{ route('profile.show', $post->author) }}" class="font-bold text-gray-700 uppercase">{{ $post->author->username }}</a>
                 </div>
             </div>
             <div class="flex justify-between items-center">
@@ -122,7 +122,7 @@
 
         <div class="flex flex-col gap-2 bg-brand-500 p-4 min-w-sm max-w-sm font-sans">
             <div class="flex items-center gap-2">
-                <div class="text-2xl font-bold text-gray-800 font-lazy-dog tracking-widest">y/{{ $topic->name }}</div>
+                <div class="text-3xl font-bold text-gray-800 font-lazy-dog tracking-widest">y/{{ $topic->name }}</div>
                 @if(auth()->check() && auth()->user()->topicFollowings()->where('topic_id', '=', $topic->id)->exists())
                     <button onclick="followTopic({{ $topic->id }})" class="follow-topic-button bg-brand-900 font-semibold text-brand-300 p-1 px-2 rounded-4xl cursor-pointer">
                         Joined
@@ -133,6 +133,7 @@
                     </button>
                 @endif
             </div>
+            <div class="font-lazy-dog text-2xl text-brand-900">By: <a href="{{ route('profile.show', $topic->owner) }}">{{ $topic->owner->username }}</a></div>
             <div>
                 {{ $topic->description }}
             </div>

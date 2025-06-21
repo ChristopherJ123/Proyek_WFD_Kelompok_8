@@ -64,13 +64,15 @@
             <div x-show="!editing" x-transition.opacity.scale>
                 <div class="flex justify-between items-center mb-3">
                     <span class="font-bold text-lg">PROFILE</span>
-                    <button
-                        type="button"
-                        @click="editing=true"
-                        class="text-blue-700 underline focus:outline-none"
-                    >
-                        EDIT
-                    </button>
+                    @if(auth()->check() && auth()->id() === $user->id)
+                        <button
+                            type="button"
+                            @click="editing=true"
+                            class="text-blue-700 underline focus:outline-none"
+                        >
+                            EDIT
+                        </button>
+                    @endif
                 </div>
 
                 <div class="mb-4">
@@ -117,107 +119,109 @@
                 @endif
             </div>
 
-            {{-- ───────────────── EDIT MODE ───────────────── --}}
-            <form
-                x-show="editing"
-                x-transition.opacity.scale
-                x-cloak                 {{-- keep hidden until Alpine is ready --}}
-                method="POST"
-                action="{{ route('profile.update', $user) }}"
-                enctype="multipart/form-data"
-                class="space-y-4"
-            >
-                @csrf
-                @method('PUT')
+            @if(auth()->check() && auth()->id() === $user->id)
+                {{-- ───────────────── EDIT MODE ───────────────── --}}
+                <form
+                    x-show="editing"
+                    x-transition.opacity.scale
+                    x-cloak                 {{-- keep hidden until Alpine is ready --}}
+                    method="POST"
+                    action="{{ route('profile.update', $user) }}"
+                    enctype="multipart/form-data"
+                    class="space-y-4"
+                >
+                    @csrf
+                    @method('PUT')
 
-                <div class="flex justify-between items-center mb-1">
-                    <span class="font-bold text-lg">EDIT PROFILE</span>
-                    <button
-                        type="button"
-                        @click="editing=false"
-                        class="text-red-600 underline text-xs"
-                    >
-                        Cancel
-                    </button>
-                </div>
+                    <div class="flex justify-between items-center mb-1">
+                        <span class="font-bold text-lg">EDIT PROFILE</span>
+                        <button
+                            type="button"
+                            @click="editing=false"
+                            class="text-red-600 underline text-xs"
+                        >
+                            Cancel
+                        </button>
+                    </div>
 
-                {{-- Profile picture --}}
-                <div>
-                    <label class="block text-gray-600 uppercase text-xs mb-1">Profile picture</label>
-                    <input
-                        type="file"
-                        name="avatar"
-                        accept="image/*"
-                        class="block w-full text-sm text-gray-700
+                    {{-- Profile picture --}}
+                    <div>
+                        <label class="block text-gray-600 uppercase text-xs mb-1">Profile picture</label>
+                        <input
+                            type="file"
+                            name="avatar"
+                            accept="image/*"
+                            class="block w-full text-sm text-gray-700
                        file:mr-4 file:py-2 file:px-4
                        file:rounded-full file:border-0
                        file:text-sm file:font-semibold
                        file:bg-brand-900 file:text-brand-300
                        hover:file:bg-brand-800"
-                    >
-                    @error('avatar') <p class="text-red-500 text-xs mt-1">{{ $message }}</p> @enderror
-                </div>
+                        >
+                        @error('avatar') <p class="text-red-500 text-xs mt-1">{{ $message }}</p> @enderror
+                    </div>
 
-                {{-- Bio --}}
-                <div>
-                    <label class="block text-gray-600 uppercase text-xs mb-1">Biography</label>
-                    <textarea
-                        name="bio"
-                        rows="3"
-                        class="w-full p-2 rounded-lg border border-brand-500 focus:border-brand-500"
-                    >{{ old('bio', $user->bio) }}</textarea>
-                    @error('bio') <p class="text-red-500 text-xs mt-1">{{ $message }}</p> @enderror
-                </div>
+                    {{-- Bio --}}
+                    <div>
+                        <label class="block text-gray-600 uppercase text-xs mb-1">Biography</label>
+                        <textarea
+                            name="bio"
+                            rows="3"
+                            class="w-full p-2 rounded-lg border border-brand-500 focus:border-brand-500"
+                        >{{ old('bio', $user->bio) }}</textarea>
+                        @error('bio') <p class="text-red-500 text-xs mt-1">{{ $message }}</p> @enderror
+                    </div>
 
-                {{-- Education status --}}
-                <div>
-                    <label class="block text-gray-600 uppercase text-xs mb-1">Education status</label>
-                    <input
-                        type="text"
-                        name="education"
-                        value="{{ old('education', $user->education) }}"
-                        class="w-full p-2 rounded-lg border border-brand-500 focus:ring-brand-500"
-                    >
-                    @error('education') <p class="text-red-500 text-xs mt-1">{{ $message }}</p> @enderror
-                </div>
+                    {{-- Education status --}}
+                    <div>
+                        <label class="block text-gray-600 uppercase text-xs mb-1">Education status</label>
+                        <input
+                            type="text"
+                            name="education"
+                            value="{{ old('education', $user->education) }}"
+                            class="w-full p-2 rounded-lg border border-brand-500 focus:ring-brand-500"
+                        >
+                        @error('education') <p class="text-red-500 text-xs mt-1">{{ $message }}</p> @enderror
+                    </div>
 
-                {{-- University --}}
-                <div>
-                    <label class="block text-gray-600 uppercase text-xs mb-1">Most Recent School/University</label>
-                    <input
-                        type="text"
-                        name="university"
-                        value="{{ old('university', $user->university) }}"
-                        class="w-full p-2 rounded-lg border border-brand-500 focus:ring-brand-500"
-                    >
-                    @error('university') <p class="text-red-500 text-xs mt-1">{{ $message }}</p> @enderror
-                </div>
+                    {{-- University --}}
+                    <div>
+                        <label class="block text-gray-600 uppercase text-xs mb-1">Most Recent School/University</label>
+                        <input
+                            type="text"
+                            name="university"
+                            value="{{ old('university', $user->university) }}"
+                            class="w-full p-2 rounded-lg border border-brand-500 focus:ring-brand-500"
+                        >
+                        @error('university') <p class="text-red-500 text-xs mt-1">{{ $message }}</p> @enderror
+                    </div>
 
-                {{-- Birthdate --}}
-                <div>
-                    <label class="block text-gray-600 uppercase text-xs mb-1">
-                        Your Birthdate<span class="text-red-500">*</span>
-                    </label>
-                    <input
-                        type="date"
-                        name="birth_date"
-                        value="{{ old('birth_date', $user->birth_date) }}"
-                        class="w-full p-2 rounded-lg border border-brand-500 focus:ring-brand-500"
-                        required
-                    >
-                    @error('birth_date') <p class="text-red-500 text-xs mt-1">{{ $message }}</p> @enderror
-                </div>
+                    {{-- Birthdate --}}
+                    <div>
+                        <label class="block text-gray-600 uppercase text-xs mb-1">
+                            Your Birthdate<span class="text-red-500">*</span>
+                        </label>
+                        <input
+                            type="date"
+                            name="birth_date"
+                            value="{{ old('birth_date', $user->birth_date) }}"
+                            class="w-full p-2 rounded-lg border border-brand-500 focus:ring-brand-500"
+                            required
+                        >
+                        @error('birth_date') <p class="text-red-500 text-xs mt-1">{{ $message }}</p> @enderror
+                    </div>
 
-                {{-- Submit --}}
-                <div class="flex justify-end">
-                    <button
-                        type="submit"
-                        class="bg-brand-900 text-brand-300 font-semibold py-2 px-4 rounded-xl hover:bg-brand-800 transition"
-                    >
-                        Save
-                    </button>
-                </div>
-            </form>
+                    {{-- Submit --}}
+                    <div class="flex justify-end">
+                        <button
+                            type="submit"
+                            class="bg-brand-900 text-brand-300 font-semibold py-2 px-4 rounded-xl hover:bg-brand-800 transition"
+                        >
+                            Save
+                        </button>
+                    </div>
+                </form>
+            @endif
         </div>
     </div>
     <script>

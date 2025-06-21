@@ -30,7 +30,7 @@ class NotificationController extends Controller {
                       });
                 })
 
-                // CASE 3: comment was marked as answer 
+                // CASE 3: comment was marked as answer
                 ->orWhere(function ($q) use ($userId) {
                     $q->whereHas('post', function ($postQuery) use ($userId) {
                         $postQuery->where('author_id', $userId);
@@ -98,7 +98,7 @@ public function redirect($type, $id) {
             // CASE 2: Reply to your comment
             if (
                 $comment->parent &&
-                $comment->parent->author_id === $userId 
+                $comment->parent->author_id === $userId
             ) {
                 $comment->is_parent_message_owner_read = true;
                 $isUpdated = true;
@@ -117,7 +117,7 @@ public function redirect($type, $id) {
                 $comment->save();
             }
             return redirect()->route('topics.posts.show', [$comment->post->topic, $comment->post]);
-        
+
         case 'upvote':
             $vote = \App\Models\UserVote::with(['post.topic', 'comment.post.topic'])->findOrFail($id);
 
@@ -142,7 +142,7 @@ public function redirect($type, $id) {
                 $dm->is_read = true;
                 $dm->save();
             }
-            return redirect()->route('messages.index', $dm->sender_id);
+            return redirect()->route('messages.index', $dm->sender->username);
 
         default:
             abort(404);

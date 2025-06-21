@@ -4,12 +4,12 @@
 
 
 @section('content')
-    <div class="bg-brand-300 w-full"> 
+    <div class="bg-brand-300 w-full">
         <div class="bg-brand-300 p-8 rounded-xl w-full max-w-6xl mx-auto">
             <div class="text-3xl">
-                Chatting with User: <span class="underline">{{ $user->username }}</span>
-            </div> 
-            
+                Chatting with User: <a href="{{ route('profile.show', $user) }}" class="underline">{{ $user->username }}</a>
+            </div>
+
             <div id="chatBox" class="border p-4 h-96 w-full overflow-y-scroll bg-brand-100 rounded mb-6">
                 @foreach ($messages  as $msg)
                     <div class="mb-4 {{ $msg->sender_id === auth()->id() ? 'text-right' : 'text-left' }}">
@@ -43,13 +43,13 @@
                 @endforeach
             </div>
             <div>
-                <form action="{{ route('messages.store', $user->id) }}" id="messageForm" method="POST" enctype="multipart/form-data" class="space-y-4">
+                <form action="{{ route('messages.store', $user->username) }}" id="messageForm" method="POST" enctype="multipart/form-data" class="space-y-4">
                     @csrf
                     <div class="relative w-full">
                         {{-- Input box--}}
                         <input type="text" name="message"
                             class="w-full py-2 pl-10 pr-20 rounded border bg-brand-100 border-black"
-                            placeholder="Type a message..." 
+                            placeholder="Type a message..."
                             autocomplete="off"/>
 
                         {{-- attach image (left side) --}}
@@ -71,7 +71,7 @@
         </div>
     </div>
 
-    
+
 
     <script>
     document.getElementById('messageForm').addEventListener('submit', function (e) {
@@ -96,7 +96,7 @@
     function limitImages(input) {
     if (input.files.length > 4) {
             alert("You can only upload up to 4 images.");
-            input.value = ""; 
+            input.value = "";
         }
     }
     </script>
