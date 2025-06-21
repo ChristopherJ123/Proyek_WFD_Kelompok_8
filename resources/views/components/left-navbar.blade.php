@@ -7,8 +7,20 @@
         $recentlyVisitedTopics = $user->topicsVisited()->latest()->get();
     }
 @endphp
-<nav
-    class="flex flex-col text-2xl font-bold tracking-wider bg-brand-900 text-brand-500 p-2 gap-4 max-w-64 w-full overflow-auto">
+<nav id="side‑nav"
+     class="fixed inset-y-0 left-0 z-1 flex flex-col text-2xl font-bold tracking-wider
+            bg-brand-900 text-brand-500 p-2 gap-4 max-w-80 w-80 overflow-ellipsis md:overflow-auto
+            transition-transform duration-300
+            -translate-x-full
+            md:static md:translate-x-0">
+    <button id="mobile‑nav‑toggle"
+            class="absolute top-32 -right-12 z‑50 flex items-center gap‑1 rounded-full bg-brand-900 text-brand-500 p-2
+               shadow-lg">
+        <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="size-6">
+            <path stroke-linecap="round" stroke-linejoin="round" d="M3.75 6.75h16.5M3.75 12h16.5m-16.5 5.25h16.5" />
+        </svg>
+        <span class="sr-only">Open navigation</span>
+    </button>
     <a href="{{ route('dashboard') }}" class="flex items-end gap-2">
         <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor" class="size-8">
             <path
@@ -146,6 +158,10 @@
     </ul>
 </nav>
 <script>
+    $('#mobile‑nav‑toggle').on('click', function () {
+        $('#side‑nav').toggleClass('-translate-x-full');   // slide in / out
+    });
+
     $('#recent-bar').on("click", function () {
         $('#recent-tab').slideToggle();
         $(this).children('button').children().first().toggleClass('rotate-180');

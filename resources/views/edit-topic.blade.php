@@ -92,16 +92,20 @@
                 y/{{ $topic->name }} moderators
             </div>
 
-            @foreach($topic->moderators as $moderator)
-                <div id="moderator-container-{{ $loop->index }}" class="moderator-container flex flex-col bg-brand-100 p-2 rounded-2xl">
+            <div id="moderator-container-0" class="moderator-container flex flex-col bg-brand-100 p-2 rounded-2xl">
+                <div class="flex space-x-4 items-center">
+                    <span class="text-xl">1</span>
+                    <div class="flex relative justify-between w-full font-semibold">
+                        <input type="text" name="moderators[0]" id="moderators[0]" placeholder="Username" class="focus:outline-brand-500 focus:outline-2 text-brand-500" value="{{ auth()->user()->username }}" readonly>
+                    </div>
+                </div>
+            </div>
+            @foreach($topic->moderators()->where('username', '!=', auth()->user()->username)->get() as $moderator)
+                <div id="moderator-container-{{ $loop->index + 1 }}" class="moderator-container flex flex-col bg-brand-100 p-2 rounded-2xl">
                     <div class="flex space-x-4 items-center">
-                        <span class="text-xl">{{ $loop->iteration }}</span>
+                        <span class="text-xl">{{ $loop->iteration + 1 }}</span>
                         <div class="flex relative justify-between w-full font-semibold">
-                            @if($loop->first)
-                                <input type="text" name="moderators[{{ $loop->index }}]" id="moderators[{{ $loop->index }}]" placeholder="Username" class="focus:outline-brand-500 focus:outline-2 text-brand-500" value="{{ $moderator->username }}" disabled>
-                            @else
-                                <input type="text" name="moderators[{{ $loop->index }}]" id="moderators[{{ $loop->index }}]" placeholder="Username" class="focus:outline-brand-500 focus:outline-2" value="{{ $moderator->username }}">
-                            @endif
+                            <input type="text" name="moderators[{{ $loop->index + 1 }}]" id="moderators[{{ $loop->index + 1 }}]" placeholder="Username" class="focus:outline-brand-500 focus:outline-2" value="{{ $moderator->username }}">
                         </div>
                     </div>
                 </div>
