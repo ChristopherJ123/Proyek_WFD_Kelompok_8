@@ -15,7 +15,13 @@ class ExplorePageController extends Controller
             'order_by' =>'nullable|string',
         ]);
 
+        $order = $request->order_by ?? 'desc';
+
         $postsBuilder = Post::query()
+            ->withCount([
+                'votes as upvotes_count' => fn ($q) => $q->where('is_upvote', 1),
+                'votes as downvotes_count' => fn ($q) => $q->where('is_upvote', 0),
+            ])
             ->when($request->search, function (\Illuminate\Database\Eloquent\Builder $query, string $search) {
                 $query->where('title', 'like', '%'.$search.'%')
                     ->orWhereHas('topic', function (\Illuminate\Database\Eloquent\Builder $query) use ($search) {
@@ -23,46 +29,33 @@ class ExplorePageController extends Controller
                     });
             });
 
-        match ($request->sort_by) {
-            default => $postsBuilder
-                ->select('*')
-                ->inRandomOrder(),
-            'Best' => $postsBuilder
-                ->select('*')
-                ->selectRaw('
-                CASE
-                    WHEN
-                        (SELECT COUNT(*) FROM user_votes WHERE user_votes.post_id = posts.id AND is_upvote = 1) = 0 AND
-                        (SELECT COUNT(*) FROM user_votes WHERE user_votes.post_id = posts.id AND is_upvote = 0) = 0
-                    THEN 0
-                    WHEN
-                        (SELECT COUNT(*) FROM user_votes WHERE user_votes.post_id = posts.id AND is_upvote = 0) = 0
-                    THEN
-                        (SELECT COUNT(*) FROM user_votes WHERE user_votes.post_id = posts.id AND is_upvote = 1)
-                    ELSE
-                        (SELECT COUNT(*) FROM user_votes WHERE user_votes.post_id = posts.id AND is_upvote = 1) /
-                        (SELECT COUNT(*) FROM user_votes WHERE user_votes.post_id = posts.id AND is_upvote = 0)
-                END as votes_ratio
-            ')
-                ->orderBy('votes_ratio', $request->order_by ?? 'desc'),
-            'Popular' => $postsBuilder
-                ->select('*')
-                ->selectRaw('
-                        (
-                            SELECT COUNT(*)
-                            FROM user_votes
-                            WHERE user_votes.post_id = posts.id AND is_upvote = 1
-                        ) -
-                        (
-                            SELECT COUNT(*)
-                            FROM user_votes
-                            WHERE user_votes.post_id = posts.id AND is_upvote = 0
-                        ) AS votes_delta
-                    ')
-                ->orderBy('votes_delta', $request->order_by ?? 'desc'),
-            'Date' => $postsBuilder
-                ->select('*')
-                ->orderBy('created_at', $request->order_by ?? 'desc'),
+        switch ($request->sort_by) {
+            // Popular = upvote – downvote
+            case 'Popular':
+                $postsBuilder->orderByRaw(
+                    '(upvotes_count - downvotes_count) ' . $order
+                );
+                break;
+
+            // Date = created_at
+            case 'Date':
+                $postsBuilder->orderBy('created_at', $order);
+                break;
+
+            // Default (Best) = ratio (handle ÷0 safely, cast to DECIMAL)
+            case 'Best': // ‘Ratio’ or blank
+                $postsBuilder->orderByRaw(
+                    'COALESCE(
+                            CASE
+                                WHEN downvotes_count = 0 THEN upvotes_count
+                                ELSE upvotes_count / downvotes_count
+                            END, 0
+                    ) ' . $order
+                );
+                break;
+            default:
+                $postsBuilder->inRandomOrder();
+                break;
         };
 
         $posts = $postsBuilder->with(['topic', 'author'])->paginate(20);
