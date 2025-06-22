@@ -106,3 +106,4 @@ Route::middleware(AdminOnly::class)->group(function () {
     Route::post('admins', [AdminController::class, 'store'])->name('admin.store');
     Route::delete('admins/{user}', [AdminController::class, 'destroy'])->name('admin.destroy');
 });
+
