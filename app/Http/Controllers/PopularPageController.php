@@ -31,11 +31,9 @@ class PopularPageController extends Controller
             });
 
         switch ($request->sort_by) {
-            // Popular = upvote – downvote
+            // Popular = upvote
             case 'Popular':
-                $postsBuilder->orderByRaw(
-                    '(upvotes_count - downvotes_count) ' . $order
-                );
+                $postsBuilder->orderBy('upvotes_count', $order);
                 break;
 
             // Date = created_at
