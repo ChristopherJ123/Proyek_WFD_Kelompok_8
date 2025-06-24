@@ -35,7 +35,7 @@
                 <div id="preview-image-container" class="flex gap-2 overflow-x-auto">
 
                 </div>
-                <textarea class="resize-none bg-brand-100 focus:outline-brand-500 focus:outline-2 p-4 rounded-3xl text-lg" name="description" id="description" cols="30" rows="8" placeholder="Body Text (Optional)">{{ $post->description }}</textarea>
+                <textarea class="resize-none bg-brand-100 focus:outline-brand-500 focus:outline-2 p-4 rounded-3xl text-lg" name="description" id="description" cols="30" rows="8" placeholder="Body Text (Required)">{{ $post->description }}</textarea>
                 <div class="flex flex-row-reverse">
                     <button class="p-2 rounded-4xl font-semibold bg-brand-900 text-brand-100 w-36" type="submit">Post</button>
                 </div>

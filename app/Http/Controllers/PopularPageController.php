@@ -30,6 +30,14 @@ class PopularPageController extends Controller
                     });
             });
 
+        if (Auth::check()) {
+            $genres = $request->user()->genres()->pluck('genres.id');
+
+            $postsBuilder->whereHas('topic', function ($query) use ($genres) {
+                $query->whereIn('genre_id', $genres);
+            });
+        }
+
         switch ($request->sort_by) {
             // Popular = upvote
             case 'Popular':
